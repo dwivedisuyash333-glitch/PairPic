@@ -2860,19 +2860,36 @@ async function runPhotoSession(
   /* =========================
    START PHOTO SESSION
 ========================= */
-
 async function startPhotoSession(mode) {
 
   if (captureBusy) {
     return;
   }
 
-  /*
-   * Only the room creator
-   * can start a shared session.
-   */
+  /* Solo mode */
+  if (solo) {
 
-  if (!solo && role !== "host") {
+    const session = {
+      type: "start-session",
+      mode: mode,
+      count: mode === "strip" ? 4 : 1,
+      timer: selectedTimer,
+
+      /*
+       * Give the local camera a small
+       * head start too.
+       */
+      startAt: Date.now() + 300
+    };
+
+    await runPhotoSession(session);
+
+    return;
+  }
+
+
+  /* Only room creator starts */
+  if (role !== "host") {
 
     alert(
       "The room creator starts the photo session."
@@ -2882,41 +2899,7 @@ async function startPhotoSession(mode) {
   }
 
 
-  /*
-   * SOLO MODE
-   */
-
-  if (solo) {
-
-    await runPhotoSession({
-
-      type:
-        "start-session",
-
-      mode:
-        mode,
-
-      count:
-        mode === "strip"
-          ? 4
-          : 1,
-
-      timer:
-        selectedTimer,
-
-      startAt:
-        Date.now() + 300
-
-    });
-
-    return;
-  }
-
-
-  /*
-   * REAL ROOM
-   */
-
+  /* Make sure WebSocket is connected */
   if (
     !ws ||
     ws.readyState !== WebSocket.OPEN
@@ -2931,19 +2914,20 @@ async function startPhotoSession(mode) {
 
 
   /*
-   * Give the other phone
-   * enough time to receive
-   * the message before the
-   * countdown begins.
+   * IMPORTANT:
+   *
+   * Both phones receive the SAME
+   * startAt timestamp.
+   *
+   * This makes the countdown begin
+   * at approximately the same time.
    */
 
   const session = {
 
-    type:
-      "start-session",
+    type: "start-session",
 
-    mode:
-      mode,
+    mode: mode,
 
     count:
       mode === "strip"
@@ -2953,27 +2937,30 @@ async function startPhotoSession(mode) {
     timer:
       selectedTimer,
 
+    /*
+     * 2 seconds gives the other phone
+     * enough time to receive the message.
+     */
     startAt:
-      Date.now() + 1200
+      Date.now() + 2000
 
   };
 
 
   /*
-   * Send to friend.
+   * Send the session to the friend.
    */
 
   signal(session);
 
 
   /*
-   * Start on creator's phone too.
+   * Start the exact same session
+   * on the creator's phone.
    */
 
-  await runPhotoSession(
-    session
-  );
-}
+  await runPhotoSession(session);
+}  
 
 
 /* =========================
