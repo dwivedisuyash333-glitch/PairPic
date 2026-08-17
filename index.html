@@ -1517,5 +1517,1664 @@ function connectSignal(){
       }
 
 
+      if(message.type === "offer"){
+
+        await pc.setRemoteDescription(
+          message.offer
+        );
+
+        remoteReady = true;
+
+        await flushIce();
+
+        const answer =
+          await pc.createAnswer();
+
+        await pc.setLocalDescription(
+          answer
+        );
+
+        signal({
+          type:"answer",
+          answer:pc.localDescription
+        });
+
+      }
+
+
+      if(message.type === "answer"){
+
+        await pc.setRemoteDescription(
+          message.answer
+        );
+
+        remoteReady = true;
+
+        await flushIce();
+
+      }
+
+
+      if(message.type === "ice"){
+
+        await addIce(
+          message.candidate
+        );
+
+      }
+
+
+      if(message.type === "peer-left"){
+
+        status(
+          "Friend left the room"
+        );
+
+        $("wait").style.display = "flex";
+
+        remoteReady = false;
+
+      }
+
+
+      /*
+       * PHOTO SESSION
+       *
+       * The server sends these commands
+       * to BOTH people.
+       */
+
+      if(message.type === "start-single"){
+
+        await runSession(
+          "single"
+        );
+
+      }
+
+
+      if(message.type === "start-strip"){
+
+        await runSession(
+          "strip"
+        );
+
+      }
+
+
+      if(message.type === "retake"){
+
+        await retakePhoto(
+          Number(message.index)
+        );
+
+      }
+
+    };
+
+}
+
+
+/* =========================================================
+   ENTER BOOTH
+========================================================= */
+
+async function enterBooth(
+  newRoom,
+  newRole
+){
+
+  room = newRoom;
+  role = newRole;
+
+  $("roomLabel").textContent =
+    room;
+
+  $("lobby").style.display =
+    "none";
+
+  $("booth").style.display =
+    "block";
+
+
+  try{
+
+    await startCamera();
+
+
+    if(solo){
+
+      $("modeLabel").textContent =
+        "Solo Photo Booth";
+
+      $("wait").style.display =
+        "none";
+
+      $("remote").style.display =
+        "none";
+
+      $("booth")
+        .querySelector(".stage")
+        .style.gridTemplateColumns =
+        "1fr";
+
+      status(
+        "Solo demo"
+      );
+
+      $("single").disabled = false;
+      $("strip").disabled = false;
+
+    }else{
+
+      setupPeer();
+
+      connectSocket();
+
+      $("single").disabled = false;
+      $("strip").disabled = false;
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Camera permission failed. " +
+      "Please allow camera access and reload."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   5 SECOND COUNTDOWN
+========================================================= */
+
+async function countdown(){
+
+  const element =
+    $("count");
+
+
+  for(
+    let number = 5;
+    number >= 1;
+    number--
+  ){
+
+    element.textContent =
+      number;
+
+    element.classList.add(
+      "show"
+    );
+
+    await sleep(850);
+
+    element.classList.remove(
+      "show"
+    );
+
+    await sleep(150);
+
+  }
+
+
+  element.textContent =
+    "📸";
+
+  element.classList.add(
+    "show"
+  );
+
+  await sleep(180);
+
+  element.classList.remove(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   FLASH
+========================================================= */
+
+function cameraFlash(){
+
+  const flash =
+    $("flash");
+
+  flash.style.opacity =
+    ".95";
+
+  setTimeout(
+    () => {
+      flash.style.opacity =
+        "0";
+    },
+    130
+  );
+
+}
+
+
+/* =========================================================
+   DRAW CAMERA
+========================================================= */
+
+function drawCamera(
+  ctx,
+  video,
+  x,
+  y,
+  width,
+  height,
+  mirror
+){
+
+  if(
+    !video ||
+    video.readyState < 2
+  ){
+
+    return;
+
+  }
+
+
+  const vw =
+    video.videoWidth ||
+    1280;
+
+  const vh =
+    video.videoHeight ||
+    720;
+
+
+  const scale =
+    Math.max(
+      width / vw,
+      height / vh
+    );
+
+
+  const sw =
+    width / scale;
+
+  const sh =
+    height / scale;
+
+
+  const sx =
+    (vw - sw) / 2;
+
+  const sy =
+    (vh - sh) / 2;
+
+
+  ctx.save();
+
+
+  if(mirror){
+
+    ctx.translate(
+      x + width,
+      y
+    );
+
+    ctx.scale(
+      -1,
+      1
+    );
+
+    ctx.drawImage(
+      video,
+      sx,
+      sy,
+      sw,
+      sh,
+      0,
+      0,
+      width,
+      height
+    );
+
+  }else{
+
+    ctx.drawImage(
+      video,
+      sx,
+      sy,
+      sw,
+      sh,
+      x,
+      y,
+      width,
+      height
+    );
+
+  }
+
+
+  ctx.restore();
+
+}
+
+
+/* =========================================================
+   CAPTURE PHOTO
+========================================================= */
+
+async function capturePhoto(){
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  const width = 1280;
+  const height = 800;
+
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  ctx.fillStyle =
+    "#050509";
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  if(solo){
+
+    drawCamera(
+      ctx,
+      $("local"),
+      0,
+      0,
+      width,
+      height,
+      true
+    );
+
+  }else{
+
+    /*
+     * IMPORTANT:
+     * The local camera is mirrored
+     * in LIVE view AND here.
+     *
+     * This fixes the live/captured
+     * left-right mismatch.
+     */
+
+    drawCamera(
+      ctx,
+      $("local"),
+      0,
+      0,
+      width / 2,
+      height,
+      true
+    );
+
+
+    drawCamera(
+      ctx,
+      $("remote"),
+      width / 2,
+      0,
+      width / 2,
+      height,
+      false
+    );
+
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.fillRect(
+      width / 2 - 1,
+      0,
+      2,
+      height
+    );
+
+  }
+
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.30)";
+
+  ctx.fillRect(
+    0,
+    height - 58,
+    width,
+    58
+  );
+
+
+  ctx.fillStyle =
+    "#ffffff";
+
+  ctx.font =
+    "900 24px system-ui";
+
+  ctx.fillText(
+    "PAIRPIC",
+    24,
+    height - 24
+  );
+
+
+  return new Promise(
+    resolve => {
+
+      canvas.toBlob(
+        resolve,
+        "image/jpeg",
+        .94
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   PHOTO SESSION
+========================================================= */
+
+async function runSession(
+  type
+){
+
+  if(captureBusy){
+    return;
+  }
+
+
+  captureBusy =
+    true;
+
+
+  photos = [];
+
+
+  $("result").style.display =
+    "none";
+
+
+  const total =
+    type === "strip"
+      ? 4
+      : 1;
+
+
+  for(
+    let i = 0;
+    i < total;
+    i++
+  ){
+
+    await countdown();
+
+    cameraFlash();
+
+
+    const photo =
+      await capturePhoto();
+
+
+    photos.push(
+      photo
+    );
+
+
+    if(
+      i < total - 1
+    ){
+
+      await sleep(
+        850
+      );
+
+    }
+
+  }
+
+
+  await renderResult();
+
+
+  captureBusy =
+    false;
+
+}
+
+
+/* =========================================================
+   START PHOTO
+========================================================= */
+
+function startPhoto(
+  type
+){
+
+  if(captureBusy){
+    return;
+  }
+
+
+  if(solo){
+
+    runSession(
+      type
+    );
+
+    return;
+
+  }
+
+
+  if(role !== "host"){
+
+    alert(
+      "Only the room creator can start the photo session."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * DO NOT run runSession()
+   * directly on the host.
+   *
+   * Server broadcasts this command
+   * to the friend AND back to host.
+   *
+   * Therefore BOTH see 5,4,3,2,1.
+   */
+
+  signal({
+
+    type:
+      type === "strip"
+        ? "start-strip"
+        : "start-single"
+
+  });
+
+}
+
+
+/* =========================================================
+   THEME COLORS
+========================================================= */
+
+function getTheme(){
+
+  const themes = {
+
+    classic:{
+      bg:"#ffffff",
+      border:"#111111",
+      text:"#111111"
+    },
+
+    forever:{
+      bg:"#fff0f7",
+      border:"#ff3f96",
+      text:"#8d164f"
+    },
+
+    sweetheart:{
+      bg:"#ffe5f0",
+      border:"#ff76b3",
+      text:"#9b285e"
+    },
+
+    rose:{
+      bg:"#f5dce1",
+      border:"#9b263c",
+      text:"#681322"
+    },
+
+    midnight:{
+      bg:"#0d0712",
+      border:"#ff4d9d",
+      text:"#ffffff"
+    },
+
+    sparkle:{
+      bg:"#fff8fd",
+      border:"#966cff",
+      text:"#4a2b80"
+    },
+
+    retro:{
+      bg:"#eadbb9",
+      border:"#49311e",
+      text:"#2b1b0d"
+    },
+
+    elegant:{
+      bg:"#faf7f0",
+      border:"#b49761",
+      text:"#362d20"
+    },
+
+    dreamy:{
+      bg:"#eeeaff",
+      border:"#8066d8",
+      text:"#36255f"
+    },
+
+    party:{
+      bg:"#171020",
+      border:"#ff4fa3",
+      text:"#ffffff"
+    }
+
+  };
+
+
+  return (
+    themes[currentTheme] ||
+    themes.classic
+  );
+
+}
+
+
+/* =========================================================
+   LOAD IMAGE
+========================================================= */
+
+function loadImage(
+  blob
+){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const image =
+        new Image();
+
+
+      image.onload =
+        () => resolve(
+          image
+        );
+
+
+      image.onerror =
+        reject;
+
+
+      image.src =
+        URL.createObjectURL(
+          blob
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   BUILD STRIP
+========================================================= */
+
+async function buildStrip(){
+
+  const images =
+    await Promise.all(
+      photos.map(
+        loadImage
+      )
+    );
+
+
+  const theme =
+    getTheme();
+
+
+  const width =
+    currentLayout === "grid"
+      ? 900
+      : 760;
+
+
+  const padding = 32;
+  const gap = 18;
+
+
+  const photoWidth =
+    currentLayout === "grid"
+      ? 403
+      : width - padding * 2;
+
+
+  const photoHeight =
+    currentLayout === "grid"
+      ? 310
+      : 390;
+
+
+  const top = 140;
+  const bottom = 110;
+
+
+  let height;
+
+
+  if(
+    currentLayout ===
+    "grid"
+  ){
+
+    height =
+      top +
+      photoHeight * 2 +
+      gap +
+      bottom;
+
+  }else{
+
+    height =
+      top +
+      images.length *
+        photoHeight +
+      (images.length - 1) *
+        gap +
+      bottom;
+
+  }
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  ctx.fillStyle =
+    theme.bg;
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /*
+   * Romantic decorative hearts.
+   */
+
+  if(
+    [
+      "forever",
+      "sweetheart",
+      "rose"
+    ].includes(
+      currentTheme
+    )
+  ){
+
+    ctx.fillStyle =
+      "#ff4d9d";
+
+    ctx.globalAlpha =
+      ".18";
+
+    ctx.font =
+      "45px system-ui";
+
+    ctx.fillText(
+      "♥",
+      25,
+      55
+    );
+
+    ctx.fillText(
+      "♥",
+      width - 65,
+      55
+    );
+
+    ctx.globalAlpha =
+      "1";
+
+  }
+
+
+  ctx.textAlign =
+    "center";
+
+
+  ctx.fillStyle =
+    theme.text;
+
+
+  ctx.font =
+    "900 48px system-ui";
+
+
+  ctx.fillText(
+    "PAIRPIC",
+    width / 2,
+    65
+  );
+
+
+  ctx.font =
+    "700 18px system-ui";
+
+
+  ctx.fillText(
+    currentText ||
+      "4 MOMENTS TOGETHER",
+    width / 2,
+    102
+  );
+
+
+  images.forEach(
+    (image,index) => {
+
+      let x;
+      let y;
+      let w;
+      let h;
+
+
       if(
-        message.type ==
+        currentLayout ===
+        "grid"
+      ){
+
+        const column =
+          index % 2;
+
+        const row =
+          Math.floor(
+            index / 2
+          );
+
+
+        x =
+          padding +
+          column *
+            (photoWidth + gap);
+
+
+        y =
+          top +
+          row *
+            (photoHeight + gap);
+
+
+        w =
+          photoWidth;
+
+        h =
+          photoHeight;
+
+      }else{
+
+        x =
+          padding;
+
+        y =
+          top +
+          index *
+            (photoHeight + gap);
+
+        w =
+          width -
+          padding * 2;
+
+        h =
+          photoHeight;
+
+      }
+
+
+      ctx.save();
+
+
+      ctx.beginPath();
+
+
+      ctx.roundRect(
+        x,
+        y,
+        w,
+        h,
+        16
+      );
+
+
+      ctx.clip();
+
+
+      const scale =
+        Math.max(
+          w / image.width,
+          h / image.height
+        );
+
+
+      const sw =
+        w / scale;
+
+      const sh =
+        h / scale;
+
+
+      const sx =
+        (image.width - sw) /
+        2;
+
+      const sy =
+        (image.height - sh) /
+        2;
+
+
+      ctx.drawImage(
+        image,
+        sx,
+        sy,
+        sw,
+        sh,
+        x,
+        y,
+        w,
+        h
+      );
+
+
+      ctx.restore();
+
+    }
+  );
+
+
+  if(
+    currentSticker
+  ){
+
+    ctx.fillStyle =
+      theme.text;
+
+    ctx.font =
+      "42px system-ui";
+
+    ctx.textAlign =
+      "left";
+
+    ctx.fillText(
+      currentSticker,
+      28,
+      height - 32
+    );
+
+  }
+
+
+  ctx.textAlign =
+    "center";
+
+
+  ctx.fillStyle =
+    theme.text;
+
+
+  ctx.font =
+    "700 17px system-ui";
+
+
+  ctx.fillText(
+    new Date()
+      .toLocaleDateString(),
+    width / 2,
+    height - 32
+  );
+
+
+  /*
+   * BIG BORDER
+   */
+
+  ctx.lineWidth =
+    30;
+
+  ctx.strokeStyle =
+    theme.border;
+
+
+  ctx.strokeRect(
+    15,
+    15,
+    width - 30,
+    height - 30
+  );
+
+
+  return new Promise(
+    resolve => {
+
+      canvas.toBlob(
+        resolve,
+        "image/jpeg",
+        .95
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+async function renderResult(){
+
+  if(!photos.length){
+    return;
+  }
+
+
+  if(
+    photos.length === 1
+  ){
+
+    resultBlob =
+      photos[0];
+
+  }else{
+
+    resultBlob =
+      await buildStrip();
+
+  }
+
+
+  $("resultBadge")
+    .textContent =
+      photos.length === 1
+        ? "PHOTO"
+        : "4 PHOTO STRIP";
+
+
+  $("photo").src =
+    URL.createObjectURL(
+      resultBlob
+    );
+
+
+  $("result")
+    .style.display =
+      "block";
+
+
+  buildRetakeButtons();
+
+
+  $("notice")
+    .textContent =
+      "Choose a theme, layout or sticker, then download your memory.";
+
+}
+
+
+/* =========================================================
+   RETAKE BUTTONS
+========================================================= */
+
+function buildRetakeButtons(){
+
+  const box =
+    $("retakeButtons");
+
+
+  box.innerHTML =
+    "";
+
+
+  if(
+    photos.length !== 4
+  ){
+
+    $("retakeBox")
+      .style.display =
+        "none";
+
+    return;
+
+  }
+
+
+  photos.forEach(
+    (_,index) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.textContent =
+        "Retake " +
+        (index + 1);
+
+
+      button.onclick =
+        () => {
+
+          if(solo){
+
+            retakePhoto(
+              index
+            );
+
+          }else if(
+            role === "host"
+          ){
+
+            signal({
+
+              type:"retake",
+
+              index:index
+
+            });
+
+          }else{
+
+            alert(
+              "Only the room creator can retake a photo."
+            );
+
+          }
+
+        };
+
+
+      box.appendChild(
+        button
+      );
+
+    }
+  );
+
+
+  $("retakeBox")
+    .style.display =
+      "block";
+
+}
+
+
+/* =========================================================
+   RETAKE ONE
+========================================================= */
+
+async function retakePhoto(
+  index
+){
+
+  if(captureBusy){
+    return;
+  }
+
+
+  captureBusy =
+    true;
+
+
+  await countdown();
+
+  cameraFlash();
+
+
+  photos[index] =
+    await capturePhoto();
+
+
+  await renderResult();
+
+
+  captureBusy =
+    false;
+
+}
+
+
+/* =========================================================
+   REFRESH RESULT
+========================================================= */
+
+async function refreshResult(){
+
+  if(
+    photos.length > 1
+  ){
+
+    resultBlob =
+      await buildStrip();
+
+    $("photo").src =
+      URL.createObjectURL(
+        resultBlob
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   FLIP CAMERA
+========================================================= */
+
+async function flipCamera(){
+
+  facing =
+    facing === "user"
+      ? "environment"
+      : "user";
+
+
+  if(stream){
+
+    stream
+      .getTracks()
+      .forEach(
+        track =>
+          track.stop()
+      );
+
+  }
+
+
+  await startCamera();
+
+
+  if(pc){
+
+    const sender =
+      pc
+        .getSenders()
+        .find(
+          item =>
+            item.track &&
+            item.track.kind ===
+              "video"
+        );
+
+
+    if(sender){
+
+      await sender.replaceTrack(
+        stream
+          .getVideoTracks()[0]
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function download(
+  blob,
+  filename
+){
+
+  if(!blob){
+    return;
+  }
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  link.download =
+    filename;
+
+
+  document.body.appendChild(
+    link
+  );
+
+
+  link.click();
+
+
+  link.remove();
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+$("solo").onclick =
+  () => {
+
+    solo =
+      true;
+
+    enterBooth(
+      "SOLO",
+      "solo"
+    );
+
+  };
+
+
+$("create").onclick =
+  () => {
+
+    const newRoom =
+      makeRoom();
+
+
+    enterBooth(
+      newRoom,
+      "host"
+    ).then(
+      () => {
+
+        alert(
+          "Your room code is:\n\n" +
+          newRoom +
+          "\n\nShare it with your friend."
+        );
+
+      }
+    );
+
+  };
+
+
+$("join").onclick =
+  () => {
+
+    const code =
+      $("code")
+        .value
+        .trim()
+        .toUpperCase();
+
+
+    if(
+      code.length < 4
+    ){
+
+      alert(
+        "Enter a valid room code."
+      );
+
+      return;
+
+    }
+
+
+    solo =
+      false;
+
+
+    enterBooth(
+      code,
+      "guest"
+    );
+
+  };
+
+
+$("single").onclick =
+  () =>
+    startPhoto(
+      "single"
+    );
+
+
+$("strip").onclick =
+  () =>
+    startPhoto(
+      "strip"
+    );
+
+
+$("flip").onclick =
+  flipCamera;
+
+
+$("leave").onclick =
+  () =>
+    location.reload();
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+$("composition")
+  .onchange =
+  event => {
+
+    composition =
+      event.target.value;
+
+
+    const stage =
+      document.querySelector(
+        ".stage"
+      );
+
+
+    stage.classList.toggle(
+      "together",
+      composition ===
+        "together"
+    );
+
+  };
+
+
+$("background")
+  .onchange =
+  event => {
+
+    background =
+      event.target.value;
+
+
+    $("scene").className =
+      "scene " +
+      background;
+
+  };
+
+
+$("filter")
+  .onchange =
+  event => {
+
+    filter =
+      event.target.value;
+
+
+    $("local").className =
+      "feed " +
+      filter;
+
+
+    $("remote").className =
+      "feed " +
+      filter;
+
+  };
+
+
+$("sound").onclick =
+  () => {
+
+    soundEnabled =
+      !soundEnabled;
+
+
+    $("sound")
+      .textContent =
+        soundEnabled
+          ? "🔊 Sound"
+          : "🔇 Sound";
+
+  };
+
+
+/* =========================================================
+   THEME BUTTONS
+========================================================= */
+
+document
+  .querySelectorAll(
+    "[data-theme]"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        async () => {
+
+          document
+            .querySelectorAll(
+              "[data-theme]"
+            )
+            .forEach(
+              item =>
+                item.classList
+                  .remove(
+                    "active"
+                  )
+            );
+
+
+          button.classList
+            .add(
+              "active"
+            );
+
+
+          currentTheme =
+            button.dataset.theme;
+
+
+          await refreshResult();
+
+        };
+
+    }
+  );
+
+
+document
+  .querySelector(
+    '[data-theme="classic"]'
+  )
+  .classList
+  .add(
+    "active"
+  );
+
+
+/* =========================================================
+   LAYOUT BUTTONS
+========================================================= */
+
+document
+  .querySelectorAll(
+    "[data-layout]"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        async () => {
+
+          document
+            .querySelectorAll(
+              "[data-layout]"
+            )
+            .forEach(
+              item =>
+                item.classList
+                  .remove(
+                    "active"
+                  )
+            );
+
+
+          button.classList
+            .add(
+          
