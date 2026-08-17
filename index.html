@@ -3,28 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <title>PairPic — Online Photo Booth</title>
 
 <style>
+
 :root{
-  --bg:#090711;
-  --card:#171321;
+  --bg:#09070d;
+  --card:#15111d;
   --text:#fff;
-  --muted:#aaa5b8;
-  --pink:#ff3f98;
-  --purple:#8b5cf6;
-  --line:#ffffff18;
+  --muted:#aaa4b5;
+  --pink:#ff3f9f;
+  --purple:#8b63ff;
+  --line:#ffffff1c;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 html,body{
   margin:0;
   min-height:100%;
   background:
-    radial-gradient(circle at 50% -10%,#4a1644,#090711 65%);
+    radial-gradient(
+      circle at 50% -10%,
+      #52205f 0,
+      #190e25 32%,
+      #09070d 70%
+    );
   color:var(--text);
-  font-family:Inter,system-ui,Arial,sans-serif;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
 
 body{
@@ -32,23 +48,16 @@ body{
   justify-content:center;
 }
 
-button,input{
+button,
+input{
   font:inherit;
 }
 
 button{
   border:0;
-  cursor:pointer;
   color:#fff;
+  cursor:pointer;
   font-weight:850;
-  border-radius:14px;
-  padding:13px 16px;
-  background:linear-gradient(135deg,var(--pink),var(--purple));
-}
-
-button.secondary{
-  background:#ffffff0b;
-  border:1px solid var(--line);
 }
 
 button:disabled{
@@ -56,7 +65,7 @@ button:disabled{
 }
 
 .app{
-  width:min(1150px,100%);
+  width:min(1120px,100%);
   padding:14px;
 }
 
@@ -64,12 +73,12 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
 
 .brand{
-  font-weight:1000;
-  font-size:27px;
+  font-size:26px;
+  font-weight:950;
 }
 
 .brand span{
@@ -78,41 +87,41 @@ header{
 
 .status{
   font-size:12px;
-  color:#c9c5d4;
+  color:#c1bdca;
 }
 
-.card{
-  background:#12101ddd;
-  border:1px solid var(--line);
-  border-radius:26px;
-  box-shadow:0 20px 70px #000b;
-  backdrop-filter:blur(16px);
-  padding:16px;
-}
+
+/* =========================
+   LOBBY
+========================= */
 
 #lobby{
   max-width:650px;
-  margin:7vh auto;
+  margin:6vh auto;
+  padding:20px;
 }
 
 .hero{
   text-align:center;
-  padding:25px 15px;
+  padding:20px 10px;
 }
 
-.hero .logo{
-  font-size:58px;
+.heroLogo{
+  font-size:56px;
 }
 
 .hero h1{
-  font-size:43px;
-  line-height:1;
-  margin:12px 0;
+  font-size:42px;
+  line-height:1.03;
+  margin:14px 0;
+  letter-spacing:-1.5px;
 }
 
 .hero p{
   color:var(--muted);
   line-height:1.6;
+  max-width:520px;
+  margin:auto;
 }
 
 .row{
@@ -127,33 +136,65 @@ header{
 
 input{
   width:100%;
-  background:#08070e;
-  border:1px solid var(--line);
-  color:#fff;
   padding:14px;
-  border-radius:14px;
+  border-radius:15px;
+  border:1px solid var(--line);
+  background:#08070d;
+  color:#fff;
   text-align:center;
   text-transform:uppercase;
   letter-spacing:3px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#ff4fa366;
+}
+
+.primary{
+  background:
+    linear-gradient(
+      135deg,
+      var(--pink),
+      var(--purple)
+    );
+}
+
+.secondary{
+  background:#ffffff0b;
+  border:1px solid var(--line);
+}
+
+.bigButton{
+  padding:15px;
+  border-radius:16px;
 }
 
 .tiny{
-  font-size:11px;
-  color:#888493;
+  color:#85808e;
   text-align:center;
-  margin-top:12px;
+  font-size:11px;
+  margin-top:13px;
 }
+
+
+/* =========================
+   BOOTH
+========================= */
 
 #booth{
   display:none;
 }
 
+.boothCard{
+  padding:15px;
+}
+
 .topbar{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
+  align-items:center;
+  margin-bottom:12px;
 }
 
 .mode{
@@ -166,239 +207,453 @@ input{
   font-size:12px;
 }
 
-.toolbar,
-.controls,
-.choices{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+.room b{
+  color:#fff;
+  letter-spacing:2px;
 }
 
-.toolbar{
+.hostNotice{
+  display:none;
   margin-bottom:10px;
+  padding:10px;
+  border-radius:12px;
+  background:#ff3f9f12;
+  color:#ffc1df;
+  font-size:12px;
 }
 
-.toolbar button,
-.controls button{
-  flex:1;
-  min-width:120px;
-}
+
+/* =========================
+   CAMERA STAGE
+========================= */
 
 .stage{
   position:relative;
   display:grid;
   grid-template-columns:1fr 1fr;
+
+  width:100%;
   aspect-ratio:16/9;
   min-height:320px;
+
   overflow:hidden;
-  border-radius:25px;
+
   border:8px solid #fff;
-  background:#050509;
-  box-shadow:0 20px 70px #000b;
+  border-radius:28px;
+
+  background:#050408;
+
+  box-shadow:
+    0 0 0 2px #ffffff22,
+    0 20px 65px #000b;
 }
 
 .pane{
   position:relative;
   overflow:hidden;
   background:#08070d;
+  min-width:0;
 }
 
 .pane+.pane{
-  border-left:3px solid #fff9;
+  border-left:3px solid #ffffffaa;
 }
 
 .feed{
   width:100%;
   height:100%;
-  object-fit:cover;
   display:block;
+  object-fit:cover;
+  background:#08070d;
 }
 
-.feed.mirror{
+/* Front camera mirror */
+.localFeed{
   transform:scaleX(-1);
 }
 
 .name{
   position:absolute;
-  left:12px;
+  z-index:5;
+
   top:12px;
+  left:12px;
+
   padding:7px 11px;
+
   border-radius:999px;
+
   background:#0009;
+
   font-size:11px;
   font-weight:900;
-  z-index:4;
 }
 
 .wait{
   position:absolute;
   inset:0;
+  z-index:6;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#8d8999;
-  font-size:13px;
+
+  text-align:center;
+
+  padding:20px;
+
+  color:#85808f;
+
   background:#08070ddd;
-  z-index:3;
+
+  font-size:13px;
 }
+
+.wait.hidden{
+  display:none;
+}
+
+
+/* =========================
+   BACKGROUND DECORATION
+========================= */
+
+.backdropLayer{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+
+.stage.theme-love{
+  border-color:#ff4fa3;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      #ff3f9f55,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      #ff6bb444,
+      transparent 28%
+    ),
+    #260713;
+}
+
+.stage.theme-retro{
+  border-color:#e5c98f;
+  background:#342817;
+}
+
+.stage.theme-neon{
+  border-color:#a16cff;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      #ff3fa344,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      #704cff44,
+      transparent 30%
+    ),
+    #080612;
+}
+
+.stage.theme-minimal{
+  border-color:#777;
+  background:#111;
+}
+
+
+/* Love hearts */
+
+.stage.theme-love .backdropLayer::before{
+  content:"♥   ♡   ♥   ♡   ♥";
+  position:absolute;
+
+  top:15%;
+  left:2%;
+
+  color:#ff72b733;
+
+  font-size:48px;
+  letter-spacing:14px;
+
+  transform:rotate(-10deg);
+}
+
+.stage.theme-love .backdropLayer::after{
+  content:"♡   ♥   ♡   ♥";
+  position:absolute;
+
+  bottom:15%;
+  right:2%;
+
+  color:#ff72b733;
+
+  font-size:48px;
+  letter-spacing:14px;
+
+  transform:rotate(10deg);
+}
+
+
+/* =========================
+   COUNTDOWN
+========================= */
 
 .overlay{
   position:absolute;
   inset:0;
+  z-index:20;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   pointer-events:none;
-  z-index:20;
 }
 
 .count{
-  font-size:130px;
+  width:145px;
+  height:145px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:#0008;
+
+  border:4px solid #fff;
+
+  font-size:90px;
   font-weight:1000;
-  text-shadow:
-    0 8px 30px #000,
-    0 0 30px #ff4fa3;
+
   opacity:0;
-  transform:scale(.7);
+
+  transform:scale(.6);
+
+  box-shadow:
+    0 15px 60px #000;
 }
+
+.count.show{
+  animation:countPop .95s ease forwards;
+}
+
+@keyframes countPop{
+
+  0%{
+    opacity:0;
+    transform:scale(.6);
+  }
+
+  20%{
+    opacity:1;
+    transform:scale(1.08);
+  }
+
+  70%{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  100%{
+    opacity:0;
+    transform:scale(.82);
+  }
+
+}
+
+
+/* =========================
+   CAMERA FLASH
+========================= */
 
 .flash{
   position:absolute;
   inset:0;
-  background:#fff;
-  opacity:0;
-  pointer-events:none;
+
   z-index:30;
-}
 
-.decor{
-  position:absolute;
-  inset:0;
   pointer-events:none;
-  z-index:15;
-  overflow:hidden;
+
+  background:#fff;
+
+  opacity:0;
 }
 
-.decor.hidden{
-  display:none;
+.flash.show{
+  animation:flash .22s ease;
 }
 
-.heart{
-  position:absolute;
-  color:#ff4fa3;
-  text-shadow:0 4px 20px #000;
-  animation:float 4s ease-in-out infinite;
+@keyframes flash{
+
+  0%{
+    opacity:0;
+  }
+
+  25%{
+    opacity:.95;
+  }
+
+  100%{
+    opacity:0;
+  }
+
 }
 
-.h1{left:5%;top:12%;font-size:28px}
-.h2{right:7%;top:20%;font-size:20px}
-.h3{left:8%;bottom:15%;font-size:18px}
-.h4{right:8%;bottom:12%;font-size:30px}
 
-@keyframes float{
-  0%,100%{transform:translateY(0) rotate(-5deg)}
-  50%{transform:translateY(-13px) rotate(8deg)}
-}
+/* =========================
+   CONTROLS
+========================= */
 
-.bg-love{
-  background:
-    radial-gradient(circle at 20% 20%,#ff2f8b55 0 4%,transparent 5%),
-    radial-gradient(circle at 80% 30%,#ff4fa355 0 4%,transparent 5%),
-    linear-gradient(135deg,#310b27,#120712);
-}
-
-.bg-darkpink{
-  background:
-    radial-gradient(circle at 50% 0,#8b164f,#21091a 60%,#08070d);
-}
-
-.bg-purple{
-  background:
-    radial-gradient(circle at 50% 0,#5936a8,#130c25 65%);
-}
-
-.bg-cream{
-  background:
-    radial-gradient(circle,#fff1df,#e7cdb8);
-}
-
-.options{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:12px;
-}
-
-.optionGroup{
-  background:#ffffff05;
-  border:1px solid var(--line);
-  border-radius:17px;
-  padding:11px;
-}
-
-.optionGroup h3{
-  font-size:12px;
-  margin:0 0 8px;
-  color:#ddd8e4;
-}
-
-.optionButtons{
+.controls{
   display:flex;
+  gap:9px;
   flex-wrap:wrap;
-  gap:6px;
+  margin-top:13px;
 }
 
-.optionButtons button{
-  padding:8px 10px;
-  font-size:11px;
-  background:#ffffff0a;
-  border:1px solid var(--line);
-  box-shadow:none;
-}
-
-.optionButtons button.active{
-  background:linear-gradient(135deg,var(--pink),var(--purple));
+.controls button{
+  flex:1;
+  min-width:130px;
+  padding:14px;
+  border-radius:15px;
 }
 
 .hint{
   color:var(--muted);
   font-size:12px;
   margin-top:9px;
+  text-align:center;
 }
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+
+.settingBox{
+  padding:13px;
+
+  border-radius:17px;
+
+  background:#ffffff08;
+  border:1px solid var(--line);
+}
+
+.settingTitle{
+  font-size:12px;
+  font-weight:900;
+  color:#ddd;
+
+  margin-bottom:8px;
+}
+
+.choices{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.choices button{
+  flex:1;
+  min-width:80px;
+
+  padding:10px;
+
+  border-radius:12px;
+
+  background:#ffffff09;
+  border:1px solid var(--line);
+
+  font-size:11px;
+}
+
+.choices button.active{
+  background:
+    linear-gradient(
+      135deg,
+      var(--pink),
+      var(--purple)
+    );
+
+  border-color:transparent;
+}
+
+
+/* =========================
+   RESULT
+========================= */
 
 .result{
   display:none;
-  margin-top:15px;
+  margin-top:16px;
 }
 
 .resultGrid{
   display:grid;
-  grid-template-columns:minmax(250px,430px) 1fr;
+
+  grid-template-columns:
+    minmax(240px,420px)
+    1fr;
+
   gap:16px;
+
+  align-items:start;
 }
 
 .previewWrap{
-  background:#08070d;
+  padding:11px;
+
+  background:#07060b;
+
+  border:1px solid var(--line);
+
   border-radius:20px;
-  padding:12px;
+
   text-align:center;
 }
 
 .previewWrap img{
-  max-width:100%;
-  max-height:700px;
   display:block;
-  margin:auto;
-  border-radius:10px;
+
+  max-width:100%;
+  max-height:650px;
+
+  margin:10px auto 0;
+
+  border-radius:9px;
 }
 
 .badge{
   display:inline-block;
+
   padding:6px 10px;
-  margin-bottom:8px;
+
   border-radius:999px;
+
   background:#ffffff0d;
+
   border:1px solid var(--line);
+
+  color:#ccc;
+
   font-size:11px;
 }
 
@@ -408,45 +663,30 @@ input{
   gap:10px;
 }
 
-.sectionTitle{
-  font-size:13px;
-  font-weight:900;
-  color:#ddd;
-}
-
-.choices button{
-  flex:1;
-  min-width:100px;
-  padding:10px;
-  font-size:12px;
+.resultTools button{
+  padding:12px;
+  border-radius:13px;
 }
 
 .notice{
+  color:#aaa5b5;
   font-size:12px;
-  color:#aaa5b7;
   line-height:1.5;
 }
 
-@media(max-width:800px){
 
-  .hero h1{
-    font-size:35px;
-  }
+/* =========================
+   MOBILE
+========================= */
 
-  .options{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .resultGrid{
-    grid-template-columns:1fr;
-  }
-
-}
-
-@media(max-width:650px){
+@media(max-width:700px){
 
   .app{
     padding:9px;
+  }
+
+  .hero h1{
+    font-size:34px;
   }
 
   .row{
@@ -456,15 +696,25 @@ input{
   .stage{
     aspect-ratio:3/4;
     min-height:0;
-    border-width:6px;
+    border-width:5px;
   }
 
   .count{
-    font-size:85px;
+    width:110px;
+    height:110px;
+    font-size:70px;
   }
 
-  .options{
+  .settings{
     grid-template-columns:1fr;
+  }
+
+  .resultGrid{
+    grid-template-columns:1fr;
+  }
+
+  .controls button{
+    min-width:100px;
   }
 
 }
@@ -477,21 +727,31 @@ input{
 <main class="app">
 
 <header>
+
   <div class="brand">
     Pair<span>Pic</span> 📸
   </div>
 
-  <div id="status" class="status">
+  <div
+    id="status"
+    class="status">
     Offline
   </div>
+
 </header>
 
 
-<section id="lobby" class="card">
+<!-- =========================
+     LOBBY
+========================= -->
+
+<section
+  id="lobby"
+  class="card">
 
   <div class="hero">
 
-    <div class="logo">
+    <div class="heroLogo">
       🫶📸
     </div>
 
@@ -501,8 +761,9 @@ input{
     </h1>
 
     <p>
-      Join from two phones, see each other together,
-      count down together and create a real photobooth strip.
+      Join from two phones, see each other
+      together and create a real 4-photo
+      photobooth strip.
     </p>
 
   </div>
@@ -510,12 +771,16 @@ input{
 
   <div class="row">
 
-    <button id="solo">
-      Try Solo Demo
+    <button
+      id="solo"
+      class="primary bigButton">
+      📸 Try Solo Demo
     </button>
 
-    <button id="create">
-      Create Room
+    <button
+      id="create"
+      class="primary bigButton">
+      🫶 Create Room
     </button>
 
   </div>
@@ -527,13 +792,11 @@ input{
       id="code"
       maxlength="8"
       placeholder="ROOM CODE"
-      autocomplete="off"
-    >
+      autocomplete="off">
 
     <button
       id="join"
-      class="secondary"
-    >
+      class="secondary bigButton">
       Join Room
     </button>
 
@@ -541,34 +804,27 @@ input{
 
 
   <div class="tiny">
-    Camera permission is requested only after entering the booth.
+    Camera permission is requested only when
+    you enter the booth.
   </div>
 
 </section>
 
 
+<!-- =========================
+     BOOTH
+========================= -->
+
 <section id="booth">
 
-<div class="card">
+<div class="card boothCard">
 
   <div class="topbar">
 
-    <div>
-
-      <div
-        class="mode"
-        id="modeLabel"
-      >
-        Photo Booth
-      </div>
-
-      <div
-        class="hint"
-        id="roomInfo"
-      >
-        Ready
-      </div>
-
+    <div
+      id="modeLabel"
+      class="mode">
+      Photo Booth
     </div>
 
     <div class="room">
@@ -579,40 +835,22 @@ input{
   </div>
 
 
-  <div class="toolbar">
-
-    <button
-      id="mirrorBtn"
-      class="secondary"
-    >
-      🪞 Mirror
-    </button>
-
-    <button
-      id="flip"
-      class="secondary"
-    >
-      🔄 Flip Camera
-    </button>
-
-    <button
-      id="themeBtn"
-      class="secondary"
-    >
-      🎨 Theme
-    </button>
-
-    <button
-      id="leave"
-      class="secondary"
-    >
-      Leave
-    </button>
-
+  <div
+    id="hostNotice"
+    class="hostNotice">
+    👑 You created this room.
+    Start the photo session when your friend is connected.
   </div>
 
 
-  <div class="stage">
+  <!-- CAMERA -->
+
+  <div
+    id="stage"
+    class="stage theme-classic">
+
+    <div class="backdropLayer"></div>
+
 
     <div class="pane">
 
@@ -622,11 +860,11 @@ input{
 
       <video
         id="local"
-        class="feed mirror"
+        class="feed localFeed"
         autoplay
         muted
-        playsinline
-      ></video>
+        playsinline>
+      </video>
 
     </div>
 
@@ -641,28 +879,14 @@ input{
         id="remote"
         class="feed"
         autoplay
-        playsinline
-      ></video>
+        playsinline>
+      </video>
 
       <div
         id="wait"
-        class="wait"
-      >
+        class="wait">
         Waiting for your friend…
       </div>
-
-    </div>
-
-
-    <div
-      id="decor"
-      class="decor hidden"
-    >
-
-      <span class="heart h1">♥</span>
-      <span class="heart h2">♥</span>
-      <span class="heart h3">♥</span>
-      <span class="heart h4">♥</span>
 
     </div>
 
@@ -671,8 +895,7 @@ input{
 
       <div
         id="count"
-        class="count"
-      >
+        class="count">
         5
       </div>
 
@@ -681,27 +904,38 @@ input{
 
     <div
       id="flash"
-      class="flash"
-    ></div>
+      class="flash">
+    </div>
 
   </div>
 
 
+  <!-- MAIN BUTTONS -->
+
   <div class="controls">
 
-    <button id="single">
+    <button
+      id="single"
+      class="primary">
       📸 Single Photo
     </button>
 
-    <button id="strip">
+    <button
+      id="strip"
+      class="primary">
       🎞️ 4 Photo Strip
     </button>
 
     <button
-      id="retake"
-      class="secondary"
-    >
-      🔁 Retake
+      id="flip"
+      class="secondary">
+      🔄 Flip
+    </button>
+
+    <button
+      id="leave"
+      class="secondary">
+      🚪 Leave
     </button>
 
   </div>
@@ -709,41 +943,34 @@ input{
 
   <div
     id="hint"
-    class="hint"
-  >
-    Both people will see the same countdown and synchronized shot.
+    class="hint">
+    Both people will see the same 5-second countdown.
   </div>
 
 
-  <div class="options">
+  <!-- SETTINGS -->
 
-    <div class="optionGroup">
+  <div class="settings">
 
-      <h3>💗 Background</h3>
 
-      <div class="optionButtons">
+    <div class="settingBox">
+
+      <div class="settingTitle">
+        ⏱ Countdown
+      </div>
+
+      <div class="choices">
 
         <button
-          data-bg="black"
-          class="active"
-        >
-          Normal
+          class="timerBtn active"
+          data-timer="5">
+          5 Seconds
         </button>
 
-        <button data-bg="love">
-          Love
-        </button>
-
-        <button data-bg="darkpink">
-          Dark Pink
-        </button>
-
-        <button data-bg="purple">
-          Purple
-        </button>
-
-        <button data-bg="cream">
-          Classic
+        <button
+          class="timerBtn"
+          data-timer="3">
+          3 Seconds
         </button>
 
       </div>
@@ -751,210 +978,113 @@ input{
     </div>
 
 
-    <div class="optionGroup">
+    <div class="settingBox">
 
-      <h3>🎨 Theme</h3>
+      <div class="settingTitle">
+        🎨 Theme
+      </div>
 
-      <div class="optionButtons">
+      <div class="choices">
 
         <button
-          data-theme="classic"
-          class="active"
-        >
+          class="themeBtn active"
+          data-theme="classic">
           Classic
         </button>
 
-        <button data-theme="love">
-          Romantic
+        <button
+          class="themeBtn"
+          data-theme="love">
+          ❤️ Love
         </button>
 
-        <button data-theme="retro">
+        <button
+          class="themeBtn"
+          data-theme="retro">
           Retro
         </button>
 
-        <button data-theme="dark">
-          Dark
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="optionGroup">
-
-      <h3>✨ Filter</h3>
-
-      <div class="optionButtons">
-
         <button
-          data-filter="normal"
-          class="active"
-        >
-          Normal
-        </button>
-
-        <button data-filter="soft">
-          Soft
-        </button>
-
-        <button data-filter="warm">
-          Warm
-        </button>
-
-        <button data-filter="mono">
-          B&W
-        </button>
-
-        <button data-filter="romantic">
-          Pink
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="optionGroup">
-
-      <h3>💕 Decoration</h3>
-
-      <div class="optionButtons">
-
-        <button id="heartsBtn">
-          Hearts
+          class="themeBtn"
+          data-theme="neon">
+          Neon
         </button>
 
         <button
-          id="noDecor"
-          class="active"
-        >
-          Clean
+          class="themeBtn"
+          data-theme="minimal">
+          Minimal
         </button>
 
       </div>
 
     </div>
+
 
   </div>
 
 
+  <!-- RESULT -->
+
   <div
     id="result"
-    class="result"
-  >
+    class="result">
 
     <div class="resultGrid">
 
+
       <div class="previewWrap">
 
-        <div
+        <span
           id="resultBadge"
-          class="badge"
-        >
+          class="badge">
           PHOTO
-        </div>
+        </span>
 
         <img
           id="photo"
-          alt="PairPic result"
-        >
+          alt="PairPic result">
 
       </div>
 
 
       <div class="resultTools">
 
-        <div class="sectionTitle">
-          💕 Frame
-        </div>
+        <button
+          id="saveStrip"
+          class="primary">
+          📥 Download Strip
+        </button>
 
-        <div class="choices">
+        <button
+          id="savePhotos"
+          class="secondary">
+          📥 Download Photos
+        </button>
 
-          <button data-frame="classic">
-            Classic
-          </button>
+        <button
+          id="enhance"
+          class="secondary">
+          ✨ Enhance
+        </button>
 
-          <button data-frame="love">
-            ❤️ Love
-          </button>
+        <button
+          id="caption"
+          class="secondary">
+          💬 Caption
+        </button>
 
-          <button data-frame="romantic">
-            💗 Romantic
-          </button>
-
-          <button data-frame="retro">
-            Retro
-          </button>
-
-          <button data-frame="neon">
-            Neon
-          </button>
-
-        </div>
-
-
-        <div class="sectionTitle">
-          📜 Strip Style
-        </div>
-
-        <div class="choices">
-
-          <button data-layout="vertical">
-            Vertical
-          </button>
-
-          <button data-layout="film">
-            Film
-          </button>
-
-          <button data-layout="polaroid">
-            Polaroid
-          </button>
-
-        </div>
-
-
-        <div class="sectionTitle">
-          📥 Save
-        </div>
-
-        <div class="choices">
-
-          <button id="saveStrip">
-            Download Result
-          </button>
-
-          <button id="savePhotos">
-            Download Photos
-          </button>
-
-        </div>
-
-
-        <div class="choices">
-
-          <button
-            id="enhance"
-            class="secondary"
-          >
-            ✨ Enhance
-          </button>
-
-          <button
-            id="caption"
-            class="secondary"
-          >
-            💬 Caption
-          </button>
-
-        </div>
-
+        <button
+          id="resultRetake"
+          class="primary">
+          🔄 Take Again
+        </button>
 
         <div
           id="aiNotice"
-          class="notice"
-        ></div>
+          class="notice">
+          Your photo is ready.
+        </div>
 
       </div>
 
@@ -968,12 +1098,9 @@ input{
 
 </main>
 
-<script>
-  /* =========================================================
-   PAIRPIC JAVASCRIPT — PART 2
-========================================================= */
 
-const $ = id => document.getElementById(id);
+<script>
+  const $ = id => document.getElementById(id);
 
 const WS_URL =
   (location.protocol === "https:" ? "wss://" : "ws://") +
@@ -998,50 +1125,51 @@ let remoteStream = null;
 let facing = "user";
 let solo = false;
 
-let remoteReady = false;
 let pendingIce = [];
+let remoteReady = false;
 
 let captureBusy = false;
+
+let selectedTimer = 5;
+let currentTheme = "classic";
+let currentFrame = "classic";
 
 let lastImages = [];
 let currentBlob = null;
 
-let currentFrame = "classic";
-let currentLayout = "vertical";
-let currentFilter = "normal";
 
-let mirrorLocal = true;
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
+/* =========================
+   BASIC HELPERS
+========================= */
 
 function setStatus(text) {
   $("status").textContent = text;
-}
-
-function makeCode() {
-  return Math.random()
-    .toString(36)
-    .slice(2, 7)
-    .toUpperCase();
 }
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function makeRoomCode() {
+  return Math.random()
+    .toString(36)
+    .slice(2, 7)
+    .toUpperCase();
+}
+
 function signal(message) {
-  if (ws && ws.readyState === WebSocket.OPEN) {
+  if (
+    ws &&
+    ws.readyState === WebSocket.OPEN
+  ) {
     ws.send(JSON.stringify(message));
   }
 }
 
 
-/* =========================================================
+/* =========================
    CAMERA
-========================================================= */
+========================= */
 
 async function startCamera() {
 
@@ -1052,18 +1180,18 @@ async function startCamera() {
     throw new Error("Camera API unavailable");
   }
 
-  const oldStream = stream;
+  if (stream) {
+    stream.getTracks().forEach(
+      track => track.stop()
+    );
+  }
 
   stream =
     await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: facing,
-        width: {
-          ideal: 1280
-        },
-        height: {
-          ideal: 720
-        },
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
         frameRate: {
           ideal: 30,
           max: 30
@@ -1072,30 +1200,28 @@ async function startCamera() {
       audio: false
     });
 
-  if (oldStream) {
-    oldStream.getTracks().forEach(track => {
-      track.stop();
-    });
-  }
-
   $("local").srcObject = stream;
 
-  $("local")
-    .classList
-    .toggle("mirror", mirrorLocal);
+  $("local").classList.toggle(
+    "localFeed",
+    facing === "user"
+  );
+
+  try {
+    await $("local").play();
+  } catch (e) {}
 }
 
 
-/* =========================================================
+/* =========================
    WEBRTC PEER
-========================================================= */
+========================= */
 
 function setupPeer() {
 
-  pc =
-    new RTCPeerConnection(
-      rtcConfig
-    );
+  pc = new RTCPeerConnection(
+    rtcConfig
+  );
 
   remoteStream =
     new MediaStream();
@@ -1103,49 +1229,71 @@ function setupPeer() {
   $("remote").srcObject =
     remoteStream;
 
-
   if (stream) {
 
-    stream
-      .getTracks()
-      .forEach(track => {
-
+    stream.getTracks().forEach(
+      track => {
         pc.addTrack(
           track,
           stream
         );
-
-      });
+      }
+    );
 
   }
 
 
   pc.ontrack = event => {
 
-    const tracks =
+    if (
       event.streams &&
       event.streams[0]
-        ? event.streams[0].getTracks()
-        : [];
+    ) {
 
-    tracks.forEach(track => {
+      event.streams[0]
+        .getTracks()
+        .forEach(track => {
 
-      const alreadyExists =
-        remoteStream
+          if (
+            !remoteStream
+              .getTracks()
+              .some(
+                oldTrack =>
+                  oldTrack.id === track.id
+              )
+          ) {
+
+            remoteStream.addTrack(
+              track
+            );
+
+          }
+
+        });
+
+    } else if (event.track) {
+
+      if (
+        !remoteStream
           .getTracks()
           .some(
-            existing =>
-              existing.id === track.id
-          );
+            oldTrack =>
+              oldTrack.id ===
+              event.track.id
+          )
+      ) {
 
-      if (!alreadyExists) {
-        remoteStream.addTrack(track);
+        remoteStream.addTrack(
+          event.track
+        );
+
       }
 
-    });
+    }
 
-    $("wait").style.display =
-      "none";
+    $("wait")
+      .classList
+      .add("hidden");
 
   };
 
@@ -1166,6 +1314,8 @@ function setupPeer() {
 
   pc.onconnectionstatechange = () => {
 
+    if (!pc) return;
+
     const state =
       pc.connectionState;
 
@@ -1175,29 +1325,40 @@ function setupPeer() {
         "Online · Connected"
       );
 
-      $("wait").style.display =
-        "none";
+      $("wait")
+        .classList
+        .add("hidden");
 
-    } else {
+    } else if (
+      state === "connecting"
+    ) {
 
       setStatus(
-        "Online · " + state
+        "Connecting…"
       );
 
-    }
+    } else if (
+      state === "disconnected"
+    ) {
 
-  };
+      setStatus(
+        "Connection interrupted"
+      );
 
-
-  pc.oniceconnectionstatechange = () => {
-
-    if (
-      pc.iceConnectionState ===
-      "failed"
+    } else if (
+      state === "failed"
     ) {
 
       setStatus(
         "Connection failed"
+      );
+
+    } else if (
+      state === "closed"
+    ) {
+
+      setStatus(
+        "Disconnected"
       );
 
     }
@@ -1207,11 +1368,15 @@ function setupPeer() {
 }
 
 
-/* =========================================================
-   ICE CANDIDATES
-========================================================= */
+/* =========================
+   ICE
+========================= */
 
 async function addIce(candidate) {
+
+  if (!pc || !candidate) {
+    return;
+  }
 
   if (!remoteReady) {
 
@@ -1220,7 +1385,6 @@ async function addIce(candidate) {
     );
 
     return;
-
   }
 
   try {
@@ -1231,8 +1395,8 @@ async function addIce(candidate) {
 
   } catch (error) {
 
-    console.log(
-      "ICE candidate error:",
+    console.warn(
+      "ICE error:",
       error
     );
 
@@ -1243,32 +1407,45 @@ async function addIce(candidate) {
 
 async function flushIce() {
 
+  if (!pc) return;
+
   const candidates =
     pendingIce.splice(0);
 
   for (
-    const candidate of candidates
+    const candidate
+    of candidates
   ) {
 
-    await addIce(
-      candidate
-    );
+    try {
+
+      await pc.addIceCandidate(
+        candidate
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "ICE flush error:",
+        error
+      );
+
+    }
 
   }
 
 }
 
 
-/* =========================================================
+/* =========================
    SIGNALING SERVER
-========================================================= */
+========================= */
 
 function connectSignal() {
 
-  ws =
-    new WebSocket(
-      WS_URL
-    );
+  ws = new WebSocket(
+    WS_URL
+  );
 
 
   ws.onopen = () => {
@@ -1288,9 +1465,13 @@ function connectSignal() {
 
   ws.onclose = () => {
 
-    setStatus(
-      "Disconnected"
-    );
+    if (!solo) {
+
+      setStatus(
+        "Disconnected"
+      );
+
+    }
 
   };
 
@@ -1304,126 +1485,89 @@ function connectSignal() {
   };
 
 
-  ws.onmessage =
-    async event => {
+  ws.onmessage = async event => {
 
-      let message;
+    let message;
 
-      try {
+    try {
 
-        message =
-          JSON.parse(
-            event.data
-          );
-
-      } catch {
-
-        return;
-
-      }
-
-
-      /* WAITING */
-
-      if (
-        message.type ===
-        "waiting"
-      ) {
-
-        setStatus(
-          "Waiting for friend…"
+      message =
+        JSON.parse(
+          event.data
         );
 
-        $("wait").style.display =
-          "flex";
+    } catch (error) {
 
-      }
+      return;
 
-
-      /* READY */
-
-      if (
-        message.type ===
-        "ready"
-      ) {
-
-        setStatus(
-          "Connected"
-        );
-
-        $("wait").style.display =
-          "none";
+    }
 
 
-        if (
-          role === "host"
-        ) {
+    /* FRIEND WAITING */
 
-          try {
+    if (
+      message.type ===
+      "waiting"
+    ) {
 
-            const offer =
-              await pc.createOffer();
+      setStatus(
+        "Waiting for your friend…"
+      );
 
-            await pc.setLocalDescription(
-              offer
-            );
+      $("wait")
+        .classList
+        .remove("hidden");
 
-            signal({
-              type: "offer",
-              offer: pc.localDescription
-            });
-
-          } catch (error) {
-
-            console.error(
-              "Offer error:",
-              error
-            );
-
-          }
-
-        }
-
-      }
+      return;
+    }
 
 
-      /* OFFER */
+    /* BOTH CONNECTED */
+
+    if (
+      message.type ===
+      "ready"
+    ) {
+
+      setStatus(
+        "Connected"
+      );
+
+      $("wait")
+        .classList
+        .add("hidden");
+
+
+      /*
+       * HOST creates offer.
+       */
 
       if (
-        message.type ===
-        "offer"
+        role === "host" &&
+        pc
       ) {
 
         try {
 
-          await pc.setRemoteDescription(
-            message.offer
-          );
-
-          remoteReady =
-            true;
-
-          await flushIce();
-
-
-          const answer =
-            await pc.createAnswer();
-
+          const offer =
+            await pc.createOffer({
+              offerToReceiveVideo: true,
+              offerToReceiveAudio: false
+            });
 
           await pc.setLocalDescription(
-            answer
+            offer
           );
 
-
           signal({
-            type: "answer",
-            answer: pc.localDescription
+            type: "offer",
+            offer: pc.localDescription
           });
 
         } catch (error) {
 
           console.error(
-            "Offer handling error:",
+            "Offer error:",
             error
           );
 
@@ -1431,106 +1575,169 @@ function connectSignal() {
 
       }
 
-
-      /* ANSWER */
-
-      if (
-        message.type ===
-        "answer"
-      ) {
-
-        try {
-
-          await pc.setRemoteDescription(
-            message.answer
-          );
-
-          remoteReady =
-            true;
-
-          await flushIce();
-
-        } catch (error) {
-
-          console.error(
-            "Answer handling error:",
-            error
-          );
-
-        }
-
-      }
+      return;
+    }
 
 
-      /* ICE */
+    /* GUEST RECEIVES OFFER */
 
-      if (
-        message.type ===
-        "ice"
-      ) {
+    if (
+      message.type ===
+      "offer"
+    ) {
 
-        await addIce(
-          message.candidate
+      if (!pc) return;
+
+      try {
+
+        await pc.setRemoteDescription(
+          message.offer
+        );
+
+        remoteReady = true;
+
+        await flushIce();
+
+        const answer =
+          await pc.createAnswer();
+
+        await pc.setLocalDescription(
+          answer
+        );
+
+        signal({
+          type: "answer",
+          answer: pc.localDescription
+        });
+
+      } catch (error) {
+
+        console.error(
+          "Answer error:",
+          error
         );
 
       }
 
+      return;
+    }
 
-      /* FRIEND LEFT */
 
-      if (
-        message.type ===
-        "peer-left"
-      ) {
+    /* HOST RECEIVES ANSWER */
 
-        setStatus(
-          "Friend left the room"
+    if (
+      message.type ===
+      "answer"
+    ) {
+
+      if (!pc) return;
+
+      try {
+
+        await pc.setRemoteDescription(
+          message.answer
         );
 
-        $("wait").style.display =
-          "flex";
+        remoteReady = true;
 
-      }
+        await flushIce();
 
+      } catch (error) {
 
-      /* ROOM FULL */
-
-      if (
-        message.type ===
-        "full"
-      ) {
-
-        alert(
-          "This room already has two people."
-        );
-
-      }
-
-
-      /* SYNCHRONIZED PHOTO */
-
-      if (
-        message.type ===
-        "capture"
-      ) {
-
-        await runCapture(
-          message.sessionId,
-          message.captureAt,
-          message.kind,
-          message.count
+        console.error(
+          "Remote description error:",
+          error
         );
 
       }
 
-    };
+      return;
+    }
+
+
+    /* ICE */
+
+    if (
+      message.type ===
+      "ice"
+    ) {
+
+      await addIce(
+        message.candidate
+      );
+
+      return;
+    }
+
+
+    /* FRIEND LEFT */
+
+    if (
+      message.type ===
+      "peer-left"
+    ) {
+
+      setStatus(
+        "Friend left the room"
+      );
+
+      $("wait")
+        .classList
+        .remove("hidden");
+
+      return;
+    }
+
+
+    /* ROOM FULL */
+
+    if (
+      message.type ===
+      "full"
+    ) {
+
+      alert(
+        "This room already has two people."
+      );
+
+      return;
+    }
+
+
+    /*
+     * PHOTO SESSION MESSAGE
+     *
+     * Part 3 will provide
+     * runPhotoSession().
+     */
+
+    if (
+      message.type ===
+      "start-session"
+    ) {
+
+      if (
+        typeof runPhotoSession ===
+        "function"
+      ) {
+
+        await runPhotoSession(
+          message
+        );
+
+      }
+
+      return;
+    }
+
+  };
 
 }
 
 
-/* =========================================================
+/* =========================
    ENTER BOOTH
-========================================================= */
+========================= */
 
 async function enterBooth(
   newRoom,
@@ -1538,20 +1745,27 @@ async function enterBooth(
 ) {
 
   room =
-    newRoom;
+    String(newRoom)
+      .toUpperCase()
+      .slice(0, 8);
 
   role =
     newRole;
 
 
-  $("roomLabel").textContent =
+  $("roomLabel")
+    .textContent =
     room;
 
 
-  $("lobby").style.display =
+  $("lobby")
+    .style
+    .display =
     "none";
 
-  $("booth").style.display =
+  $("booth")
+    .style
+    .display =
     "block";
 
 
@@ -1562,1033 +1776,684 @@ async function enterBooth(
 
     if (solo) {
 
-      $("modeLabel").textContent =
+      $("modeLabel")
+        .textContent =
         "Solo Photo Booth";
 
-      $("roomInfo").textContent =
-        "Solo mode";
+      $("wait")
+        .classList
+        .add("hidden");
 
-      $("wait").style.display =
+      $("remote")
+        .style
+        .display =
         "none";
 
-      $("remote").style.display =
+      $("hostNotice")
+        .style
+        .display =
         "none";
-
 
       document
         .querySelector(".stage")
-        .style.gridTemplateColumns =
+        .style
+        .gridTemplateColumns =
         "1fr";
 
-
       setStatus(
-        "Solo"
+        "Solo Demo"
       );
 
-    } else {
-
-      $("roomInfo").textContent =
-        "Share room code with your friend";
-
-      setupPeer();
-
-      connectSignal();
-
+      return;
     }
+
+
+    $("modeLabel")
+      .textContent =
+      "Photo Booth";
+
+
+    $("hostNotice")
+      .style
+      .display =
+      role === "host"
+        ? "block"
+        : "none";
+
+
+    setupPeer();
+
+    connectSignal();
 
   } catch (error) {
 
     console.error(
+      "Camera error:",
       error
     );
 
     alert(
-      "Camera access failed. Please allow camera permission for this HTTPS website."
+      "Camera access failed.\n\n" +
+      "Please allow camera permission " +
+      "for this website and try again."
     );
 
     location.reload();
 
   }
 
-}
-
-
-/* =========================================================
+            }
+  /* =========================
    COUNTDOWN
-   EXACT SAME TIMESTAMP ON BOTH PHONES
-========================================================= */
+========================= */
 
-async function countdownUntil(
-  captureAt
-) {
+async function showCountdown(seconds) {
 
-  const count =
-    $("count");
+  const count = $("count");
 
+  for (
+    let number = seconds;
+    number >= 1;
+    number--
+  ) {
 
-  while (true) {
+    count.textContent = number;
 
-    const remaining =
-      captureAt -
-      Date.now();
+    count.classList.remove("show");
 
+    void count.offsetWidth;
 
-    if (remaining <= 0) {
-      break;
-    }
+    count.classList.add("show");
 
-
-    const seconds =
-      Math.ceil(
-        remaining / 1000
-      );
-
-
-    count.textContent =
-      seconds;
-
-
-    count.style.opacity =
-      "1";
-
-    count.style.transform =
-      "scale(1)";
-
-
-    await sleep(
-      Math.min(
-        100,
-        Math.max(
-          20,
-          remaining
-        )
-      )
-    );
-
+    await sleep(1000);
   }
 
-
-  count.style.opacity =
-    "0";
-
+  count.classList.remove("show");
 }
 
 
-/* =========================================================
-   FLASH
-========================================================= */
+/* =========================
+   CAMERA FLASH
+========================= */
 
-function showFlash() {
+async function cameraFlash() {
 
-  const flash =
-    $("flash");
+  const flash = $("flash");
 
+  flash.classList.remove("show");
 
-  flash.style.opacity =
-    ".95";
+  void flash.offsetWidth;
 
+  flash.classList.add("show");
 
-  setTimeout(() => {
-
-    flash.style.opacity =
-      "0";
-
-  }, 140);
-
+  await sleep(180);
 }
 
 
-/* =========================================================
-   DRAW VIDEO INTO CANVAS
-========================================================= */
+/* =========================
+   LOVE HEART EFFECT
+========================= */
+
+function createHearts() {
+
+  const stage = $("stage");
+
+  const symbols = [
+    "♥",
+    "♡",
+    "❤",
+    "💕"
+  ];
+
+  for (
+    let i = 0;
+    i < 14;
+    i++
+  ) {
+
+    const heart =
+      document.createElement("div");
+
+    heart.className = "heart";
+
+    heart.textContent =
+      symbols[
+        Math.floor(
+          Math.random() *
+          symbols.length
+        )
+      ];
+
+    heart.style.left =
+      (5 + Math.random() * 90) + "%";
+
+    heart.style.top =
+      (45 + Math.random() * 45) + "%";
+
+    heart.style.animationDelay =
+      (Math.random() * .5) + "s";
+
+    stage.appendChild(heart);
+
+    setTimeout(
+      () => heart.remove(),
+      3200
+    );
+  }
+}
+
+
+/* =========================
+   WAIT FOR VIDEO
+========================= */
+
+async function waitForVideo(video) {
+
+  for (
+    let i = 0;
+    i < 30;
+    i++
+  ) {
+
+    if (
+      video &&
+      video.readyState >= 2 &&
+      video.videoWidth > 0
+    ) {
+
+      return true;
+    }
+
+    await sleep(100);
+  }
+
+  return false;
+}
+
+
+/* =========================
+   DRAW CAMERA VIDEO
+========================= */
 
 function drawCover(
   ctx,
   video,
-  dx,
-  dy,
-  dw,
-  dh,
+  x,
+  y,
+  width,
+  height,
   mirror
 ) {
 
   if (
     !video ||
-    video.readyState < 2 ||
-    !video.videoWidth
+    video.readyState < 2
   ) {
     return;
   }
 
+  const videoWidth =
+    video.videoWidth || 1280;
 
-  const vw =
-    video.videoWidth;
-
-  const vh =
-    video.videoHeight;
-
+  const videoHeight =
+    video.videoHeight || 720;
 
   const scale =
     Math.max(
-      dw / vw,
-      dh / vh
+      width / videoWidth,
+      height / videoHeight
     );
 
+  const sourceWidth =
+    width / scale;
 
-  const sw =
-    dw / scale;
+  const sourceHeight =
+    height / scale;
 
-  const sh =
-    dh / scale;
+  const sourceX =
+    (videoWidth - sourceWidth) / 2;
 
-
-  const sx =
-    (vw - sw) / 2;
-
-  const sy =
-    (vh - sh) / 2;
-
+  const sourceY =
+    (videoHeight - sourceHeight) / 2;
 
   ctx.save();
-
 
   if (mirror) {
 
     ctx.translate(
-      dx + dw,
-      dy
+      x + width,
+      y
     );
 
-    ctx.scale(
-      -1,
-      1
-    );
-
+    ctx.scale(-1, 1);
 
     ctx.drawImage(
       video,
-      sx,
-      sy,
-      sw,
-      sh,
+      sourceX,
+      sourceY,
+      sourceWidth,
+      sourceHeight,
       0,
       0,
-      dw,
-      dh
+      width,
+      height
     );
 
   } else {
 
     ctx.drawImage(
       video,
-      sx,
-      sy,
-      sw,
-      sh,
-      dx,
-      dy,
-      dw,
-      dh
+      sourceX,
+      sourceY,
+      sourceWidth,
+      sourceHeight,
+      x,
+      y,
+      width,
+      height
     );
-
   }
 
-
   ctx.restore();
-
 }
 
 
-/* =========================================================
-   PHOTO CAPTURE
-========================================================= */
+/* =========================
+   CAPTURE COMBINED PHOTO
+========================= */
 
-async function capturePhoto() {
+async function captureCombinedPhoto() {
+
+  await waitForVideo(
+    $("local")
+  );
+
+  if (!solo) {
+
+    await waitForVideo(
+      $("remote")
+    );
+  }
+
 
   const canvas =
-    document.createElement(
-      "canvas"
-    );
+    document.createElement("canvas");
 
 
-  const W =
-    1400;
+  const width =
+    solo ? 1280 : 1600;
 
-  const H =
-    900;
+  const height = 1000;
 
 
-  canvas.width =
-    W;
-
-  canvas.height =
-    H;
+  canvas.width = width;
+  canvas.height = height;
 
 
   const ctx =
-    canvas.getContext(
-      "2d"
-    );
+    canvas.getContext("2d");
 
 
-  /* BACKGROUND */
+  /* Background */
 
-  const stage =
-    document.querySelector(
-      ".stage"
-    );
+  if (currentTheme === "love") {
 
-
-  if (
-    stage.classList.contains(
-      "bg-love"
-    )
-  ) {
-
-    ctx.fillStyle =
-      "#2b081f";
+    ctx.fillStyle = "#260713";
 
   } else if (
-    stage.classList.contains(
-      "bg-darkpink"
-    )
+    currentTheme === "retro"
   ) {
 
-    ctx.fillStyle =
-      "#260814";
+    ctx.fillStyle = "#e9dcc1";
 
   } else if (
-    stage.classList.contains(
-      "bg-purple"
-    )
+    currentTheme === "neon"
   ) {
 
-    ctx.fillStyle =
-      "#180c32";
-
-  } else if (
-    stage.classList.contains(
-      "bg-cream"
-    )
-  ) {
-
-    ctx.fillStyle =
-      "#ead7c7";
+    ctx.fillStyle = "#080514";
 
   } else {
 
-    ctx.fillStyle =
-      "#050509";
-
+    ctx.fillStyle = "#08080d";
   }
-
 
   ctx.fillRect(
     0,
     0,
-    W,
-    H
+    width,
+    height
   );
 
 
-  const local =
-    $("local");
+  /* Camera area */
 
-  const remote =
-    $("remote");
+  const photoTop = 65;
+  const photoHeight = 830;
 
-
-  /* SOLO */
 
   if (solo) {
 
     drawCover(
       ctx,
-      local,
+      $("local"),
       0,
-      0,
-      W,
-      H,
-      mirrorLocal
+      photoTop,
+      width,
+      photoHeight,
+      facing === "user"
     );
 
-  }
+  } else {
+
+    const halfWidth =
+      width / 2;
 
 
-  /* TWO PEOPLE */
-
-  else {
+    /*
+     * YOU
+     */
 
     drawCover(
       ctx,
-      local,
+      $("local"),
       0,
-      0,
-      W / 2,
-      H,
-      mirrorLocal
+      photoTop,
+      halfWidth,
+      photoHeight,
+      facing === "user"
     );
 
 
+    /*
+     * FRIEND
+     */
+
     drawCover(
       ctx,
-      remote,
-      W / 2,
-      0,
-      W / 2,
-      H,
+      $("remote"),
+      halfWidth,
+      photoTop,
+      halfWidth,
+      photoHeight,
       false
     );
 
 
+    /*
+     * CENTER DIVIDER
+     */
+
     ctx.fillStyle =
-      "#ffffffaa";
-
-
-    ctx.fillRect(
-      W / 2 - 2,
-      0,
-      4,
-      H
-    );
-
-  }
-
-
-  /* FILTER */
-
-  applyFilter(
-    ctx,
-    W,
-    H
-  );
-
-
-  /* FRAME */
-
-  drawPhotoFrame(
-    ctx,
-    W,
-    H
-  );
-
-
-  return new Promise(
-    resolve => {
-
-      canvas.toBlob(
-        resolve,
-        "image/jpeg",
-        .94
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-function applyFilter(
-  ctx,
-  W,
-  H
-) {
-
-  if (
-    currentFilter ===
-    "normal"
-  ) {
-    return;
-  }
-
-
-  const image =
-    ctx.getImageData(
-      0,
-      0,
-      W,
-      H
-    );
-
-
-  const data =
-    image.data;
-
-
-  for (
-    let i = 0;
-    i < data.length;
-    i += 4
-  ) {
-
-    let r =
-      data[i];
-
-    let g =
-      data[i + 1];
-
-    let b =
-      data[i + 2];
-
-
-    if (
-      currentFilter ===
-      "soft"
-    ) {
-
-      r *= 1.04;
-      g *= 1.04;
-      b *= 1.04;
-
-    }
-
-
-    if (
-      currentFilter ===
-      "warm"
-    ) {
-
-      r *= 1.10;
-      g *= 1.02;
-      b *= .92;
-
-    }
-
-
-    if (
-      currentFilter ===
-      "romantic"
-    ) {
-
-      r *= 1.08;
-      g *= .96;
-      b *= 1.04;
-
-    }
-
-
-    if (
-      currentFilter ===
-      "mono"
-    ) {
-
-      const gray =
-        .299 * r +
-        .587 * g +
-        .114 * b;
-
-
-      r =
-        gray;
-
-      g =
-        gray;
-
-      b =
-        gray;
-
-    }
-
-
-    data[i] =
-      Math.min(
-        255,
-        Math.max(
-          0,
-          r
-        )
-      );
-
-
-    data[i + 1] =
-      Math.min(
-        255,
-        Math.max(
-          0,
-          g
-        )
-      );
-
-
-    data[i + 2] =
-      Math.min(
-        255,
-        Math.max(
-          0,
-          b
-        )
-      );
-
-  }
-
-
-  ctx.putImageData(
-    image,
-    0,
-    0
-  );
-
-}
-
-
-/* =========================================================
-   PHOTO FRAME
-========================================================= */
-
-function drawPhotoFrame(
-  ctx,
-  W,
-  H
-) {
-
-  ctx.lineWidth =
-    38;
-
-
-  if (
-    currentFrame ===
-    "love"
-  ) {
-
-    ctx.strokeStyle =
-      "#ff4f9e";
-
-  } else if (
-    currentFrame ===
-    "romantic"
-  ) {
-
-    ctx.strokeStyle =
-      "#ff78bd";
-
-  } else if (
-    currentFrame ===
-    "retro"
-  ) {
-
-    ctx.strokeStyle =
-      "#d8bd83";
-
-  } else if (
-    currentFrame ===
-    "neon"
-  ) {
-
-    ctx.strokeStyle =
-      "#9d6cff";
-
-    ctx.shadowColor =
-      "#ff4fa3";
-
-    ctx.shadowBlur =
-      28;
-
-  } else {
-
-    ctx.strokeStyle =
       "#ffffff";
 
+    ctx.fillRect(
+      halfWidth - 2,
+      photoTop,
+      4,
+      photoHeight
+    );
   }
 
 
-  ctx.strokeRect(
-    20,
-    20,
-    W - 40,
-    H - 40
+  /* Bottom information */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.55)";
+
+  ctx.fillRect(
+    0,
+    photoTop + photoHeight,
+    width,
+    height -
+      photoTop -
+      photoHeight
   );
 
-
-  ctx.shadowBlur =
-    0;
-
-
-  /* ROMANTIC HEARTS */
-
-  if (
-    currentFrame ===
-      "love" ||
-    currentFrame ===
-      "romantic"
-  ) {
-
-    ctx.fillStyle =
-      "#ff4f9e";
-
-    ctx.font =
-      "bold 72px serif";
-
-
-    ctx.fillText(
-      "♥",
-      65,
-      110
-    );
-
-
-    ctx.fillText(
-      "♥",
-      W - 130,
-      110
-    );
-
-
-    ctx.font =
-      "bold 46px serif";
-
-
-    ctx.fillText(
-      "♥",
-      95,
-      H - 70
-    );
-
-
-    ctx.fillText(
-      "♥",
-      W - 140,
-      H - 70
-    );
-
-  }
-
-
-  /* BRAND */
 
   ctx.fillStyle =
     "#ffffff";
 
-  ctx.font =
-    "900 28px system-ui";
-
   ctx.textAlign =
     "center";
 
+  ctx.font =
+    "900 34px system-ui";
 
   ctx.fillText(
     "PAIRPIC",
-    W / 2,
-    H - 32
+    width / 2,
+    height - 52
   );
 
 
-  ctx.textAlign =
-    "left";
+  ctx.font =
+    "700 16px system-ui";
 
-}
-
-
-/* =========================================================
-   SYNCHRONIZED CAPTURE
-========================================================= */
-
-async function runCapture(
-  sessionId,
-  captureAt,
-  kind,
-  count
-) {
-
-  if (captureBusy) {
-    return;
-  }
+  ctx.fillText(
+    new Date().toLocaleDateString(),
+    width / 2,
+    height - 24
+  );
 
 
-  captureBusy =
-    true;
-
-
-  lastImages =
-    [];
-
-
-  $("result").style.display =
-    "none";
-
-
-  const total =
-    kind === "strip"
-      ? (count || 4)
-      : 1;
-
-
-  for (
-    let i = 0;
-    i < total;
-    i++
-  ) {
-
-    let targetTime =
-      captureAt;
-
-
-    /*
-      First picture uses the exact
-      timestamp sent by the host.
-
-      After each picture we create
-      another synchronized 5-second
-      countdown.
-    */
-
-    if (i > 0) {
-
-      targetTime =
-        Date.now() +
-        5000;
-
-    }
-
-
-    await countdownUntil(
-      targetTime
-    );
-
-
-    showFlash();
-
-
-    const blob =
-      await capturePhoto();
-
-
-    lastImages.push(
-      blob
-    );
-
-
-    await sleep(
-      600
-    );
-
-  }
-
+  /* Love decorations */
 
   if (
-    lastImages.length >
-    1
+    currentTheme === "love"
   ) {
 
-    currentBlob =
-      await buildStrip(
-        lastImages,
-        currentFrame,
-        currentLayout
-      );
+    ctx.fillStyle =
+      "#ff5cad";
 
-  } else {
+    ctx.font =
+      "36px system-ui";
 
-    currentBlob =
-      lastImages[0];
+    ctx.fillText(
+      "♥",
+      45,
+      48
+    );
 
+    ctx.fillText(
+      "♥",
+      width - 45,
+      48
+    );
   }
 
 
-  renderResult();
-
-
-  captureBusy =
-    false;
-
+  return new Promise(
+    resolve =>
+      canvas.toBlob(
+        resolve,
+        "image/jpeg",
+        .94
+      )
+  );
 }
 
 
-/* =========================================================
-   START SESSION
-========================================================= */
+/* =========================
+   FRAME DRAWING
+========================= */
 
-async function startSession(
-  kind
+function drawFrame(
+  ctx,
+  width,
+  height,
+  frame
 ) {
 
-  if (captureBusy) {
-    return;
-  }
+  ctx.lineWidth = 32;
+
+  ctx.textAlign = "center";
 
 
-  const sessionId =
-    crypto.randomUUID
-      ? crypto.randomUUID()
-      : String(
-          Date.now()
-        );
-
-
-  /*
-    EXACT 5 SECOND
-    START TIME
-  */
-
-  const captureAt =
-    Date.now() +
-    5000;
-
-
-  const message = {
-
-    type:
-      "capture",
-
-    sessionId:
-      sessionId,
-
-    captureAt:
-      captureAt,
-
-    kind:
-      kind,
-
-    count:
-      kind === "strip"
-        ? 4
-        : 1
-
-  };
-
-
-  /* SOLO */
-
-  if (solo) {
-
-    await runCapture(
-      sessionId,
-      captureAt,
-      kind,
-      message.count
-    );
-
-    return;
-
-  }
-
-
-  /* ONLY HOST STARTS */
+  /* CLASSIC */
 
   if (
-    role !==
-    "host"
+    frame === "classic"
   ) {
 
-    alert(
-      "Only the room creator can start the photo session."
+    ctx.strokeStyle =
+      "#ffffff";
+
+    ctx.strokeRect(
+      18,
+      18,
+      width - 36,
+      height - 36
     );
-
-    return;
-
   }
 
 
-  /*
-    Send EXACT same
-    timestamp to friend.
-  */
+  /* LOVE */
 
-  signal(
-    message
-  );
+  if (
+    frame === "love"
+  ) {
+
+    ctx.strokeStyle =
+      "#ff3f9f";
+
+    ctx.strokeRect(
+      18,
+      18,
+      width - 36,
+      height - 36
+    );
+
+    ctx.fillStyle =
+      "#ff3f9f";
+
+    ctx.font =
+      "900 26px system-ui";
+
+    ctx.fillText(
+      "♥ TOGETHER ♥",
+      width / 2,
+      height - 20
+    );
+  }
 
 
-  /*
-    Run on host too.
-  */
+  /* RETRO */
 
-  await runCapture(
-    sessionId,
-    captureAt,
-    kind,
-    message.count
-  );
+  if (
+    frame === "retro"
+  ) {
 
+    ctx.strokeStyle =
+      "#d2ae6c";
+
+    ctx.strokeRect(
+      18,
+      18,
+      width - 36,
+      height - 36
+    );
+  }
+
+
+  /* NEON */
+
+  if (
+    frame === "neon"
+  ) {
+
+    ctx.strokeStyle =
+      "#a16cff";
+
+    ctx.shadowColor =
+      "#ff3fa3";
+
+    ctx.shadowBlur = 25;
+
+    ctx.strokeRect(
+      18,
+      18,
+      width - 36,
+      height - 36
+    );
+
+    ctx.shadowBlur = 0;
+  }
+
+
+  /* MINIMAL */
+
+  if (
+    frame === "minimal"
+  ) {
+
+    ctx.strokeStyle =
+      "#222";
+
+    ctx.strokeRect(
+      18,
+      18,
+      width - 36,
+      height - 36
+    );
+  }
 }
 
 
-/* =========================================================
-   END OF PART 2
-========================================================= */
-  /* =========================================================
-   STRIP BUILDER
-========================================================= */
+/* =========================
+   BUILD 4 PHOTO STRIP
+========================= */
 
-async function buildStrip(
+async function buildPhotoStrip(
   blobs,
-  frame,
-  layout
+  frame
 ) {
 
   const images =
     await Promise.all(
-      blobs.map(blob =>
-        new Promise((resolve, reject) => {
 
-          const img =
-            new Image();
+      blobs.map(
+        blob =>
+          new Promise(
+            (resolve, reject) => {
 
-          img.onload =
-            () => resolve(img);
+              const image =
+                new Image();
 
-          img.onerror =
-            reject;
+              image.onload =
+                () => resolve(image);
 
-          img.src =
-            URL.createObjectURL(blob);
+              image.onerror =
+                reject;
 
-        })
+              image.src =
+                URL.createObjectURL(
+                  blob
+                );
+            }
+          )
       )
     );
 
 
-  if (layout === "film") {
+  const width = 820;
 
-    return buildFilmStrip(
-      images,
-      frame
-    );
+  const padding = 40;
 
-  }
-
-
-  if (layout === "polaroid") {
-
-    return buildPolaroidStrip(
-      images,
-      frame
-    );
-
-  }
-
-
-  return buildVerticalStrip(
-    images,
-    frame
-  );
-
-}
-
-
-/* =========================================================
-   VERTICAL STRIP
-========================================================= */
-
-async function buildVerticalStrip(
-  images,
-  frame
-) {
-
-  const W = 760;
-  const pad = 34;
   const gap = 18;
-  const photoH = 410;
-  const top = 150;
+
+  const photoHeight = 400;
+
+  const top = 145;
+
   const bottom = 105;
 
-  const H =
+
+  const height =
     top +
-    images.length * photoH +
-    (images.length - 1) * gap +
+    images.length *
+      photoHeight +
+    (images.length - 1) *
+      gap +
     bottom;
 
 
@@ -2597,8 +2462,12 @@ async function buildVerticalStrip(
       "canvas"
     );
 
-  canvas.width = W;
-  canvas.height = H;
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
 
 
   const ctx =
@@ -2607,544 +2476,224 @@ async function buildVerticalStrip(
     );
 
 
-  drawStripBackground(
-    ctx,
-    W,
-    H,
-    frame
-  );
+  /* Strip background */
 
-
-  drawStripHeader(
-    ctx,
-    W
-  );
-
-
-  images.forEach(
-    (img, index) => {
-
-      const y =
-        top +
-        index *
-          (photoH + gap);
-
-
-      drawStripPhoto(
-        ctx,
-        img,
-        pad,
-        y,
-        W - pad * 2,
-        photoH
-      );
-
-    }
-  );
-
-
-  drawStripFooter(
-    ctx,
-    W,
-    H
-  );
-
-
-  return canvasBlob(
-    canvas
-  );
-
-}
-
-
-/* =========================================================
-   FILM STRIP
-========================================================= */
-
-async function buildFilmStrip(
-  images,
-  frame
-) {
-
-  const W = 850;
-  const H = 1050;
-
-
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
-
-  canvas.width = W;
-  canvas.height = H;
-
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
-
-  drawStripBackground(
-    ctx,
-    W,
-    H,
-    frame
-  );
-
-
-  ctx.fillStyle =
+  if (
     frame === "love"
-      ? "#ff4f9e"
-      : "#111";
-
-
-  ctx.textAlign =
-    "center";
-
-  ctx.font =
-    "900 42px system-ui";
-
-
-  ctx.fillText(
-    "PAIRPIC",
-    W / 2,
-    58
-  );
-
-
-  const photoW = 520;
-  const photoH = 210;
-  const x =
-    (W - photoW) / 2;
-
-
-  images.forEach(
-    (img, index) => {
-
-      const y =
-        80 +
-        index *
-          (photoH + 22);
-
-
-      drawStripPhoto(
-        ctx,
-        img,
-        x,
-        y,
-        photoW,
-        photoH
-      );
-
-    }
-  );
-
-
-  ctx.fillStyle =
-    frame === "love"
-      ? "#ff4f9e"
-      : "#333";
-
-
-  ctx.font =
-    "700 18px system-ui";
-
-
-  ctx.fillText(
-    "MEMORIES TOGETHER ♥",
-    W / 2,
-    H - 20
-  );
-
-
-  return canvasBlob(
-    canvas
-  );
-
-}
-
-
-/* =========================================================
-   POLAROID STRIP
-========================================================= */
-
-async function buildPolaroidStrip(
-  images,
-  frame
-) {
-
-  const W = 850;
-  const H = 1120;
-
-
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
-
-  canvas.width = W;
-  canvas.height = H;
-
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
-
-  drawStripBackground(
-    ctx,
-    W,
-    H,
-    frame
-  );
-
-
-  const photoW = 560;
-  const photoH = 190;
-
-  const x =
-    (W - photoW) / 2;
-
-
-  images.forEach(
-    (img, index) => {
-
-      const y =
-        40 +
-        index * 265;
-
-
-      ctx.fillStyle =
-        "#ffffff";
-
-
-      ctx.fillRect(
-        x - 20,
-        y - 20,
-        photoW + 40,
-        photoH + 65
-      );
-
-
-      drawStripPhoto(
-        ctx,
-        img,
-        x,
-        y,
-        photoW,
-        photoH
-      );
-
-
-      ctx.fillStyle =
-        "#222";
-
-
-      ctx.font =
-        "700 14px system-ui";
-
-      ctx.textAlign =
-        "center";
-
-
-      ctx.fillText(
-        `MOMENT ${index + 1}`,
-        W / 2,
-        y + photoH + 35
-      );
-
-    }
-  );
-
-
-  return canvasBlob(
-    canvas
-  );
-
-}
-
-
-/* =========================================================
-   STRIP BACKGROUND
-========================================================= */
-
-function drawStripBackground(
-  ctx,
-  W,
-  H,
-  frame
-) {
-
-  if (frame === "love") {
+  ) {
 
     ctx.fillStyle =
       "#fff0f7";
-
-  } else if (
-    frame === "romantic"
-  ) {
-
-    const gradient =
-      ctx.createLinearGradient(
-        0,
-        0,
-        W,
-        H
-      );
-
-
-    gradient.addColorStop(
-      0,
-      "#ff4f9e"
-    );
-
-    gradient.addColorStop(
-      1,
-      "#4b123b"
-    );
-
-
-    ctx.fillStyle =
-      gradient;
 
   } else if (
     frame === "retro"
   ) {
 
     ctx.fillStyle =
-      "#eadcc0";
+      "#eadfc5";
 
   } else if (
     frame === "neon"
   ) {
 
     ctx.fillStyle =
-      "#080714";
+      "#090713";
 
   } else {
 
     ctx.fillStyle =
       "#ffffff";
-
   }
 
 
   ctx.fillRect(
     0,
     0,
-    W,
-    H
+    width,
+    height
   );
 
-}
 
-
-/* =========================================================
-   STRIP HEADER
-========================================================= */
-
-function drawStripHeader(
-  ctx,
-  W
-) {
-
-  ctx.fillStyle =
-    "#111";
-
+  /* Title */
 
   ctx.textAlign =
     "center";
 
+  ctx.fillStyle =
+    frame === "retro"
+      ? "#241a0d"
+      : "#111";
 
   ctx.font =
-    "900 52px system-ui";
-
+    "900 58px system-ui";
 
   ctx.fillText(
     "PAIRPIC",
-    W / 2,
-    65
+    width / 2,
+    70
   );
 
 
   ctx.font =
     "700 19px system-ui";
 
-
   ctx.fillText(
     "4 MOMENTS TOGETHER",
-    W / 2,
-    105
-  );
-
-}
-
-
-/* =========================================================
-   STRIP FOOTER
-========================================================= */
-
-function drawStripFooter(
-  ctx,
-  W,
-  H
-) {
-
-  ctx.fillStyle =
-    "#333";
-
-
-  ctx.textAlign =
-    "center";
-
-
-  ctx.font =
-    "700 18px system-ui";
-
-
-  ctx.fillText(
-    new Date().toLocaleDateString(),
-    W / 2,
-    H - 38
-  );
-
-}
-
-
-/* =========================================================
-   DRAW STRIP PHOTO
-========================================================= */
-
-function drawStripPhoto(
-  ctx,
-  img,
-  x,
-  y,
-  w,
-  h
-) {
-
-  ctx.save();
-
-
-  ctx.beginPath();
-
-
-  if (ctx.roundRect) {
-
-    ctx.roundRect(
-      x,
-      y,
-      w,
-      h,
-      12
-    );
-
-  } else {
-
-    ctx.rect(
-      x,
-      y,
-      w,
-      h
-    );
-
-  }
-
-
-  ctx.clip();
-
-
-  const scale =
-    Math.max(
-      w / img.width,
-      h / img.height
-    );
-
-
-  const sw =
-    w / scale;
-
-  const sh =
-    h / scale;
-
-
-  const sx =
-    (img.width - sw) / 2;
-
-  const sy =
-    (img.height - sh) / 2;
-
-
-  ctx.drawImage(
-    img,
-    sx,
-    sy,
-    sw,
-    sh,
-    x,
-    y,
-    w,
-    h
+    width / 2,
+    108
   );
 
 
-  ctx.restore();
+  /* Photos */
+
+  images.forEach(
+    (image, index) => {
+
+      const y =
+        top +
+        index *
+          (photoHeight + gap);
 
 
-  ctx.strokeStyle =
-    "#ffffffaa";
+      ctx.save();
 
-  ctx.lineWidth =
-    3;
+      ctx.beginPath();
 
-
-  ctx.strokeRect(
-    x,
-    y,
-    w,
-    h
-  );
-
-}
-
-
-/* =========================================================
-   CANVAS → BLOB
-========================================================= */
-
-function canvasBlob(
-  canvas
-) {
-
-  return new Promise(
-    resolve => {
-
-      canvas.toBlob(
-        resolve,
-        "image/jpeg",
-        .95
+      ctx.roundRect(
+        padding,
+        y,
+        width -
+          padding * 2,
+        photoHeight,
+        10
       );
+
+      ctx.clip();
+
+
+      const areaWidth =
+        width -
+        padding * 2;
+
+
+      const scale =
+        Math.max(
+          areaWidth / image.width,
+          photoHeight / image.height
+        );
+
+
+      const sourceWidth =
+        areaWidth / scale;
+
+      const sourceHeight =
+        photoHeight / scale;
+
+
+      const sourceX =
+        (image.width -
+          sourceWidth) / 2;
+
+      const sourceY =
+        (image.height -
+          sourceHeight) / 2;
+
+
+      ctx.drawImage(
+        image,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        padding,
+        y,
+        areaWidth,
+        photoHeight
+      );
+
+
+      ctx.restore();
 
     }
   );
 
+
+  /* Love decoration */
+
+  if (
+    frame === "love"
+  ) {
+
+    ctx.fillStyle =
+      "#ff3f9f";
+
+    ctx.font =
+      "30px system-ui";
+
+    ctx.fillText(
+      "♥",
+      35,
+      65
+    );
+
+    ctx.fillText(
+      "♥",
+      width - 35,
+      65
+    );
+  }
+
+
+  /* Date */
+
+  ctx.fillStyle =
+    frame === "retro"
+      ? "#241a0d"
+      : "#333";
+
+  ctx.font =
+    "700 18px system-ui";
+
+  ctx.fillText(
+    new Date().toLocaleDateString(),
+    width / 2,
+    height - 35
+  );
+
+
+  drawFrame(
+    ctx,
+    width,
+    height,
+    frame
+  );
+
+
+  return new Promise(
+    resolve =>
+      canvas.toBlob(
+        resolve,
+        "image/jpeg",
+        .94
+      )
+  );
 }
 
 
-/* =========================================================
+/* =========================
    SHOW RESULT
-========================================================= */
+========================= */
 
-function renderResult() {
+function showResult() {
 
-  $("result").style.display =
+  $("result")
+    .style
+    .display =
     "block";
 
 
-  $("resultBadge").textContent =
+  $("resultBadge")
+    .textContent =
     lastImages.length > 1
       ? "4 PHOTO STRIP"
       : "PHOTO";
@@ -3152,54 +2701,309 @@ function renderResult() {
 
   if (currentBlob) {
 
-    $("photo").src =
+    $("photo")
+      .src =
       URL.createObjectURL(
         currentBlob
       );
+  }
+
+
+  $("aiNotice")
+    .textContent =
+    lastImages.length > 1
+      ? "Your 4-photo strip is ready."
+      : "Your shared photo is ready.";
+}
+
+
+/* =========================
+   RUN PHOTO SESSION
+========================= */
+
+async function runPhotoSession(
+  session
+) {
+
+  if (captureBusy) {
+    return;
+  }
+
+
+  captureBusy = true;
+
+
+  /*
+   * Wait for the shared start time.
+   */
+
+  const delay =
+    Math.max(
+      0,
+      Number(session.startAt) -
+      Date.now()
+    );
+
+
+  if (delay > 0) {
+
+    await sleep(delay);
+  }
+
+
+  /*
+   * SINGLE PHOTO
+   */
+
+  if (
+    session.mode === "single"
+  ) {
+
+    await showCountdown(
+      Number(
+        session.timer || 5
+      )
+    );
+
+
+    await cameraFlash();
+
+
+    const image =
+      await captureCombinedPhoto();
+
+
+    lastImages =
+      [image];
+
+    currentBlob =
+      image;
+
+
+    showResult();
+
+
+    captureBusy = false;
+
+    return;
+  }
+
+
+  /*
+   * 4 PHOTO STRIP
+   */
+
+  lastImages = [];
+
+
+  for (
+    let i = 0;
+    i < 4;
+    i++
+  ) {
+
+    await showCountdown(
+      Number(
+        session.timer || 5
+      )
+    );
+
+
+    await cameraFlash();
+
+
+    const image =
+      await captureCombinedPhoto();
+
+
+    lastImages.push(
+      image
+    );
+
+
+    /*
+     * Hearts during Love theme.
+     */
+
+    if (
+      currentTheme === "love"
+    ) {
+
+      createHearts();
+    }
+
+
+    /*
+     * Small pause between photos.
+     */
+
+    if (i < 3) {
+
+      await sleep(900);
+    }
 
   }
 
 
-  $("aiNotice").textContent =
-    lastImages.length > 1
-      ? "Your 4-photo photobooth strip is ready. Choose a frame or layout and download it."
-      : "Your synchronized photo is ready.";
+  currentBlob =
+    await buildPhotoStrip(
+      lastImages,
+      currentFrame
+    );
 
+
+  showResult();
+
+
+  captureBusy = false;
+  }
+  /* =========================
+   START PHOTO SESSION
+========================= */
+
+async function startPhotoSession(mode) {
+
+  if (captureBusy) {
+    return;
+  }
+
+  /*
+   * Only the room creator
+   * can start a shared session.
+   */
+
+  if (!solo && role !== "host") {
+
+    alert(
+      "The room creator starts the photo session."
+    );
+
+    return;
+  }
+
+
+  /*
+   * SOLO MODE
+   */
+
+  if (solo) {
+
+    await runPhotoSession({
+
+      type:
+        "start-session",
+
+      mode:
+        mode,
+
+      count:
+        mode === "strip"
+          ? 4
+          : 1,
+
+      timer:
+        selectedTimer,
+
+      startAt:
+        Date.now() + 300
+
+    });
+
+    return;
+  }
+
+
+  /*
+   * REAL ROOM
+   */
+
+  if (
+    !ws ||
+    ws.readyState !== WebSocket.OPEN
+  ) {
+
+    alert(
+      "Wait until your friend is connected."
+    );
+
+    return;
+  }
+
+
+  /*
+   * Give the other phone
+   * enough time to receive
+   * the message before the
+   * countdown begins.
+   */
+
+  const session = {
+
+    type:
+      "start-session",
+
+    mode:
+      mode,
+
+    count:
+      mode === "strip"
+        ? 4
+        : 1,
+
+    timer:
+      selectedTimer,
+
+    startAt:
+      Date.now() + 1200
+
+  };
+
+
+  /*
+   * Send to friend.
+   */
+
+  signal(session);
+
+
+  /*
+   * Start on creator's phone too.
+   */
+
+  await runPhotoSession(
+    session
+  );
 }
 
 
-/* =========================================================
+/* =========================
    CREATE ROOM
-========================================================= */
+========================= */
 
 $("create").onclick =
   async () => {
 
     solo = false;
 
-
     const code =
-      makeCode();
-
+      makeRoomCode();
 
     await enterBooth(
       code,
       "host"
     );
 
-
     alert(
       "Your room code is:\n\n" +
       code +
       "\n\nShare this code with your friend."
     );
-
   };
 
 
-/* =========================================================
+/* =========================
    JOIN ROOM
-========================================================= */
+========================= */
 
 $("join").onclick =
   async () => {
@@ -3214,101 +3018,155 @@ $("join").onclick =
     if (code.length < 4) {
 
       alert(
-        "Enter the room code first."
+        "Please enter a valid room code."
       );
 
       return;
-
     }
 
 
     solo = false;
 
-
     await enterBooth(
       code,
       "guest"
     );
-
   };
 
 
-/* =========================================================
-   SOLO
-========================================================= */
+/* =========================
+   SOLO DEMO
+========================= */
 
 $("solo").onclick =
   async () => {
 
     solo = true;
 
-
     await enterBooth(
       "SOLO",
       "solo"
     );
-
   };
 
 
-/* =========================================================
-   SINGLE PHOTO
-========================================================= */
+/* =========================
+   PHOTO BUTTONS
+========================= */
 
 $("single").onclick =
   () => {
 
-    startSession(
+    startPhotoSession(
       "single"
     );
 
   };
 
 
-/* =========================================================
-   4 PHOTO STRIP
-========================================================= */
-
 $("strip").onclick =
   () => {
 
-    startSession(
+    startPhotoSession(
       "strip"
     );
 
   };
 
 
-/* =========================================================
-   RETAKE
-========================================================= */
+/* =========================
+   FLIP CAMERA
+========================= */
 
-$("retake").onclick =
-  () => {
+$("flip").onclick =
+  async () => {
 
-    $("result").style.display =
-      "none";
-
-
-    lastImages =
-      [];
-
-    currentBlob =
-      null;
+    if (captureBusy) {
+      return;
+    }
 
 
-    $("hint").textContent =
-      "Ready for another synchronized shot.";
+    facing =
+      facing === "user"
+        ? "environment"
+        : "user";
 
+
+    const oldTrack =
+      stream
+        ?.getVideoTracks()[0];
+
+
+    await startCamera();
+
+
+    const newTrack =
+      stream
+        ?.getVideoTracks()[0];
+
+
+    /*
+     * Replace the camera track
+     * being sent to the friend.
+     */
+
+    if (
+      pc &&
+      newTrack
+    ) {
+
+      const sender =
+        pc
+          .getSenders()
+          .find(
+            item =>
+              item.track &&
+              item.track.kind ===
+              "video"
+          );
+
+
+      if (sender) {
+
+        await sender.replaceTrack(
+          newTrack
+        );
+
+      }
+
+    }
+
+
+    if (oldTrack) {
+      oldTrack.stop();
+    }
   };
 
 
-/* =========================================================
-   LEAVE
-========================================================= */
+/* =========================
+   LEAVE ROOM
+========================= */
 
 $("leave").onclick =
   () => {
+
+    try {
+
+      if (ws) {
+        ws.close();
+      }
+
+    } catch (e) {}
+
+
+    try {
+
+      if (pc) {
+        pc.close();
+      }
+
+    } catch (e) {}
+
 
     if (stream) {
 
@@ -3322,498 +3180,274 @@ $("leave").onclick =
     }
 
 
-    if (ws) {
-      ws.close();
-    }
-
-
-    if (pc) {
-      pc.close();
-    }
-
-
     location.reload();
-
   };
 
 
-/* =========================================================
-   MIRROR
-========================================================= */
+/* =========================
+   TIMER BUTTONS
+========================= */
 
-$("mirrorBtn").onclick =
-  () => {
+document
+  .querySelectorAll(
+    ".timerBtn"
+  )
+  .forEach(
+    button => {
 
-    mirrorLocal =
-      !mirrorLocal;
+      button.onclick =
+        () => {
 
-
-    $("local")
-      .classList
-      .toggle(
-        "mirror",
-        mirrorLocal
-      );
-
-
-    $("mirrorBtn").textContent =
-      mirrorLocal
-        ? "🪞 Mirror ON"
-        : "🪞 Mirror OFF";
-
-  };
-
-
-/* =========================================================
-   FLIP CAMERA
-========================================================= */
-
-$("flip").onclick =
-  async () => {
-
-    if (!stream) {
-      return;
-    }
-
-
-    facing =
-      facing === "user"
-        ? "environment"
-        : "user";
-
-
-    try {
-
-      await startCamera();
-
-
-      if (pc) {
-
-        const sender =
-          pc
-            .getSenders()
-            .find(
-              s =>
-                s.track &&
-                s.track.kind ===
-                  "video"
+          selectedTimer =
+            Number(
+              button.dataset.timer
             );
 
 
-        if (sender) {
-
-          await sender.replaceTrack(
-            stream.getVideoTracks()[0]
-          );
-
-        }
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
+          document
+            .querySelectorAll(
+              ".timerBtn"
+            )
+            .forEach(
+              item =>
+                item.classList
+                  .remove(
+                    "active"
+                  )
+            );
 
 
-      alert(
-        "Unable to switch camera."
-      );
+          button.classList
+            .add("active");
+
+
+          $("hint")
+            .textContent =
+            "Both people will see the same " +
+            selectedTimer +
+            "-second countdown.";
+
+        };
 
     }
-
-  };
-
-
-/* =========================================================
-   BACKGROUND OPTIONS
-========================================================= */
-
-document
-  .querySelectorAll(
-    "[data-bg]"
-  )
-  .forEach(button => {
-
-    button.onclick =
-      () => {
-
-        document
-          .querySelectorAll(
-            "[data-bg]"
-          )
-          .forEach(
-            item =>
-              item.classList.remove(
-                "active"
-              )
-          );
+  );
 
 
-        button.classList.add(
-          "active"
-        );
-
-
-        const stage =
-          document.querySelector(
-            ".stage"
-          );
-
-
-        stage.classList.remove(
-          "bg-love",
-          "bg-darkpink",
-          "bg-purple",
-          "bg-cream"
-        );
-
-
-        if (
-          button.dataset.bg !==
-          "black"
-        ) {
-
-          stage.classList.add(
-            "bg-" +
-            button.dataset.bg
-          );
-
-        }
-
-      };
-
-  });
-
-
-/* =========================================================
-   THEME OPTIONS
-========================================================= */
+/* =========================
+   LIVE THEME BUTTONS
+========================= */
 
 document
   .querySelectorAll(
-    "[data-theme]"
+    ".themeBtn"
   )
-  .forEach(button => {
+  .forEach(
+    button => {
 
-    button.onclick =
-      () => {
+      button.onclick =
+        () => {
 
-        document
-          .querySelectorAll(
-            "[data-theme]"
-          )
-          .forEach(
-            item =>
-              item.classList.remove(
-                "active"
-              )
-          );
-
-
-        button.classList.add(
-          "active"
-        );
-
-
-        const theme =
-          button.dataset.theme;
-
-
-        if (
-          theme ===
-          "classic"
-        ) {
-
-          currentFrame =
-            "classic";
-
-        }
-
-
-        if (
-          theme ===
-          "love"
-        ) {
-
-          currentFrame =
-            "love";
+          currentTheme =
+            button.dataset.theme;
 
 
           const stage =
-            document.querySelector(
-              ".stage"
+            $("stage");
+
+
+          stage.classList
+            .remove(
+              "theme-classic",
+              "theme-love",
+              "theme-retro",
+              "theme-neon",
+              "theme-minimal"
             );
 
 
-          stage.classList.remove(
-            "bg-darkpink",
-            "bg-purple",
-            "bg-cream"
-          );
+          stage.classList
+            .add(
+              "theme-" +
+              currentTheme
+            );
 
 
-          stage.classList.add(
-            "bg-love"
-          );
+          document
+            .querySelectorAll(
+              ".themeBtn"
+            )
+            .forEach(
+              item =>
+                item.classList
+                  .remove(
+                    "active"
+                  )
+            );
 
-        }
+
+          button.classList
+            .add("active");
 
 
-        if (
-          theme ===
-          "retro"
-        ) {
+          if (
+            currentTheme ===
+            "love"
+          ) {
+
+            $("hint")
+              .textContent =
+              "❤️ Romantic Love theme selected.";
+
+          } else {
+
+            $("hint")
+              .textContent =
+              "Both people will see the same " +
+              selectedTimer +
+              "-second countdown.";
+
+          }
+
+        };
+
+    }
+  );
+
+
+/* =========================
+   FRAME BUTTONS
+========================= */
+
+document
+  .querySelectorAll(
+    ".frameBtn"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        async () => {
 
           currentFrame =
-            "retro";
+            button.dataset.frame;
 
 
-          const stage =
-            document.querySelector(
-              ".stage"
+          document
+            .querySelectorAll(
+              ".frameBtn"
+            )
+            .forEach(
+              item =>
+                item.classList
+                  .remove(
+                    "active"
+                  )
             );
 
 
-          stage.classList.remove(
-            "bg-love",
-            "bg-darkpink",
-            "bg-purple"
-          );
+          button.classList
+            .add("active");
 
 
-          stage.classList.add(
-            "bg-cream"
-          );
+          /*
+           * Rebuild the strip
+           * immediately if one exists.
+           */
 
-        }
+          if (
+            lastImages.length > 1
+          ) {
 
+            currentBlob =
+              await buildPhotoStrip(
+                lastImages,
+                currentFrame
+              );
 
-        if (
-          theme ===
-          "dark"
-        ) {
 
-          currentFrame =
-            "neon";
+            $("photo")
+              .src =
+              URL.createObjectURL(
+                currentBlob
+              );
 
 
-          const stage =
-            document.querySelector(
-              ".stage"
-            );
+            $("aiNotice")
+              .textContent =
+              "Frame updated.";
 
+          } else {
 
-          stage.classList.remove(
-            "bg-love",
-            "bg-darkpink",
-            "bg-purple",
-            "bg-cream"
-          );
+            $("aiNotice")
+              .textContent =
+              "Frame selected. It will be used on your next 4-photo strip.";
 
-        }
+          }
 
-      };
+        };
 
-  });
+    }
+  );
 
 
-/* =========================================================
-   FILTER OPTIONS
-========================================================= */
+/* =========================
+   DOWNLOAD HELPER
+========================= */
 
-document
-  .querySelectorAll(
-    "[data-filter]"
-  )
-  .forEach(button => {
+function downloadBlob(
+  blob,
+  filename
+) {
 
-    button.onclick =
-      () => {
+  if (!blob) {
+    return;
+  }
 
-        document
-          .querySelectorAll(
-            "[data-filter]"
-          )
-          .forEach(
-            item =>
-              item.classList.remove(
-                "active"
-              )
-          );
 
+  const url =
+    URL.createObjectURL(
+      blob
+    );
 
-        button.classList.add(
-          "active"
-        );
 
+  const link =
+    document.createElement(
+      "a"
+    );
 
-        currentFilter =
-          button.dataset.filter;
 
-      };
+  link.href =
+    url;
 
-  });
 
+  link.download =
+    filename;
 
-/* =========================================================
-   HEARTS
-========================================================= */
 
-$("heartsBtn").onclick =
-  () => {
+  document.body.appendChild(
+    link
+  );
 
-    $("decor")
-      .classList
-      .remove(
-        "hidden"
-      );
 
+  link.click();
 
-    $("heartsBtn")
-      .classList
-      .add(
-        "active"
-      );
 
+  link.remove();
 
-    $("noDecor")
-      .classList
-      .remove(
-        "active"
-      );
 
-  };
+  setTimeout(
+    () =>
+      URL.revokeObjectURL(
+        url
+      ),
+    1000
+  );
+}
 
 
-$("noDecor").onclick =
-  () => {
-
-    $("decor")
-      .classList
-      .add(
-        "hidden"
-      );
-
-
-    $("noDecor")
-      .classList
-      .add(
-        "active"
-      );
-
-
-    $("heartsBtn")
-      .classList
-      .remove(
-        "active"
-      );
-
-  };
-
-
-/* =========================================================
-   FRAME OPTIONS
-========================================================= */
-
-document
-  .querySelectorAll(
-    "[data-frame]"
-  )
-  .forEach(button => {
-
-    button.onclick =
-      async () => {
-
-        currentFrame =
-          button.dataset.frame;
-
-
-        if (
-          lastImages.length > 1
-        ) {
-
-          currentBlob =
-            await buildStrip(
-              lastImages,
-              currentFrame,
-              currentLayout
-            );
-
-
-          $("photo").src =
-            URL.createObjectURL(
-              currentBlob
-            );
-
-        }
-
-
-        if (
-          lastImages.length === 1
-        ) {
-
-          currentBlob =
-            await capturePhoto();
-
-
-          $("photo").src =
-            URL.createObjectURL(
-              currentBlob
-            );
-
-        }
-
-      };
-
-  });
-
-
-/* =========================================================
-   STRIP LAYOUT OPTIONS
-========================================================= */
-
-document
-  .querySelectorAll(
-    "[data-layout]"
-  )
-  .forEach(button => {
-
-    button.onclick =
-      async () => {
-
-        currentLayout =
-          button.dataset.layout;
-
-
-        if (
-          lastImages.length > 1
-        ) {
-
-          currentBlob =
-            await buildStrip(
-              lastImages,
-              currentFrame,
-              currentLayout
-            );
-
-
-          $("photo").src =
-            URL.createObjectURL(
-              currentBlob
-            );
-
-        }
-
-      };
-
-  });
-
-
-/* =========================================================
-   DOWNLOAD RESULT
-========================================================= */
+/* =========================
+   DOWNLOAD STRIP
+========================= */
 
 $("saveStrip").onclick =
   () => {
@@ -3823,49 +3457,19 @@ $("saveStrip").onclick =
     }
 
 
-    const link =
-      document.createElement(
-        "a"
-      );
-
-
-    link.href =
-      URL.createObjectURL(
-        currentBlob
-      );
-
-
-    link.download =
+    downloadBlob(
+      currentBlob,
       lastImages.length > 1
         ? "pairpic-4-photo-strip.jpg"
-        : "pairpic-photo.jpg";
-
-
-    document.body.appendChild(
-      link
-    );
-
-
-    link.click();
-
-
-    link.remove();
-
-
-    setTimeout(
-      () =>
-        URL.revokeObjectURL(
-          link.href
-        ),
-      1000
+        : "pairpic-photo.jpg"
     );
 
   };
 
 
-/* =========================================================
+/* =========================
    DOWNLOAD INDIVIDUAL PHOTOS
-========================================================= */
+========================= */
 
 $("savePhotos").onclick =
   async () => {
@@ -3875,7 +3479,6 @@ $("savePhotos").onclick =
     ) {
 
       return;
-
     }
 
 
@@ -3885,48 +3488,16 @@ $("savePhotos").onclick =
       i++
     ) {
 
-      const link =
-        document.createElement(
-          "a"
-        );
-
-
-      const url =
-        URL.createObjectURL(
-          lastImages[i]
-        );
-
-
-      link.href =
-        url;
-
-
-      link.download =
-        `pairpic-${i + 1}.jpg`;
-
-
-      document.body.appendChild(
-        link
-      );
-
-
-      link.click();
-
-
-      link.remove();
-
-
-      setTimeout(
-        () =>
-          URL.revokeObjectURL(
-            url
-          ),
-        1000
+      downloadBlob(
+        lastImages[i],
+        "pairpic-photo-" +
+        (i + 1) +
+        ".jpg"
       );
 
 
       await sleep(
-        300
+        180
       );
 
     }
@@ -3934,9 +3505,9 @@ $("savePhotos").onclick =
   };
 
 
-/* =========================================================
+/* =========================
    ENHANCE
-========================================================= */
+========================= */
 
 $("enhance").onclick =
   async () => {
@@ -3946,25 +3517,22 @@ $("enhance").onclick =
     }
 
 
-    $("aiNotice").textContent =
-      "Enhancing locally…";
+    $("aiNotice")
+      .textContent =
+      "Enhancing photo…";
 
 
-    const img =
+    const image =
       new Image();
 
 
-    const sourceUrl =
+    image.src =
       URL.createObjectURL(
         currentBlob
       );
 
 
-    img.src =
-      sourceUrl;
-
-
-    await img.decode();
+    await image.decode();
 
 
     const canvas =
@@ -3974,10 +3542,11 @@ $("enhance").onclick =
 
 
     canvas.width =
-      img.width;
+      image.width;
+
 
     canvas.height =
-      img.height;
+      image.height;
 
 
     const ctx =
@@ -3991,52 +3560,55 @@ $("enhance").onclick =
 
 
     ctx.drawImage(
-      img,
+      image,
       0,
       0
     );
 
 
-    URL.revokeObjectURL(
-      sourceUrl
-    );
-
-
     currentBlob =
-      await canvasBlob(
-        canvas
+      await new Promise(
+        resolve =>
+          canvas.toBlob(
+            resolve,
+            "image/jpeg",
+            .95
+          )
       );
 
 
-    $("photo").src =
+    $("photo")
+      .src =
       URL.createObjectURL(
         currentBlob
       );
 
 
-    $("aiNotice").textContent =
-      "Enhanced locally.";
+    $("aiNotice")
+      .textContent =
+      "✨ Photo enhanced.";
 
   };
 
 
-/* =========================================================
+/* =========================
    CAPTION
-========================================================= */
+========================= */
 
 $("caption").onclick =
   () => {
 
     const captions = [
 
-      "Together looks good on us. 🫶",
+      "Two people. One memory. ❤️",
 
-      "One moment. Two people. One memory. ❤️",
+      "Better together. 🫶📸",
 
-      "Made a memory worth keeping. 💗",
+      "A little moment worth keeping forever. ✨",
 
-      "Same moment, one beautiful memory
-      "Four moments. One friendship. ✨"
+      "One photobooth. Endless memories. ❤️",
+
+      "Together is our favorite place. 💕"
 
     ];
 
@@ -4050,75 +3622,60 @@ $("caption").onclick =
       ];
 
 
-    $("aiNotice").textContent =
+    $("aiNotice")
+      .textContent =
+      "💬 " +
       caption;
 
   };
 
 
-/* =========================================================
-   QUICK THEME BUTTON
-========================================================= */
+/* =========================
+   RETAKE
+========================= */
 
-$("themeBtn").onclick =
+$("resultRetake").onclick =
   () => {
 
-    const buttons =
-      document.querySelectorAll(
-        "[data-theme]"
-      );
+    $("result")
+      .style
+      .display =
+      "none";
 
 
-    const themes = [
-      "classic",
-      "love",
-      "retro",
-      "dark"
-    ];
+    currentBlob =
+      null;
 
 
-    let current =
-      themes.indexOf(
-        currentFrame === "love"
-          ? "love"
-          : currentFrame === "retro"
-          ? "retro"
-          : currentFrame === "neon"
-          ? "dark"
-          : "classic"
-      );
+    lastImages =
+      [];
 
 
-    current =
-      (current + 1) %
-      themes.length;
+    $("aiNotice")
+      .textContent =
+      "Ready for another shot.";
 
 
-    const button =
-      document.querySelector(
-        `[data-theme="${themes[current]}"]`
-      );
-
-
-    if (button) {
-      button.click();
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
   };
 
 
-/* =========================================================
+/* =========================
    INITIAL STATE
-========================================================= */
+========================= */
 
 setStatus(
   "Offline"
 );
 
 
-/* =========================================================
-   FINISH
-========================================================= */
+/* =========================
+   CLOSE SCRIPT + HTML
+========================= */
 
 </script>
 
