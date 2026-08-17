@@ -17,13 +17,14 @@ const server = http.createServer((req, res) => {
 
       res.writeHead(200, {
         "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-cache"
+        "Cache-Control": "no-store"
       });
 
       res.end(html);
     } catch (err) {
+      console.error(err);
       res.writeHead(500);
-      res.end("Could not load PairPic");
+      res.end("PairPic could not load.");
     }
 
     return;
@@ -37,20 +38,30 @@ const wss = new WebSocket.Server({ server });
 
 const rooms = new Map();
 
-function send(ws, data) {
+function send(ws, message) {
   if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(data));
+    ws.send(JSON.stringify(message));
   }
 }
 
-function broadcast(room, sender, data) {
+function broadcast(room, message) {
+  const players = rooms.get(room);
+
+  if (!players) return;
+
+  for (const player of players) {
+    send(player, message);
+  }
+}
+
+function sendOthers(room, sender, message) {
   const players = rooms.get(room);
 
   if (!players) return;
 
   for (const player of players) {
     if (player !== sender) {
-      send(player, data);
+      send(player, message);
     }
   }
 }
@@ -64,19 +75,18 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("message", (raw) => {
-    let msg;
+    let message;
 
     try {
-      msg = JSON.parse(raw.toString());
+      message = JSON.parse(raw.toString());
     } catch {
       return;
     }
 
-    /*
-     * JOIN ROOM
-     */
-    if (msg.type === "join") {
-      const requestedRoom = String(msg.room || "")
+    /* JOIN */
+
+    if (message.type === "join") {
+      const requestedRoom = String(message.room || "")
         .trim()
         .toUpperCase()
         .slice(0, 8);
@@ -84,13 +94,13 @@ wss.on("connection", (ws) => {
       if (!requestedRoom) {
         send(ws, {
           type: "error",
-          message: "Invalid room"
+          message: "Invalid room."
         });
         return;
       }
 
       room = requestedRoom;
-      role = msg.role === "host" ? "host" : "guest";
+      role = message.role === "host" ? "host" : "guest";
 
       if (!rooms.has(room)) {
         rooms.set(room, new Set());
@@ -105,76 +115,92 @@ wss.on("connection", (ws) => {
 
         room = null;
         role = null;
+
         return;
       }
 
       players.add(ws);
 
       console.log(
-        `[ROOM ${room}] ${role} joined (${players.size}/2)`
+        `[PairPic] ${role} joined ${room} (${players.size}/2)`
       );
 
       if (players.size === 1) {
         send(ws, {
           type: "waiting",
-          room,
-          role
+          room
         });
       }
 
       if (players.size === 2) {
-        for (const player of players) {
-          send(player, {
-            type: "ready",
-            room
-          });
-        }
+        broadcast(room, {
+          type: "ready",
+          room
+        });
 
-        console.log(`[ROOM ${room}] Ready for WebRTC`);
+        console.log(
+          `[PairPic] Room ${room} ready`
+        );
       }
 
       return;
     }
 
-    /*
-     * WEBRTC SIGNALING
-     *
-     * offer
-     * answer
-     * ice
-     */
-    if (room && rooms.has(room)) {
-      if (
-        msg.type === "offer" ||
-        msg.type === "answer" ||
-        msg.type === "ice"
-      ) {
-        broadcast(room, ws, msg);
-        return;
-      }
+    if (!room || !rooms.has(room)) {
+      return;
+    }
 
-      /*
-       * SYNCHRONIZED PHOTO COMMANDS
-       */
-      if (
-        msg.type === "start-single" ||
-        msg.type === "start-strip"
-      ) {
-        broadcast(room, ws, msg);
-        return;
-      }
+    /*
+      WEBRTC SIGNALING
+      These messages only go to the other phone.
+    */
+
+    if (
+      message.type === "offer" ||
+      message.type === "answer" ||
+      message.type === "ice"
+    ) {
+      sendOthers(
+        room,
+        ws,
+        message
+      );
+
+      return;
+    }
+
+    /*
+      PHOTO COMMANDS
+      These must go to BOTH phones.
+    */
+
+    if (
+      message.type === "start-single" ||
+      message.type === "start-strip" ||
+      message.type === "retake" ||
+      message.type === "background" ||
+      message.type === "scene"
+    ) {
+      broadcast(
+        room,
+        message
+      );
+
+      return;
     }
   });
 
   ws.on("close", () => {
-    if (!room || !rooms.has(room)) return;
+    if (!room || !rooms.has(room)) {
+      return;
+    }
 
     const players = rooms.get(room);
 
     players.delete(ws);
 
     console.log(
-      `[ROOM ${room}] ${role || "player"} left (${players.size}/2)`
+      `[PairPic] ${role || "player"} left ${room}`
     );
 
     for (const player of players) {
@@ -185,15 +211,27 @@ wss.on("connection", (ws) => {
 
     if (players.size === 0) {
       rooms.delete(room);
-      console.log(`[ROOM ${room}] deleted`);
+
+      console.log(
+        `[PairPic] Room ${room} deleted`
+      );
     }
   });
 
-  ws.on("error", (err) => {
-    console.log("WebSocket error:", err.message);
+  ws.on("error", (error) => {
+    console.log(
+      "[PairPic] WebSocket error:",
+      error.message
+    );
   });
 });
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`PairPic running on port ${PORT}`);
-});
+server.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
+    console.log(
+      `PairPic running on port ${PORT}`
+    );
+  }
+);
