@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PairPic — Online Photo Booth</title>
+<style>
+:root{--bg:#0b0b12;--card:#151522;--text:#fff;--muted:#a6a6b7;--accent:#ff5d9e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#35204a,#0b0b12 55%);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
+body{display:flex;justify-content:center}.app{width:min(1100px,100%);padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{font-weight:900;font-size:25px;letter-spacing:-1px}.brand span{color:var(--accent)}.status{font-size:12px;color:#bdbdca}
+.card{background:#12121dd9;border:1px solid #ffffff12;border-radius:24px;box-shadow:0 18px 60px #0008;backdrop-filter:blur(14px);padding:18px}
+#lobby{max-width:560px;margin:8vh auto}.hero{text-align:center;padding:22px}.hero h1{font-size:42px;line-height:1;margin:12px 0}.hero p{color:var(--muted);line-height:1.6}
+.row{display:flex;gap:10px;margin-top:14px}.row>*{flex:1}input,button{font:inherit}input{width:100%;background:#090912;border:1px solid #ffffff18;color:#fff;padding:14px;border-radius:14px;text-align:center;text-transform:uppercase;letter-spacing:3px}button{border:0;border-radius:14px;padding:14px 18px;background:linear-gradient(135deg,#ff5d9e,#9d6cff);color:white;font-weight:850;cursor:pointer}button.secondary{background:#ffffff0d;border:1px solid #ffffff16}.tiny{font-size:11px;color:#88899a;text-align:center;margin-top:12px}
+#booth{display:none}.stage{position:relative;aspect-ratio:16/10;border-radius:22px;overflow:hidden;background:#050509;border:1px solid #ffffff12}.feed{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#09090f}.local{position:absolute;width:27%;aspect-ratio:4/3;right:14px;bottom:14px;border-radius:16px;border:2px solid #fff8;box-shadow:0 8px 30px #0009}.overlay{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center}.count{font-size:110px;font-weight:1000;text-shadow:0 8px 35px #000;opacity:0}.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.controls button{flex:1;min-width:120px}.hint{font-size:12px;color:var(--muted);margin-top:10px}.result{display:none;margin-top:16px}.result img{width:100%;border-radius:18px;display:block}.ai{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ai button{flex:1;min-width:110px}.notice{font-size:12px;color:#aeadbf;margin-top:10px}
+@media(max-width:600px){.app{padding:12px}.hero h1{font-size:34px}.stage{aspect-ratio:3/4}.local{width:34%}.row{flex-direction:column}.count{font-size:80px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand">Pair<span>Pic</span> 📸</div><div id="status" class="status">Offline</div></header>
+
+<section id="lobby" class="card">
+<div class="hero"><div style="font-size:48px">🫶📸</div><h1>Two people.<br>One photo.</h1><p>Create a private room, invite a friend, and take photos together from anywhere.</p></div>
+<div class="row"><button id="solo">Try solo demo</button><button id="create">Create room</button><button id="join" class="secondary">Join room</button></div>
+<div class="row"><input id="code" maxlength="8" placeholder="ROOM CODE" aria-label="Room code"></div>
+<div class="tiny">Camera permission is requested only when you enter a booth.</div>
+</section>
+
+<section id="booth">
+<div class="card">
+<div class="stage">
+<video id="remote" class="feed" autoplay playsinline></video>
+<video id="local" class="feed local" autoplay muted playsinline></video>
+<div class="overlay"><div id="count" class="count">3</div></div><div id="flash" class="flash"></div>
+</div>
+<div class="controls">
+<button id="capture">📸 Take photo</button><button id="flip" class="secondary">🔄 Flip camera</button><button id="leave" class="secondary">Leave</button>
+</div>
+<div class="hint">Room: <b id="roomLabel"></b> · Ask your friend to use the same code.</div>
+<div id="result" class="result">
+<h3>✨ Your photo</h3><img id="photo" alt="Captured photobooth photo">
+<div class="ai"><button id="download">Download</button><button id="enhance">✨ AI Enhance</button><button id="caption">💬 AI Caption</button></div>
+<div id="aiNotice" class="notice"></div>
+</div>
+</div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const WS_URL=(location.protocol==="https:"?"wss://":"ws://")+location.host;
+let ws,pc,room="",role="",stream=null,remoteStream=null,facing="user",lastBlob=null,solo=false;
+const rtcConfig={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
+
+function setStatus(t){$("status").textContent=t}
+function makeCode(){return Math.random().toString(36).slice(2,7).toUpperCase()}
+function signal(msg){if(ws?.readyState===1)ws.send(JSON.stringify(msg))}
+async function camera(){
+ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}},audio:false});
+ $("local").srcObject=stream;
+}
+function setupPeer(){
+ pc=new RTCPeerConnection(rtcConfig);
+ remoteStream=new MediaStream();$("remote").srcObject=remoteStream;
+ stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+ pc.ontrack=e=>e.streams[0]?.getTracks().forEach(t=>remoteStream.addTrack(t));
+ pc.onicecandidate=e=>{if(e.candidate)signal({type:"ice",candidate:e.candidate})};
+ pc.onconnectionstatechange=()=>setStatus("Online · "+pc.connectionState);
+}
+async function enter(newRoom,newRole){
+ room=newRoom;role=newRole;$("roomLabel").textContent=room;$("lobby").style.display="none";$("booth").style.display="block";
+ try{await camera();if(!solo){setupPeer();connectSignal()}else{setStatus("Solo demo");$("remote").style.display="none";$("local").classList.remove("local");$("local").style.width="100%";$("local").style.height="100%";$("local").style.right="0";$("local").style.bottom="0";$("local").style.border="0"}}catch(e){alert("Camera permission was blocked. Please allow camera access in your browser.");location.reload()}
+}
+function connectSignal(){
+ ws=new WebSocket(WS_URL);
+ ws.onopen=()=>{setStatus("Connecting…");signal({type:"join",room,role})};
+ ws.onclose=()=>setStatus("Disconnected");
+ ws.onmessage=async e=>{
+  const m=JSON.parse(e.data);
+  if(m.type==="waiting"){setStatus("Waiting for your friend…")}
+  if(m.type==="ready"){
+   setStatus("Connected");
+   if(role==="host"){const offer=await pc.createOffer();await pc.setLocalDescription(offer);signal({type:"offer",offer})}
+  }
+  if(m.type==="offer"){await pc.setRemoteDescription(m.offer);const answer=await pc.createAnswer();await pc.setLocalDescription(answer);signal({type:"answer",answer})}
+  if(m.type==="answer")await pc.setRemoteDescription(m.answer);
+  if(m.type==="ice")try{await pc.addIceCandidate(m.candidate)}catch{}
+  if(m.type==="peer-left")setStatus("Friend left the room");
+ };
+}
+$("solo").onclick=()=>{solo=true;enter("SOLO","solo")};
+$("create").onclick=()=>enter(makeCode(),"host").then(()=>{alert("Your room code is "+room+"\\nShare it with your friend.")});
+$("join").onclick=()=>{const c=$("code").value.trim().toUpperCase();if(c.length<4)return alert("Enter a room code.");enter(c,"guest")};
+$("leave").onclick=()=>location.reload();
+$("flip").onclick=async()=>{facing=facing==="user"?"environment":"user";stream?.getTracks().forEach(t=>t.stop());await camera();const sender=pc?.getSenders().find(s=>s.track?.kind==="video");if(sender)sender.replaceTrack(stream.getVideoTracks()[0])};
+
+function canvasShot(){
+ const w=1280,h=800,c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");
+ x.fillStyle="#111";x.fillRect(0,0,w,h);
+ const rv=$("remote"),lv=$("local");
+ if(!solo && rv.readyState>=2)x.drawImage(rv,0,0,w,h);
+ if(lv.readyState>=2){if(solo){x.save();x.translate(w,0);x.scale(-1,1);x.drawImage(lv,0,0,w,h);x.restore()}else{const sw=330,sh=220;x.drawImage(lv,w-sw-28,h-sh-28,sw,sh)}}
+ x.fillStyle="rgba(0,0,0,.28)";x.fillRect(0,h-72,w,72);
+ x.fillStyle="#fff";x.font="700 28px system-ui";x.fillText("PAIRPIC",28,h-28);
+ return new Promise(r=>c.toBlob(r,"image/jpeg",.92));
+}
+$("capture").onclick=async()=>{
+ const count=$("count"),flash=$("flash");
+ for(let n=3;n>0;n--){count.textContent=n;count.style.opacity=1;await new Promise(r=>setTimeout(r,650))}
+ count.style.opacity=0;flash.style.opacity=.9;setTimeout(()=>flash.style.opacity=0,120);
+ lastBlob=await canvasShot();$("photo").src=URL.createObjectURL(lastBlob);$("result").style.display="block";
+};
+$("download").onclick=()=>{if(!lastBlob)return;const a=document.createElement("a");a.href=URL.createObjectURL(lastBlob);a.download="pairpic.jpg";a.click()};
+$("enhance").onclick=async()=>{
+ if(!lastBlob)return;$("aiNotice").textContent="Enhancing…";
+ // Lightweight local enhancement: intentionally keeps the live booth smooth.
+ const img=new Image();img.src=URL.createObjectURL(lastBlob);await img.decode();const c=document.createElement("canvas");c.width=img.width;c.height=img.height;const x=c.getContext("2d");
+ x.filter="contrast(1.08) saturate(1.08) brightness(1.04)";x.drawImage(img,0,0);const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.94));lastBlob=b;$("photo").src=URL.createObjectURL(b);$("aiNotice").textContent="Enhanced locally for speed. A server AI model can be plugged in later for true generative edits.";
+};
+$("caption").onclick=()=>{$("aiNotice").textContent="AI caption example: “Two screens, one unforgettable moment. ✨” — this button is ready to connect to an AI API when you deploy the site."};
+</script>
+</body></html>
