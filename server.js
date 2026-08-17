@@ -3,15 +3,28 @@ const fs = require("fs");
 const path = require("path");
 const WebSocket = require("ws");
 
-const server = http.createServer((req, res) => {
-  if (req.url === "/" || req.url === "/index.html") {
-    res.writeHead(200, {
-      "Content-Type": "text/html; charset=utf-8"
-    });
+const PORT = process.env.PORT || 8080;
 
-    res.end(
-      fs.readFileSync(path.join(__dirname, "index.html"))
-    );
+const server = http.createServer((req, res) => {
+  const url = req.url.split("?")[0];
+
+  if (url === "/" || url === "/index.html") {
+    try {
+      const html = fs.readFileSync(
+        path.join(__dirname, "index.html"),
+        "utf8"
+      );
+
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-cache"
+      });
+
+      res.end(html);
+    } catch (err) {
+      res.writeHead(500);
+      res.end("Could not load PairPic");
+    }
 
     return;
   }
@@ -21,32 +34,63 @@ const server = http.createServer((req, res) => {
 });
 
 const wss = new WebSocket.Server({ server });
+
 const rooms = new Map();
 
-function send(ws, message) {
-  if (ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(message));
+function send(ws, data) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(data));
+  }
+}
+
+function broadcast(room, sender, data) {
+  const players = rooms.get(room);
+
+  if (!players) return;
+
+  for (const player of players) {
+    if (player !== sender) {
+      send(player, data);
+    }
   }
 }
 
 wss.on("connection", (ws) => {
   let room = null;
+  let role = null;
+
+  send(ws, {
+    type: "connected"
+  });
 
   ws.on("message", (raw) => {
-    let message;
+    let msg;
 
     try {
-      message = JSON.parse(raw.toString());
+      msg = JSON.parse(raw.toString());
     } catch {
       return;
     }
 
-    if (message.type === "join") {
-      room = String(message.room || "")
+    /*
+     * JOIN ROOM
+     */
+    if (msg.type === "join") {
+      const requestedRoom = String(msg.room || "")
+        .trim()
         .toUpperCase()
         .slice(0, 8);
 
-      if (!room) return;
+      if (!requestedRoom) {
+        send(ws, {
+          type: "error",
+          message: "Invalid room"
+        });
+        return;
+      }
+
+      room = requestedRoom;
+      role = msg.role === "host" ? "host" : "guest";
 
       if (!rooms.has(room)) {
         rooms.set(room, new Set());
@@ -55,28 +99,69 @@ wss.on("connection", (ws) => {
       const players = rooms.get(room);
 
       if (players.size >= 2) {
-        send(ws, { type: "full" });
+        send(ws, {
+          type: "full"
+        });
+
+        room = null;
+        role = null;
         return;
       }
 
       players.add(ws);
 
+      console.log(
+        `[ROOM ${room}] ${role} joined (${players.size}/2)`
+      );
+
       if (players.size === 1) {
-        send(ws, { type: "waiting" });
-      } else {
+        send(ws, {
+          type: "waiting",
+          room,
+          role
+        });
+      }
+
+      if (players.size === 2) {
         for (const player of players) {
-          send(player, { type: "ready" });
+          send(player, {
+            type: "ready",
+            room
+          });
         }
+
+        console.log(`[ROOM ${room}] Ready for WebRTC`);
       }
 
       return;
     }
 
+    /*
+     * WEBRTC SIGNALING
+     *
+     * offer
+     * answer
+     * ice
+     */
     if (room && rooms.has(room)) {
-      for (const player of rooms.get(room)) {
-        if (player !== ws) {
-          send(player, message);
-        }
+      if (
+        msg.type === "offer" ||
+        msg.type === "answer" ||
+        msg.type === "ice"
+      ) {
+        broadcast(room, ws, msg);
+        return;
+      }
+
+      /*
+       * SYNCHRONIZED PHOTO COMMANDS
+       */
+      if (
+        msg.type === "start-single" ||
+        msg.type === "start-strip"
+      ) {
+        broadcast(room, ws, msg);
+        return;
       }
     }
   });
@@ -85,20 +170,30 @@ wss.on("connection", (ws) => {
     if (!room || !rooms.has(room)) return;
 
     const players = rooms.get(room);
+
     players.delete(ws);
 
+    console.log(
+      `[ROOM ${room}] ${role || "player"} left (${players.size}/2)`
+    );
+
     for (const player of players) {
-      send(player, { type: "peer-left" });
+      send(player, {
+        type: "peer-left"
+      });
     }
 
     if (players.size === 0) {
       rooms.delete(room);
+      console.log(`[ROOM ${room}] deleted`);
     }
+  });
+
+  ws.on("error", (err) => {
+    console.log("WebSocket error:", err.message);
   });
 });
 
-const PORT = process.env.PORT || 8080;
-
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`PairPic running on port ${PORT}`);
 });
