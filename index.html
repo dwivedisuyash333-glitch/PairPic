@@ -1,223 +1,400 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>PairPic — Online Photo Booth</title>
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
+<title>PairPic — Two Phones. One Memory.</title>
 
 <style>
+
 :root{
-  --bg:#09070b;
-  --card:#141019;
+  --bg:#08070b;
+  --card:#151119;
+  --card2:#1c1621;
   --text:#fff;
-  --muted:#aaa1b2;
+  --muted:#aaa2b2;
   --pink:#ff4d9d;
-  --purple:#8b67ff;
-  --line:#ffffff1c
+  --purple:#8b68ff;
+  --line:#ffffff18;
+  --good:#72e6a7;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
-html,body{
+html,
+body{
   margin:0;
   min-height:100%;
   background:
-    radial-gradient(circle at 50% -10%,#3b1732,#09070b 58%);
+    radial-gradient(
+      circle at 50% -10%,
+      #40152f 0%,
+      #100a12 40%,
+      #08070b 75%
+    );
   color:var(--text);
-  font-family:Inter,system-ui,Arial,sans-serif
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 body{
   display:flex;
-  justify-content:center
+  justify-content:center;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
 }
 
 .app{
-  width:min(1120px,100%);
-  padding:14px
+  width:min(1180px,100%);
+  padding:14px;
 }
 
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:12px
+  margin-bottom:12px;
 }
 
-.brand{
+.logoText{
+  font-size:26px;
   font-weight:950;
-  font-size:25px
+  letter-spacing:-1px;
 }
 
-.brand span{
-  color:var(--pink)
+.logoText span{
+  color:var(--pink);
 }
 
 .status{
   font-size:12px;
-  color:#c7bdcb
+  color:#c9c1cc;
 }
+
+/* ---------- CARD ---------- */
 
 .card{
   background:#121018e8;
   border:1px solid var(--line);
-  border-radius:24px;
-  box-shadow:0 20px 70px #000b;
-  backdrop-filter:blur(14px);
-  padding:16px
+  border-radius:26px;
+  padding:16px;
+  box-shadow:
+    0 24px 80px #000b;
+  backdrop-filter:blur(18px);
 }
 
+/* ---------- LOBBY ---------- */
+
 #lobby{
-  max-width:620px;
-  margin:7vh auto
+  max-width:650px;
+  margin:6vh auto;
 }
 
 .hero{
   text-align:center;
-  padding:20px
+  padding:22px 15px;
 }
 
-.hero .logo{
-  font-size:52px
+.heroIcon{
+  font-size:58px;
 }
 
 .hero h1{
-  font-size:42px;
-  line-height:1;
-  margin:12px 0
+  font-size:44px;
+  line-height:.98;
+  letter-spacing:-2px;
+  margin:14px 0;
 }
 
 .hero p{
   color:var(--muted);
-  line-height:1.55
+  line-height:1.6;
+  max-width:500px;
+  margin:auto;
 }
 
 .row{
   display:flex;
   gap:10px;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .row>*{
-  flex:1
-}
-
-input,button{
-  font:inherit
+  flex:1;
 }
 
 input{
   width:100%;
   background:#09070d;
-  border:1px solid var(--line);
   color:#fff;
+  border:1px solid var(--line);
   padding:14px;
   border-radius:14px;
   text-align:center;
+  letter-spacing:3px;
   text-transform:uppercase;
-  letter-spacing:3px
+  outline:none;
 }
 
-button{
-  border:0;
-  border-radius:14px;
-  padding:13px 16px;
-  background:linear-gradient(135deg,var(--pink),var(--purple));
+input:focus{
+  border-color:#ff4d9d66;
+}
+
+.primary{
+  background:
+    linear-gradient(
+      135deg,
+      var(--pink),
+      var(--purple)
+    );
   color:#fff;
   font-weight:850;
-  cursor:pointer
 }
 
-button.secondary{
-  background:#ffffff0b;
-  border:1px solid var(--line)
-}
-
-button:disabled{
-  opacity:.45
+.secondary{
+  background:#ffffff0a;
+  border:1px solid var(--line);
+  color:#fff;
 }
 
 .tiny{
+  color:#827a88;
   font-size:11px;
-  color:#88818d;
   text-align:center;
-  margin-top:12px
+  margin-top:12px;
 }
 
+/* ---------- BOOTH ---------- */
+
 #booth{
-  display:none
+  display:none;
 }
 
 .topbar{
   display:flex;
-  gap:8px;
-  align-items:center;
   justify-content:space-between;
-  margin-bottom:10px
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
 }
 
 .mode{
-  font-weight:850
+  font-weight:900;
 }
 
 .room{
+  color:var(--muted);
   font-size:12px;
-  color:var(--muted)
+}
+
+.toolbar{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+
+.toolbar button,
+.toolbar select{
+  min-height:40px;
+}
+
+select{
+  background:#ffffff0a;
+  color:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:9px 12px;
+  outline:none;
+}
+
+/* ---------- LIVE STAGE ---------- */
+
+.scene{
+  position:relative;
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background:#050509;
+  box-shadow:0 16px 55px #000a;
+}
+
+.scene.original{
+  background:#050509;
+}
+
+.scene.love{
+  background:
+    radial-gradient(circle at 20% 20%,#ff3f9233,transparent 25%),
+    radial-gradient(circle at 80% 25%,#ff79b833,transparent 25%),
+    linear-gradient(135deg,#2b0618,#6f123c,#210713);
+}
+
+.scene.rose{
+  background:
+    radial-gradient(circle at 15% 25%,#ff526233,transparent 25%),
+    radial-gradient(circle at 80% 70%,#d42d5633,transparent 30%),
+    linear-gradient(135deg,#18070b,#4b0b17);
+}
+
+.scene.sunset{
+  background:
+    linear-gradient(
+      180deg,
+      #32154e,
+      #c14d61 50%,
+      #f2a35b
+    );
+}
+
+.scene.night{
+  background:
+    radial-gradient(circle at 50% 25%,#5441a744,transparent 22%),
+    linear-gradient(160deg,#05030c,#15102c,#030308);
+}
+
+.scene.studio{
+  background:
+    radial-gradient(circle,#555 0%,#202020 48%,#070707 100%);
+}
+
+.scene.classic{
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #eee 0,
+      #eee 12px,
+      #ddd 12px,
+      #ddd 24px
+    );
+}
+
+.scene.dreamy{
+  background:
+    radial-gradient(circle at 30% 30%,#ff9bdb55,transparent 25%),
+    radial-gradient(circle at 75% 60%,#8d7aff55,transparent 28%),
+    linear-gradient(135deg,#21153e,#553b78);
+}
+
+.scene::before,
+.scene::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:1;
+}
+
+.scene.love::before,
+.scene.rose::before,
+.scene.dreamy::before{
+  content:"♥  ✦  ♥  ✦  ♥";
+  left:0;
+  right:0;
+  top:12px;
+  text-align:center;
+  color:#fff;
+  opacity:.28;
+  font-size:25px;
+  letter-spacing:12px;
 }
 
 .stage{
   position:relative;
+  z-index:2;
   display:grid;
   grid-template-columns:1fr 1fr;
   aspect-ratio:16/9;
   min-height:300px;
-  border-radius:22px;
   overflow:hidden;
-  background:#050509;
-  border:1px solid var(--line);
-  box-shadow:0 14px 50px #0009
 }
 
 .pane{
   position:relative;
   overflow:hidden;
-  background:#08080d
 }
 
 .pane+.pane{
-  border-left:2px solid #fff9
+  border-left:2px solid #ffffffaa;
 }
 
 .feed{
   width:100%;
   height:100%;
-  object-fit:cover;
   display:block;
-  background:#08080d
+  object-fit:cover;
+  background:#08080d;
+}
+
+/*
+  Your own preview is mirrored.
+  Remote preview stays normal.
+*/
+
+#local{
+  transform:scaleX(-1);
 }
 
 .name{
   position:absolute;
-  left:10px;
-  top:10px;
+  left:12px;
+  top:12px;
+  z-index:4;
+  background:#0009;
+  border:1px solid #ffffff18;
   padding:6px 10px;
   border-radius:999px;
-  background:#0009;
-  font-size:11px;
-  font-weight:800;
-  z-index:2
+  font-size:10px;
+  font-weight:850;
 }
 
 .wait{
   position:absolute;
   inset:0;
   display:flex;
-  align-items:center;
   justify-content:center;
-  color:#77788a;
+  align-items:center;
+  background:#050509cc;
+  color:#aaa;
+  z-index:5;
   font-size:13px;
-  background:#08080dcc
 }
+
+.together .pane+.pane{
+  border-left:0;
+}
+
+.together .stage{
+  gap:0;
+}
+
+.together .pane{
+  width:100%;
+}
+
+/* ---------- COUNTDOWN ---------- */
 
 .overlay{
   position:absolute;
@@ -225,17 +402,27 @@ button:disabled{
   display:flex;
   align-items:center;
   justify-content:center;
+  z-index:20;
   pointer-events:none;
-  z-index:10
 }
 
 .count{
-  font-size:110px;
-  font-weight:1000;
-  text-shadow:0 8px 35px #000;
   opacity:0;
-  transform:scale(.75);
-  transition:transform .15s
+  font-size:120px;
+  line-height:1;
+  font-weight:1000;
+  text-shadow:
+    0 8px 40px #000,
+    0 0 35px #ff4d9d66;
+  transform:scale(.7);
+  transition:
+    opacity .12s,
+    transform .16s;
+}
+
+.count.show{
+  opacity:1;
+  transform:scale(1);
 }
 
 .flash{
@@ -243,139 +430,189 @@ button:disabled{
   inset:0;
   background:#fff;
   opacity:0;
+  z-index:30;
   pointer-events:none;
-  z-index:20
+  transition:opacity .1s;
 }
+
+/* ---------- CONTROLS ---------- */
 
 .controls{
   display:flex;
   gap:9px;
   flex-wrap:wrap;
-  margin-top:12px
+  margin-top:12px;
 }
 
 .controls button{
   flex:1;
-  min-width:125px
+  min-width:130px;
+  padding:14px;
+  border-radius:15px;
+  font-weight:850;
 }
 
 .hint{
-  font-size:12px;
+  margin-top:9px;
   color:var(--muted);
-  margin-top:9px
+  font-size:12px;
 }
+
+/* ---------- RESULT ---------- */
 
 .result{
   display:none;
-  margin-top:15px
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
 }
 
 .resultGrid{
   display:grid;
-  grid-template-columns:minmax(220px,390px) 1fr;
-  gap:16px;
-  align-items:start
+  grid-template-columns:minmax(230px,420px) 1fr;
+  gap:18px;
+  align-items:start;
 }
 
-.previewWrap{
-  background:#08080d;
-  border-radius:18px;
+.preview{
+  background:#08070b;
   padding:10px;
-  text-align:center
+  border-radius:20px;
+  border:1px solid var(--line);
+  text-align:center;
 }
 
-.previewWrap img{
+.preview img{
   max-width:100%;
-  max-height:700px;
+  max-height:720px;
   display:block;
   margin:auto;
-  border-radius:8px
+  border-radius:10px;
 }
 
-.resultTools{
+.badge{
+  display:inline-block;
+  margin-bottom:8px;
+  padding:5px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:#ccc;
+  font-size:10px;
+  font-weight:800;
+}
+
+.tools{
   display:flex;
   flex-direction:column;
-  gap:9px
+  gap:10px;
 }
 
 .sectionTitle{
   font-size:13px;
-  font-weight:850;
-  color:#ddd;
-  margin-top:2px
+  font-weight:900;
+  color:#eee;
+  margin-top:2px;
 }
 
-.choices{
+.gridButtons{
   display:flex;
+  flex-wrap:wrap;
   gap:7px;
-  flex-wrap:wrap
 }
 
-.choices button{
+.gridButtons button{
   flex:1;
-  min-width:110px;
+  min-width:105px;
   padding:10px;
-  font-size:12px
+  border-radius:12px;
+  font-size:12px;
+  background:#ffffff0a;
+  color:#fff;
+  border:1px solid var(--line);
+}
+
+.gridButtons button.active{
+  background:
+    linear-gradient(
+      135deg,
+      #ff4d9d,
+      #8b68ff
+    );
+  border-color:transparent;
 }
 
 .notice{
+  color:#aaa2b2;
   font-size:12px;
-  color:#aaaabd;
-  line-height:1.5
+  line-height:1.5;
 }
 
-.stripBadge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:999px;
-  background:#ffffff0d;
+/* ---------- RETAKE ---------- */
+
+.retakeBox{
+  display:none;
+  padding:12px;
+  background:#ffffff07;
   border:1px solid var(--line);
-  font-size:11px;
-  color:#ccc
+  border-radius:15px;
 }
 
-@media(max-width:700px){
+.retakeTitle{
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.retakeButtons{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.retakeButtons button{
+  background:#ffffff0a;
+  color:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 12px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:720px){
 
   .app{
-    padding:10px
+    padding:9px;
   }
 
   .hero h1{
-    font-size:34px
+    font-size:34px;
   }
 
   .row{
-    flex-direction:column
+    flex-direction:column;
   }
 
   .stage{
     aspect-ratio:3/4;
-    min-height:0
-  }
-
-  .feed{
-    object-fit:cover
   }
 
   .count{
-    font-size:82px
+    font-size:82px;
   }
 
   .resultGrid{
-    grid-template-columns:1fr
+    grid-template-columns:1fr;
   }
 
-  .resultTools{
-    display:grid;
-    grid-template-columns:1fr 1fr
+  .controls button{
+    min-width:110px;
   }
 
-  .resultTools .sectionTitle,
-  .resultTools .notice{
-    grid-column:1/-1
-  }
 }
+
 </style>
+
 </head>
 
 <body>
@@ -383,222 +620,559 @@ button:disabled{
 <main class="app">
 
 <header>
-  <div class="brand">Pair<span>Pic</span> 📸</div>
-  <div id="status" class="status">Offline</div>
+
+<div class="logoText">
+  Pair<span>Pic</span> 📸
+</div>
+
+<div
+  id="status"
+  class="status"
+>
+  Offline
+</div>
+
 </header>
 
-<section id="lobby" class="card">
+
+<!-- =========================
+     LOBBY
+========================= -->
+
+<section
+  id="lobby"
+  class="card"
+>
 
 <div class="hero">
 
-  <div class="logo">🫶📸</div>
+<div class="heroIcon">
+  🫶📸
+</div>
 
-  <h1>
-    Two people.<br>
-    One photobooth.
-  </h1>
+<h1>
+  Two phones.<br>
+  One memory.
+</h1>
 
-  <p>
-    Join from two phones, see each other side-by-side,
-    then create a real four-photo photobooth strip.
-  </p>
+<p>
+  PairPic turns two separate cameras into
+  one shared online photobooth.
+</p>
 
 </div>
+
 
 <div class="row">
-  <button id="solo">Try Solo Demo</button>
-  <button id="create">Create Room</button>
+
+<button
+  id="solo"
+  class="primary"
+>
+  Try Solo
+</button>
+
+<button
+  id="create"
+  class="primary"
+>
+  Create Room
+</button>
+
 </div>
 
+
 <div class="row">
-  <input id="code" maxlength="8" placeholder="ROOM CODE">
-  <button id="join" class="secondary">Join Room</button>
+
+<input
+  id="code"
+  maxlength="8"
+  placeholder="ROOM CODE"
+/>
+
+<button
+  id="join"
+  class="secondary"
+>
+  Join Room
+</button>
+
 </div>
+
 
 <div class="tiny">
-  Camera permission is requested only when you enter a booth.
+  Camera access is requested only when entering the booth.
 </div>
 
 </section>
+
+
+<!-- =========================
+     BOOTH
+========================= -->
 
 <section id="booth">
 
 <div class="card">
 
+
 <div class="topbar">
 
-  <div class="mode" id="modeLabel">
+<div class="mode">
+  <span id="modeLabel">
     Photo Booth
-  </div>
+  </span>
+</div>
 
-  <div class="room">
-    Room: <b id="roomLabel"></b>
-  </div>
+<div class="room">
+  Room:
+  <b id="roomLabel"></b>
+</div>
 
 </div>
+
+
+<!-- SETTINGS -->
+
+<div class="toolbar">
+
+<select id="composition">
+
+<option value="classic">
+  📷 Classic
+</option>
+
+<option value="together">
+  🫶 Together
+</option>
+
+<option value="close">
+  💕 Close Together
+</option>
+
+</select>
+
+
+<select id="background">
+
+<option value="original">
+  📷 Original
+</option>
+
+<option value="love">
+  ❤️ Pink Romance
+</option>
+
+<option value="rose">
+  🌹 Rose
+</option>
+
+<option value="sunset">
+  🌅 Sunset
+</option>
+
+<option value="night">
+  🌌 Night
+</option>
+
+<option value="studio">
+  🖤 Dark Studio
+</option>
+
+<option value="classic">
+  🎞️ Classic Booth
+</option>
+
+<option value="dreamy">
+  ☁️ Dreamy
+</option>
+
+</select>
+
+
+<select id="filter">
+
+<option value="none">
+  Natural
+</option>
+
+<option value="warm">
+  Warm
+</option>
+
+<option value="cool">
+  Cool
+</option>
+
+<option value="vintage">
+  Vintage
+</option>
+
+<option value="soft">
+  Soft
+</option>
+
+<option value="pink">
+  Pink
+</option>
+
+<option value="mono">
+  B&W
+</option>
+
+</select>
+
+
+<button
+  id="sound"
+  class="secondary"
+>
+  🔊 Sound
+</button>
+
+</div>
+
+
+<!-- CAMERA -->
+
+<div
+  id="scene"
+  class="scene original"
+>
 
 <div class="stage">
 
-<div class="pane">
-
-  <div class="name">YOU</div>
-
-  <video
-    id="local"
-    class="feed"
-    autoplay
-    muted
-    playsinline>
-  </video>
-
-</div>
 
 <div class="pane">
 
-  <div class="name">FRIEND</div>
+<div class="name">
+  YOU
+</div>
 
-  <video
-    id="remote"
-    class="feed"
-    autoplay
-    playsinline>
-  </video>
-
-  <div id="wait" class="wait">
-    Waiting for your friend…
-  </div>
+<video
+  id="local"
+  class="feed"
+  autoplay
+  muted
+  playsinline
+></video>
 
 </div>
+
+
+<div class="pane">
+
+<div class="name">
+  FRIEND
+</div>
+
+<video
+  id="remote"
+  class="feed"
+  autoplay
+  playsinline
+></video>
+
+<div
+  id="wait"
+  class="wait"
+>
+  Waiting for your friend…
+</div>
+
+</div>
+
+
+</div>
+
 
 <div class="overlay">
-  <div id="count" class="count">5</div>
+
+<div
+  id="count"
+  class="count"
+>
+  5
 </div>
 
-<div id="flash" class="flash"></div>
+</div>
+
+
+<div
+  id="flash"
+  class="flash"
+></div>
 
 </div>
+
+
+<!-- CAMERA BUTTONS -->
 
 <div class="controls">
 
-  <button id="single">
-    📸 Single Photo
-  </button>
+<button
+  id="single"
+  class="primary"
+>
+  📸 Single Photo
+</button>
 
-  <button id="strip">
-    🎞️ 4-Photo Strip
-  </button>
+<button
+  id="strip"
+  class="primary"
+>
+  🎞️ 4-Photo Strip
+</button>
 
-  <button id="flip" class="secondary">
-    🔄 Flip
-  </button>
+<button
+  id="flip"
+  class="secondary"
+>
+  🔄 Flip
+</button>
 
-  <button id="leave" class="secondary">
-    Leave
-  </button>
+<button
+  id="leave"
+  class="secondary"
+>
+  Leave
+</button>
 
 </div>
+
 
 <div class="hint">
-  Every photo uses a 5-second countdown.
-  The host starts the session.
+  5-second countdown • 4-photo strip • synchronized capture
 </div>
 
-<div id="result" class="result">
+
+<!-- RESULT -->
+
+<div
+  id="result"
+  class="result"
+>
+
 
 <div class="resultGrid">
 
-<div class="previewWrap">
 
-  <span class="stripBadge" id="resultBadge">
-    PHOTO
-  </span>
+<div class="preview">
 
-  <img id="photo" alt="PairPic result">
+<span
+  id="resultBadge"
+  class="badge"
+>
+  PHOTO
+</span>
+
+<img
+  id="photo"
+  alt="PairPic result"
+/>
 
 </div>
 
-<div class="resultTools">
+
+<div class="tools">
+
 
 <div class="sectionTitle">
-  Choose a theme
+  Theme
 </div>
 
-<div class="choices" id="frames">
 
-<button data-frame="classic">
+<div
+  id="themes"
+  class="gridButtons"
+>
+
+
+<button data-theme="classic">
   🎞️ Classic
 </button>
 
-<button data-frame="forever">
+<button data-theme="forever">
   ❤️ Forever Love
 </button>
 
-<button data-frame="sweetheart">
+<button data-theme="sweetheart">
   💕 Sweetheart
 </button>
 
-<button data-frame="rose">
+<button data-theme="rose">
   🌹 Rose Romance
 </button>
 
-<button data-frame="midnight">
+<button data-theme="midnight">
   🖤 Midnight Love
 </button>
 
-<button data-frame="sparkle">
+<button data-theme="sparkle">
   ✨ Love & Sparkle
 </button>
 
-<button data-frame="retro">
+<button data-theme="retro">
   📼 Vintage Film
 </button>
 
-<button data-frame="elegant">
+<button data-theme="elegant">
   🤍 Elegant
 </button>
 
-<button data-frame="dreamy">
+<button data-theme="dreamy">
   💜 Dreamy
 </button>
 
-<button data-frame="party">
+<button data-theme="party">
   🪩 Party Booth
 </button>
 
 </div>
 
+
 <div class="sectionTitle">
-  Download
+  Strip Layout
 </div>
 
-<div class="choices">
 
-<button id="saveStrip">
-  📥 Download Result
+<div
+  id="layouts"
+  class="gridButtons"
+>
+
+<button data-layout="vertical">
+  📜 Vertical
 </button>
 
-<button id="savePhotos">
-  📥 Individual Photos
+<button data-layout="grid">
+  ▦ 2 × 2
+</button>
+
+<button data-layout="film">
+  🎞️ Film
+</button>
+
+<button data-layout="polaroid">
+  📷 Polaroid
 </button>
 
 </div>
 
-<div class="choices">
 
-<button id="enhance" class="secondary">
+<div class="sectionTitle">
+  Add Text
+</div>
+
+
+<input
+  id="customText"
+  maxlength="40"
+  placeholder="Your text — e.g. Together Forever ❤️"
+/>
+
+
+<div class="sectionTitle">
+  Stickers
+</div>
+
+
+<div
+  id="stickers"
+  class="gridButtons"
+>
+
+<button data-sticker="">
+  None
+</button>
+
+<button data-sticker="♥">
+  ❤️ Hearts
+</button>
+
+<button data-sticker="✦">
+  ✨ Sparkles
+</button>
+
+<button data-sticker="🌹">
+  🌹 Roses
+</button>
+
+<button data-sticker="🦋">
+  🦋 Butterflies
+</button>
+
+<button data-sticker="🎀">
+  🎀 Ribbon
+</button>
+
+</div>
+
+
+<!-- RETAKES -->
+
+<div
+  id="retakeBox"
+  class="retakeBox"
+>
+
+<div class="retakeTitle">
+  🔄 Retake a photo
+</div>
+
+<div
+  id="retakeButtons"
+  class="retakeButtons"
+></div>
+
+</div>
+
+
+<div class="sectionTitle">
+  Actions
+</div>
+
+
+<div class="gridButtons">
+
+<button id="save">
+  📥 Download
+</button>
+
+<button id="saveIndividual">
+  📥 Individual
+</button>
+
+<button id="retakeAll">
+  🔄 Retake All
+</button>
+
+<button id="share">
+  📤 Share
+</button>
+
+<button id="enhance">
   ✨ Enhance
 </button>
 
-<button id="caption" class="secondary">
+<button id="caption">
   💬 Caption
 </button>
 
 </div>
 
-<div id="aiNotice" class="notice"></div>
+
+<div
+  id="notice"
+  class="notice"
+>
+</div>
+
 
 </div>
+
 </div>
+
 
 </div>
 
@@ -606,1455 +1180,500 @@ button:disabled{
 
 </section>
 
+</div>
+
 </main>
+
 
 <script>
 
-const $=id=>document.getElementById(id);
+/* =========================================================
+   PAIRPIC CORE
+========================================================= */
 
-const WS_URL=
-  (location.protocol==="https:"?"wss://":"ws://")
-  +location.host;
+const $ =
+  id => document.getElementById(id);
 
-const rtcConfig={
-  iceServers:[
-    {urls:"stun:stun.l.google.com:19302"},
-    {urls:"stun:stun1.l.google.com:19302"}
+const WS_URL =
+  (location.protocol === "https:"
+    ? "wss://"
+    : "ws://") +
+  location.host;
+
+
+const RTC_CONFIG = {
+
+  iceServers: [
+
+    {
+      urls:
+        "stun:stun.l.google.com:19302"
+    },
+
+    {
+      urls:
+        "stun:stun1.l.google.com:19302"
+    }
+
   ]
+
 };
 
-let ws;
-let pc;
-let room="";
-let role="";
-let stream=null;
-let remoteStream=null;
-let facing="user";
-let solo=false;
 
-let pendingIce=[];
-let remoteReady=false;
+let ws = null;
 
-let lastImages=[];
-let currentBlob=null;
-let currentFrame="classic";
-let captureBusy=false;
+let pc = null;
 
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let room = "";
 
-function setStatus(t){
-  $("status").textContent=t
+let role = "";
+
+let stream = null;
+
+let remoteStream = null;
+
+let facing = "user";
+
+let solo = false;
+
+let remoteReady = false;
+
+let pendingIce = [];
+
+let captureBusy = false;
+
+let soundEnabled = true;
+
+let composition = "classic";
+
+let background = "original";
+
+let filter = "none";
+
+let currentTheme = "classic";
+
+let currentLayout = "vertical";
+
+let currentSticker = "";
+
+let currentText = "";
+
+let photos = [];
+
+let resultBlob = null;
+
+let currentRetakeIndex = -1;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const sleep =
+  ms =>
+    new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          ms
+        )
+    );
+
+
+function status(text){
+
+  $("status").textContent =
+    text;
+
 }
 
-function makeCode(){
+
+function makeRoom(){
+
   return Math.random()
     .toString(36)
     .slice(2,7)
-    .toUpperCase()
+    .toUpperCase();
+
 }
 
-function signal(m){
-  if(ws?.readyState===1){
-    ws.send(JSON.stringify(m))
+
+function signal(message){
+
+  if(
+    ws &&
+    ws.readyState === WebSocket.OPEN
+  ){
+
+    ws.send(
+      JSON.stringify(message)
+    );
+
   }
+
 }
 
-async function camera(){
 
-  if(!navigator.mediaDevices?.getUserMedia){
-    throw Error("Camera API unavailable")
+/* =========================================================
+   CAMERA
+========================================================= */
+
+async function startCamera(){
+
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+
+    throw new Error(
+      "Camera API unavailable"
+    );
+
   }
 
-  stream=
-    await navigator.mediaDevices.getUserMedia({
 
-      video:{
-        facingMode:facing,
-        width:{ideal:1280},
-        height:{ideal:720},
-        frameRate:{ideal:30,max:30}
-      },
+  stream =
+    await navigator.mediaDevices
+      .getUserMedia({
 
-      audio:false
+        video: {
 
-    });
+          facingMode:
+            facing,
 
-  $("local").srcObject=stream;
+          width:{
+            ideal:1280
+          },
 
-  await $("local").play().catch(()=>{});
+          height:{
+            ideal:720
+          },
+
+          frameRate:{
+            ideal:30,
+            max:30
+          }
+
+        },
+
+        audio:false
+
+      });
+
+
+  $("local").srcObject =
+    stream;
+
+
+  await $("local")
+    .play()
+    .catch(
+      ()=>{}
+    );
+
 }
+
+
+/* =========================================================
+   WEBRTC
+========================================================= */
 
 function setupPeer(){
 
-  pc=
-    new RTCPeerConnection(rtcConfig);
+  pc =
+    new RTCPeerConnection(
+      RTC_CONFIG
+    );
 
-  remoteStream=
+
+  remoteStream =
     new MediaStream();
 
-  $("remote").srcObject=
+
+  $("remote").srcObject =
     remoteStream;
+
 
   stream
     .getTracks()
-    .forEach(t=>pc.addTrack(t,stream));
-
-  pc.ontrack=e=>{
-
-    const tracks=
-      e.streams?.[0]?.getTracks()
-      ||[e.track];
-
-    tracks.forEach(t=>{
-
-      if(
-        !remoteStream
-          .getTracks()
-          .some(x=>x.id===t.id)
-      ){
-        remoteStream.addTrack(t);
-      }
-
-    });
-
-    $("wait").style.display="none";
-
-    $("remote")
-      .play()
-      .catch(()=>{});
-
-  };
-
-  pc.onicecandidate=e=>{
-
-    if(e.candidate){
-      signal({
-        type:"ice",
-        candidate:e.candidate
-      });
-    }
-
-  };
-
-  pc.onconnectionstatechange=()=>{
-
-    const s=pc.connectionState;
-
-    setStatus(
-      s==="connected"
-      ?"Online · Connected"
-      :"Online · "+s
+    .forEach(
+      track =>
+        pc.addTrack(
+          track,
+          stream
+        )
     );
 
-    if(s==="connected"){
-      $("wait").style.display="none";
-    }
 
-  };
+  pc.ontrack =
+    event => {
 
-}
+      const tracks =
+        event.streams &&
+        event.streams[0]
+          ? event.streams[0]
+              .getTracks()
+          : [event.track];
 
-async function addIce(c){
 
-  if(!remoteReady){
+      tracks.forEach(
+        track => {
 
-    pendingIce.push(c);
+          if(
+            !remoteStream
+              .getTracks()
+              .some(
+                x =>
+                  x.id ===
+                  track.id
+              )
+          ){
 
-    return;
-  }
+            remoteStream
+              .addTrack(track);
 
-  try{
+          }
 
-    await pc.addIceCandidate(c);
-
-  }catch(e){}
-
-}
-
-async function flushIce(){
-
-  for(
-    const c of pendingIce.splice(0)
-  ){
-
-    await addIce(c);
-
-  }
-
-}
-
-async function enter(newRoom,newRole){
-
-  room=newRoom;
-
-  role=newRole;
-
-  $("roomLabel").textContent=room;
-
-  $("lobby").style.display="none";
-
-  $("booth").style.display="block";
-
-  try{
-
-    await camera();
-
-    if(solo){
-
-      $("modeLabel").textContent=
-        "Solo Photo Booth";
-
-      $("wait").style.display="none";
-
-      $("remote").style.display="none";
-
-      $("booth")
-        .querySelector(".stage")
-        .style.gridTemplateColumns="1fr";
-
-      setStatus("Solo demo");
-
-    }else{
-
-      setupPeer();
-
-      connectSignal();
-
-    }
-
-  }catch(e){
-
-    alert(
-      "Camera access failed. Please allow camera access for this HTTPS site."
-    );
-
-    location.reload();
-
-  }
-
-}
-
-function connectSignal(){
-
-  ws=
-    new WebSocket(WS_URL);
-
-  ws.onopen=()=>{
-
-    setStatus("Connecting…");
-
-    signal({
-      type:"join",
-      room,
-      role
-    });
-
-  };
-
-  ws.onclose=()=>{
-    setStatus("Disconnected")
-  };
-
-  ws.onmessage=async e=>{
-
-    const m=
-      JSON.parse(e.data);
-
-    if(m.type==="waiting"){
-
-      setStatus(
-        "Waiting for your friend…"
+        }
       );
 
-      $("wait").style.display="flex";
 
-    }
+      $("wait")
+        .style.display =
+          "none";
 
-    if(m.type==="ready"){
 
-      setStatus("Connected");
-
-      $("wait").style.display="none";
-
-      if(role==="host"){
-
-        const offer=
-          await pc.createOffer({
-            offerToReceiveVideo:true
-          });
-
-        await pc.setLocalDescription(
-          offer
+      $("remote")
+        .play()
+        .catch(
+          ()=>{}
         );
 
+    };
+
+
+  pc.onicecandidate =
+    event => {
+
+      if(
+        event.candidate
+      ){
+
         signal({
-          type:"offer",
-          offer:pc.localDescription
+
+          type:"ice",
+
+          candidate:
+            event.candidate
+
         });
 
       }
 
-    }
+    };
 
-    if(m.type==="offer"){
 
-      await pc.setRemoteDescription(
-        m.offer
-      );
+  pc.onconnectionstatechange =
+    () => {
 
-      remoteReady=true;
+      const state =
+        pc.connectionState;
 
-      await flushIce();
 
-      const answer=
-        await pc.createAnswer();
+      if(
+        state ===
+        "connected"
+      ){
 
-      await pc.setLocalDescription(
-        answer
-      );
+        status(
+          "Online · Connected"
+        );
 
-      signal({
-        type:"answer",
-        answer:pc.localDescription
-      });
+        $("wait")
+          .style.display =
+            "none";
 
-    }
+      }else{
 
-    if(m.type==="answer"){
+        status(
+          "Online · " +
+          state
+        );
 
-      await pc.setRemoteDescription(
-        m.answer
-      );
+      }
 
-      remoteReady=true;
-
-      await flushIce();
-
-    }
-
-    if(m.type==="ice"){
-
-      await addIce(
-        m.candidate
-      );
-
-    }
-
-    if(m.type==="peer-left"){
-
-      setStatus(
-        "Friend left the room"
-      );
-
-      $("wait").style.display="flex";
-
-    }
-
-    if(m.type==="start-single"){
-
-      await runSingle();
-
-    }
-
-    if(m.type==="start-strip"){
-
-      await runStrip(4);
-
-    }
-
-  };
+    };
 
 }
 
-async function countdown(){
 
-  const el=$("count");
-
-  for(let n=5;n>=1;n--){
-
-    el.textContent=n;
-
-    el.style.opacity=1;
-
-    el.style.transform=
-      "scale(1.08)";
-
-    await sleep(800);
-
-    el.style.transform=
-      "scale(.78)";
-
-    await sleep(200);
-
-  }
-
-  el.style.opacity=0;
-
-}
-
-function flash(){
-
-  const f=$("flash");
-
-  f.style.opacity=.96;
-
-  setTimeout(
-    ()=>f.style.opacity=0,
-    140
-  );
-
-}
-
-async function capture(){
-
-  const c=
-    document.createElement("canvas");
-
-  const w=1280;
-  const h=800;
-
-  c.width=w;
-  c.height=h;
-
-  const x=c.getContext("2d");
-
-  const lv=$("local");
-  const rv=$("remote");
-
-  function cover(
-    v,
-    dx,
-    dw,
-    mirror
-  ){
-
-    if(
-      !v ||
-      v.readyState<2
-    ){
-      return;
-    }
-
-    const vw=
-      v.videoWidth||1280;
-
-    const vh=
-      v.videoHeight||720;
-
-    const scale=
-      Math.max(
-        dw/vw,
-        h/vh
-      );
-
-    const sw=
-      dw/scale;
-
-    const sh=
-      h/scale;
-
-    const sx=
-      (vw-sw)/2;
-
-    const sy=
-      (vh-sh)/2;
-
-    x.save();
-
-    if(mirror){
-
-      x.translate(
-        dx+dw,
-        0
-      );
-
-      x.scale(-1,1);
-
-      x.drawImage(
-        v,
-        sx,sy,sw,sh,
-        0,0,dw,h
-      );
-
-    }else{
-
-      x.drawImage(
-        v,
-        sx,sy,sw,sh,
-        dx,0,dw,h
-      );
-
-    }
-
-    x.restore();
-
-  }
-
-  if(solo){
-
-    cover(
-      lv,
-      0,
-      w,
-      true
-    );
-
-  }else{
-
-    cover(
-      lv,
-      0,
-      w/2,
-      true
-    );
-
-    cover(
-      rv,
-      w/2,
-      w/2,
-      false
-    );
-
-    x.fillStyle="#fff";
-
-    x.fillRect(
-      w/2-1,
-      0,
-      2,
-      h
-    );
-
-  }
-
-  x.fillStyle=
-    "rgba(0,0,0,.28)";
-
-  x.fillRect(
-    0,
-    h-58,
-    w,
-    58
-  );
-
-  x.fillStyle="#fff";
-
-  x.font=
-    "900 24px system-ui";
-
-  x.fillText(
-    "PAIRPIC",
-    24,
-    h-23
-  );
-
-  return new Promise(
-    r=>
-      c.toBlob(
-        r,
-        "image/jpeg",
-        .93
-      )
-  );
-
-}
-
-async function runSingle(){
-
-  if(captureBusy)return;
-
-  captureBusy=true;
-
-  await countdown();
-
-  flash();
-
-  lastImages=[
-    await capture()
-  ];
-
-  currentBlob=
-    lastImages[0];
-
-  await render();
-
-  captureBusy=false;
-
-}
-
-async function runStrip(count=4){
-
-  if(captureBusy)return;
-
-  captureBusy=true;
-
-  lastImages=[];
-
-  for(
-    let i=0;
-    i<count;
-    i++
-  ){
-
-    await countdown();
-
-    flash();
-
-    lastImages.push(
-      await capture()
-    );
-
-    if(i<count-1){
-      await sleep(900);
-    }
-
-  }
-
-  currentBlob=
-    await buildStrip(
-      lastImages,
-      currentFrame
-    );
-
-  await render();
-
-  captureBusy=false;
-
-}
-
-function startSingle(){
-
-  if(solo){
-    return runSingle();
-  }
-
-  if(role!=="host"){
-    return alert(
-      "The room host starts the session."
-    );
-  }
-
-  signal({
-    type:"start-single"
-  });
-
-}
-
-function startStrip(){
-
-  if(solo){
-    return runStrip(4);
-  }
-
-  if(role!=="host"){
-    return alert(
-      "The room host starts the session."
-    );
-  }
-
-  signal({
-    type:"start-strip"
-  });
-
-}
-
-const themes={
-
-classic:{
-  bg:"#fff",
-  border:"#171717",
-  inner:"#d7d7d7",
-  text:"#171717",
-  title:"PAIRPIC"
-},
-
-forever:{
-  bg:"#250710",
-  border:"#9e174f",
-  inner:"#ff5b9f",
-  text:"#fff",
-  title:"♥ FOREVER LOVE ♥"
-},
-
-sweetheart:{
-  bg:"#57142f",
-  border:"#ff82b5",
-  inner:"#ffd1e2",
-  text:"#fff",
-  title:"SWEETHEART ♡"
-},
-
-rose:{
-  bg:"#2b090f",
-  border:"#b7354f",
-  inner:"#e9a1aa",
-  text:"#fff",
-  title:"🌹 ROSE ROMANCE"
-},
-
-midnight:{
-  bg:"#0a080d",
-  border:"#8e1d4a",
-  inner:"#d64e84",
-  text:"#fff",
-  title:"MIDNIGHT LOVE"
-},
-
-sparkle:{
-  bg:"#160a24",
-  border:"#d15bff",
-  inner:"#ff70c9",
-  text:"#fff",
-  title:"✨ LOVE & SPARKLE ✨"
-},
-
-retro:{
-  bg:"#eadfc9",
-  border:"#2d2319",
-  inner:"#96734c",
-  text:"#2d2319",
-  title:"PAIRPIC • MEMORY"
-},
-
-elegant:{
-  bg:"#f7f0e5",
-  border:"#9d8062",
-  inner:"#d8bea1",
-  text:"#33271d",
-  title:"PAIRPIC"
-},
-
-dreamy:{
-  bg:"#1d1533",
-  border:"#9c72ff",
-  inner:"#ff8bdd",
-  text:"#fff",
-  title:"DREAMY ♡"
-},
-
-party:{
-  bg:"#11121b",
-  border:"#ff4f9a",
-  inner:"#7d6cff",
-  text:"#fff",
-  title:"PAIRPIC • PARTY"
-}
-
-};
-
-function decorations(
-  x,
-  W,
-  H,
-  frame
-){
+async function addIce(candidate){
 
   if(
-    ![
-      "forever",
-      "sweetheart",
-      "rose",
-      "midnight",
-      "sparkle",
-      "dreamy"
-    ].includes(frame)
-  ){
-    return;
-  }
-
-  x.save();
-
-  x.globalAlpha=.22;
-
-  x.fillStyle=
-    themes[frame].inner;
-
-  x.font=
-    "bold 28px system-ui";
-
-  for(
-    let y=130;
-    y<H-75;
-    y+=105
+    !remoteReady
   ){
 
-    for(
-      let xx=28;
-      xx<W-20;
-      xx+=92
-    ){
-
-      x.fillText(
-        ((y+xx)/5)%2
-        ?"♥"
-        :"✦",
-        xx,
-        y
-      );
-
-    }
-
-  }
-
-  x.restore();
-
-}
-
-function frameStyle(
-  x,
-  W,
-  H,
-  frame
-){
-
-  const t=
-    themes[frame]||
-    themes.classic;
-
-  x.lineJoin=
-    "round";
-
-  x.lineWidth=68;
-
-  x.strokeStyle=
-    t.border;
-
-  x.strokeRect(
-    26,
-    26,
-    W-52,
-    H-52
-  );
-
-  x.lineWidth=10;
-
-  x.strokeStyle=
-    t.inner;
-
-  x.strokeRect(
-    66,
-    66,
-    W-132,
-    H-132
-  );
-
-  x.fillStyle=
-    t.text;
-
-  x.textAlign=
-    "center";
-
-  x.font=
-    "900 26px system-ui";
-
-  x.fillText(
-    t.title,
-    W/2,
-    H-28
-  );
-
-  x.textAlign="left";
-
-}
- async function buildStrip(blobs,frame){
-
-  const imgs=await Promise.all(
-    blobs.map(
-      b=>new Promise(
-        (resolve,reject)=>{
-
-          const im=new Image();
-
-          im.onload=()=>{
-            URL.revokeObjectURL(im.src);
-            resolve(im);
-          };
-
-          im.onerror=reject;
-
-          im.src=
-            URL.createObjectURL(b);
-
-        }
-      )
-    )
-  );
-
-  const W=760;
-  const pad=82;
-  const gap=18;
-  const photoH=430;
-  const top=150;
-  const bottom=110;
-
-  const H=
-    top+
-    imgs.length*photoH+
-    (imgs.length-1)*gap+
-    bottom;
-
-  const c=
-    document.createElement("canvas");
-
-  c.width=W;
-  c.height=H;
-
-  const x=
-    c.getContext("2d");
-
-  const t=
-    themes[frame]||
-    themes.classic;
-
-  /* Background */
-
-  x.fillStyle=t.bg;
-
-  x.fillRect(
-    0,
-    0,
-    W,
-    H
-  );
-
-  /* Romantic decorations */
-
-  decorations(
-    x,
-    W,
-    H,
-    frame
-  );
-
-  /* Header */
-
-  x.fillStyle=t.text;
-
-  x.textAlign="center";
-
-  x.font=
-    "900 44px system-ui";
-
-  x.fillText(
-    t.title,
-    W/2,
-    66
-  );
-
-  x.font=
-    "700 18px system-ui";
-
-  x.fillText(
-    "4 MOMENTS TOGETHER",
-    W/2,
-    104
-  );
-
-  /* Photos */
-
-  imgs.forEach(
-    (im,i)=>{
-
-      const y=
-        top+
-        i*(photoH+gap);
-
-      x.save();
-
-      x.beginPath();
-
-      x.rect(
-        pad,
-        y,
-        W-pad*2,
-        photoH
-      );
-
-      x.clip();
-
-      const scale=
-        Math.max(
-          (W-pad*2)/im.width,
-          photoH/im.height
-        );
-
-      const sw=
-        (W-pad*2)/scale;
-
-      const sh=
-        photoH/scale;
-
-      const sx=
-        (im.width-sw)/2;
-
-      const sy=
-        (im.height-sh)/2;
-
-      x.drawImage(
-        im,
-        sx,
-        sy,
-        sw,
-        sh,
-        pad,
-        y,
-        W-pad*2,
-        photoH
-      );
-
-      x.restore();
-
-      /* Small photo number */
-
-      x.fillStyle=t.text;
-
-      x.font=
-        "700 15px system-ui";
-
-      x.textAlign="left";
-
-      x.fillText(
-        String(i+1).padStart(2,"0"),
-        32,
-        y+20
-      );
-
-    }
-  );
-
-  /* Date */
-
-  x.fillStyle=t.text;
-
-  x.font=
-    "700 17px system-ui";
-
-  x.textAlign="center";
-
-  x.fillText(
-    new Date().toLocaleDateString(),
-    W/2,
-    H-38
-  );
-
-  /* Big frame */
-
-  frameStyle(
-    x,
-    W,
-    H,
-    frame
-  );
-
-  return new Promise(
-    resolve=>{
-      c.toBlob(
-        resolve,
-        "image/jpeg",
-        .94
-      );
-    }
-  );
-
-}
-
-
-/* ---------------------------
-   RESULT
----------------------------- */
-
-async function render(){
-
-  $("result").style.display=
-    "block";
-
-  $("resultBadge").textContent=
-    lastImages.length>1
-    ?"4 PHOTO STRIP"
-    :"PHOTO";
-
-  $("photo").src=
-    URL.createObjectURL(
-      currentBlob
-    );
-
-  $("aiNotice").textContent=
-    lastImages.length>1
-    ?"Your four-photo strip is ready. Choose a theme and download it."
-    :"Your photo is ready.";
-
-}
-
-
-/* ---------------------------
-   BUTTONS
----------------------------- */
-
-$("single").onclick=
-  startSingle;
-
-$("strip").onclick=
-  startStrip;
-
-
-/* SOLO */
-
-$("solo").onclick=()=>{
-  solo=true;
-
-  enter(
-    "SOLO",
-    "solo"
-  );
-};
-
-
-/* CREATE ROOM */
-
-$("create").onclick=()=>{
-
-  const newRoom=
-    makeCode();
-
-  enter(
-    newRoom,
-    "host"
-  ).then(()=>{
-
-    alert(
-      "Your room code is "+
-      room+
-      "\n\nShare this code with your friend."
-    );
-
-  });
-
-};
-
-
-/* JOIN ROOM */
-
-$("join").onclick=()=>{
-
-  const c=
-    $("code")
-      .value
-      .trim()
-      .toUpperCase();
-
-  if(c.length<4){
-
-    alert(
-      "Enter a valid room code."
+    pendingIce.push(
+      candidate
     );
 
     return;
+
   }
 
-  enter(
-    c,
-    "guest"
-  );
 
-};
+  try{
 
-
-/* LEAVE */
-
-$("leave").onclick=()=>{
-  location.reload();
-};
-
-
-/* CAMERA FLIP */
-
-$("flip").onclick=
-  async()=>{
-
-    facing=
-      facing==="user"
-      ?"environment"
-      :"user";
-
-    stream
-      ?.getTracks()
-      .forEach(
-        t=>t.stop()
-      );
-
-    await camera();
-
-    const sender=
-      pc
-      ?.getSenders()
-      .find(
-        s=>
-          s.track?.kind==="video"
-      );
-
-    if(sender){
-
-      await sender.replaceTrack(
-        stream.getVideoTracks()[0]
-      );
-
-    }
-
-  };
-
-
-/* ---------------------------
-   THEMES
----------------------------- */
-
-document
-  .querySelectorAll(
-    "[data-frame]"
-  )
-  .forEach(button=>{
-
-    button.onclick=
-      async()=>{
-
-        currentFrame=
-          button.dataset.frame;
-
-        /*
-         * If a strip already exists,
-         * rebuild it instantly.
-         */
-
-        if(
-          lastImages.length>1
-        ){
-
-          currentBlob=
-            await buildStrip(
-              lastImages,
-              currentFrame
-            );
-
-          $("photo").src=
-            URL.createObjectURL(
-              currentBlob
-            );
-
-          $("aiNotice").textContent=
-            "Theme updated ❤️";
-
-        }else{
-
-          $("aiNotice").textContent=
-            "Theme selected. Take a four-photo strip to see the full design.";
-
-        }
-
-      };
-
-  });
-
-
-/* ---------------------------
-   DOWNLOAD RESULT
----------------------------- */
-
-$("saveStrip").onclick=()=>{
-
-  if(!currentBlob){
-    return;
-  }
-
-  const a=
-    document.createElement("a");
-
-  a.href=
-    URL.createObjectURL(
-      currentBlob
+    await pc.addIceCandidate(
+      candidate
     );
 
-  a.download=
-    lastImages.length>1
-    ?"pairpic-4-photo-strip.jpg"
-    :"pairpic-photo.jpg";
+  }catch(error){
 
-  document.body.appendChild(a);
+    console.log(
+      "ICE error",
+      error
+    );
 
-  a.click();
+  }
 
-  a.remove();
-
-};
+}
 
 
-/* ---------------------------
-   DOWNLOAD INDIVIDUAL PHOTOS
----------------------------- */
+async function flushIce(){
 
-$("savePhotos").onclick=
-  async()=>{
-
-    if(!lastImages.length){
-      return;
-    }
-
-    for(
-      let i=0;
-      i<lastImages.length;
-      i++
-    ){
-
-      const a=
-        document.createElement("a");
-
-      a.href=
-        URL.createObjectURL(
-          lastImages[i]
-        );
-
-      a.download=
-        `pairpic-photo-${i+1}.jpg`;
-
-      document.body.appendChild(a);
-
-      a.click();
-
-      a.remove();
-
-      await sleep(250);
-
-    }
-
-  };
-
-
-/* ---------------------------
-   LOCAL ENHANCE
----------------------------- */
-
-$("enhance").onclick=
-  async()=>{
-
-    if(!currentBlob){
-      return;
-    }
-
-    $("aiNotice").textContent=
-      "Enhancing locally…";
-
-    const im=
-      new Image();
-
-    im.src=
-      URL.createObjectURL(
-        currentBlob
-      );
-
-    await im.decode();
-
-    const c=
-      document.createElement(
-        "canvas"
-      );
-
-    c.width=
-      im.width;
-
-    c.height=
-      im.height;
-
-    const x=
-      c.getContext("2d");
-
-    /*
-     * Very light enhancement.
-     * Designed to stay fast on phones.
-     */
-
-    x.filter=
-      "contrast(1.07) saturate(1.08) brightness(1.03)";
-
-    x.drawImage(
-      im,
-      0,
+  const list =
+    pendingIce.splice(
       0
     );
 
-    currentBlob=
-      await new Promise(
-        resolve=>
-          c.toBlob(
-            resolve,
-            "image/jpeg",
-            .94
-          )
+
+  for(
+    const candidate
+    of list
+  ){
+
+    await addIce(
+      candidate
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SIGNALING
+========================================================= */
+
+function connectSocket(){
+
+  ws =
+    new WebSocket(
+      WS_URL
+    );
+
+
+  ws.onopen =
+    () => {
+
+      status(
+        "Connecting…"
       );
 
-    $("photo").src=
-      URL.createObjectURL(
-        currentBlob
+
+      signal({
+
+        type:"join",
+
+        room,
+
+        role
+
+      });
+
+    };
+
+
+  ws.onclose =
+    () => {
+
+      status(
+        "Disconnected"
       );
 
-    $("aiNotice").textContent=
-      "Enhanced locally for speed ✨";
-
-  };
+    };
 
 
-/* ---------------------------
-   CAPTION
----------------------------- */
+  ws.onmessage =
+    async event => {
 
-$("caption").onclick=()=>{
-
-  const captions=[
-
-    "Four moments, one beautiful memory. ❤️",
-
-    "Together is our favorite place. 💕",
-
-    "Just us, making memories. ✨",
-
-    "A little moment worth remembering. 🫶",
-
-    "Four pictures. One unforgettable memory. ❤️"
-
-  ];
-
-  const caption=
-    captions[
-      Math.floor(
-        Math.random()*
-        captions.length
-      )
-    ];
-
-  $("aiNotice").textContent=
-    caption;
-
-};
-
-
-/* ---------------------------
-   SAFETY CHECK
----------------------------- */
-
-window.addEventListener(
-  "beforeunload",
-  ()=>{
-    try{
-      ws?.close();
-      pc?.close();
-
-      stream
-        ?.getTracks()
-        .forEach(
-          t=>t.stop()
+      const message =
+        JSON.parse(
+          event.data
         );
 
-    }catch(e){}
-  }
-);
 
-</script>
+      if(
+        message.type ===
+        "waiting"
+      ){
 
-</body>
-</html>
+        status(
+          "Waiting for your friend…"
+        );
+
+        $("wait")
+          .style.display =
+            "flex";
+
+      }
+
+
+      if(
+        message.type ===
+        "ready"
+      ){
+
+        status(
+          "Connected"
+        );
+
+
+        if(
+          role ===
+          "host"
+        ){
+
+          const offer =
+            await pc.createOffer({
+
+              offerToReceiveVideo:
+                true
+
+            });
+
+
+          await pc
+            .setLocalDescription(
+              offer
+            );
+
+
+          signal({
+
+            type:"offer",
+
+            offer:
+              pc.localDescription
+
+          });
+
+        }
+
+      }
+
+
+      if(
+        message.type ===
+        "offe
