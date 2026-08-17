@@ -1,59 +1,40 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,viewport-fit=cover"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>PairPic — Two Phones. One Memory.</title>
 
 <style>
-
 :root{
   --bg:#08070b;
-  --card:#151119;
-  --card2:#1c1621;
+  --card:#15111a;
   --text:#fff;
-  --muted:#aaa2b2;
+  --muted:#aaa1b2;
   --pink:#ff4d9d;
   --purple:#8b68ff;
-  --line:#ffffff18;
-  --good:#72e6a7;
+  --line:#ffffff1a;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html,
-body{
+html,body{
   margin:0;
   min-height:100%;
   background:
-    radial-gradient(
-      circle at 50% -10%,
-      #40152f 0%,
-      #100a12 40%,
-      #08070b 75%
-    );
+    radial-gradient(circle at 50% -10%,#40152f,#08070b 62%);
   color:var(--text);
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
 }
 
 body{
   display:flex;
   justify-content:center;
+}
+
+.app{
+  width:min(1180px,100%);
+  padding:12px;
 }
 
 button,
@@ -65,11 +46,16 @@ select{
 button{
   border:0;
   cursor:pointer;
+  color:#fff;
 }
 
-.app{
-  width:min(1180px,100%);
-  padding:14px;
+.card{
+  background:#121018e8;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:16px;
+  box-shadow:0 22px 75px #000b;
+  backdrop-filter:blur(16px);
 }
 
 header{
@@ -79,13 +65,12 @@ header{
   margin-bottom:12px;
 }
 
-.logoText{
+.brand{
   font-size:26px;
   font-weight:950;
-  letter-spacing:-1px;
 }
 
-.logoText span{
+.brand span{
   color:var(--pink);
 }
 
@@ -94,28 +79,16 @@ header{
   color:#c9c1cc;
 }
 
-/* ---------- CARD ---------- */
-
-.card{
-  background:#121018e8;
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:16px;
-  box-shadow:
-    0 24px 80px #000b;
-  backdrop-filter:blur(18px);
-}
-
-/* ---------- LOBBY ---------- */
+/* LOBBY */
 
 #lobby{
   max-width:650px;
-  margin:6vh auto;
+  margin:7vh auto;
 }
 
 .hero{
   text-align:center;
-  padding:22px 15px;
+  padding:22px 12px;
 }
 
 .heroIcon{
@@ -132,8 +105,6 @@ header{
 .hero p{
   color:var(--muted);
   line-height:1.6;
-  max-width:500px;
-  margin:auto;
 }
 
 .row{
@@ -146,48 +117,49 @@ header{
   flex:1;
 }
 
-input{
-  width:100%;
+input,
+select{
   background:#09070d;
-  color:#fff;
   border:1px solid var(--line);
-  padding:14px;
+  color:#fff;
   border-radius:14px;
-  text-align:center;
-  letter-spacing:3px;
-  text-transform:uppercase;
+  padding:13px;
   outline:none;
 }
 
-input:focus{
-  border-color:#ff4d9d66;
+input{
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:2px;
 }
 
-.primary{
+button{
+  border-radius:14px;
+  padding:13px 16px;
   background:
-    linear-gradient(
-      135deg,
-      var(--pink),
-      var(--purple)
-    );
-  color:#fff;
+    linear-gradient(135deg,var(--pink),var(--purple));
   font-weight:850;
 }
 
-.secondary{
+button.secondary,
+select{
   background:#ffffff0a;
   border:1px solid var(--line);
-  color:#fff;
+}
+
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
 }
 
 .tiny{
-  color:#827a88;
   font-size:11px;
+  color:#827a88;
   text-align:center;
   margin-top:12px;
 }
 
-/* ---------- BOOTH ---------- */
+/* BOOTH */
 
 #booth{
   display:none;
@@ -206,8 +178,8 @@ input:focus{
 }
 
 .room{
-  color:var(--muted);
   font-size:12px;
+  color:var(--muted);
 }
 
 .toolbar{
@@ -217,79 +189,50 @@ input:focus{
   margin-bottom:10px;
 }
 
-.toolbar button,
-.toolbar select{
+.toolbar select,
+.toolbar button{
   min-height:40px;
 }
 
-select{
-  background:#ffffff0a;
-  color:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:9px 12px;
-  outline:none;
-}
-
-/* ---------- LIVE STAGE ---------- */
+/* LIVE SCENE */
 
 .scene{
   position:relative;
   overflow:hidden;
-  border-radius:24px;
+  border-radius:26px;
   border:1px solid var(--line);
-  background:#050509;
-  box-shadow:0 16px 55px #000a;
-}
-
-.scene.original{
+  box-shadow:0 18px 60px #000a;
   background:#050509;
 }
 
 .scene.love{
   background:
-    radial-gradient(circle at 20% 20%,#ff3f9233,transparent 25%),
-    radial-gradient(circle at 80% 25%,#ff79b833,transparent 25%),
-    linear-gradient(135deg,#2b0618,#6f123c,#210713);
+    radial-gradient(circle at 18% 18%,#ff3f9255,transparent 22%),
+    radial-gradient(circle at 82% 25%,#ff79b855,transparent 22%),
+    linear-gradient(135deg,#280514,#79123e,#210713);
 }
 
 .scene.rose{
   background:
-    radial-gradient(circle at 15% 25%,#ff526233,transparent 25%),
-    radial-gradient(circle at 80% 70%,#d42d5633,transparent 30%),
-    linear-gradient(135deg,#18070b,#4b0b17);
+    radial-gradient(circle at 15% 25%,#ff526255,transparent 25%),
+    radial-gradient(circle at 80% 70%,#d42d5655,transparent 30%),
+    linear-gradient(135deg,#170509,#4b0b17);
 }
 
 .scene.sunset{
   background:
-    linear-gradient(
-      180deg,
-      #32154e,
-      #c14d61 50%,
-      #f2a35b
-    );
+    linear-gradient(180deg,#32154e,#c14d61 52%,#f2a35b);
 }
 
 .scene.night{
   background:
-    radial-gradient(circle at 50% 25%,#5441a744,transparent 22%),
-    linear-gradient(160deg,#05030c,#15102c,#030308);
+    radial-gradient(circle at 50% 25%,#6652d055,transparent 23%),
+    linear-gradient(160deg,#05030c,#17102d,#030308);
 }
 
 .scene.studio{
   background:
-    radial-gradient(circle,#555 0%,#202020 48%,#070707 100%);
-}
-
-.scene.classic{
-  background:
-    repeating-linear-gradient(
-      45deg,
-      #eee 0,
-      #eee 12px,
-      #ddd 12px,
-      #ddd 24px
-    );
+    radial-gradient(circle,#555,#202020 48%,#070707);
 }
 
 .scene.dreamy{
@@ -299,26 +242,20 @@ select{
     linear-gradient(135deg,#21153e,#553b78);
 }
 
-.scene::before,
-.scene::after{
-  content:"";
+.scene.love:before,
+.scene.rose:before,
+.scene.dreamy:before{
+  content:"♥  ✦  ♥  ✦  ♥  ✦  ♥";
   position:absolute;
-  pointer-events:none;
-  z-index:1;
-}
-
-.scene.love::before,
-.scene.rose::before,
-.scene.dreamy::before{
-  content:"♥  ✦  ♥  ✦  ♥";
   left:0;
   right:0;
-  top:12px;
+  top:10px;
   text-align:center;
   color:#fff;
   opacity:.28;
   font-size:25px;
-  letter-spacing:12px;
+  letter-spacing:10px;
+  z-index:1;
 }
 
 .stage{
@@ -334,6 +271,7 @@ select{
 .pane{
   position:relative;
   overflow:hidden;
+  background:#08080d;
 }
 
 .pane+.pane{
@@ -343,25 +281,51 @@ select{
 .feed{
   width:100%;
   height:100%;
-  display:block;
   object-fit:cover;
+  display:block;
   background:#08080d;
 }
 
-/*
-  Your own preview is mirrored.
-  Remote preview stays normal.
+/* IMPORTANT:
+   Live self camera is mirrored,
+   and capture() mirrors it the same way.
 */
 
 #local{
   transform:scaleX(-1);
 }
 
+/* FILTERS */
+
+.feed.warm{
+  filter:saturate(1.12) sepia(.15) brightness(1.03);
+}
+
+.feed.cool{
+  filter:saturate(.95) hue-rotate(10deg) brightness(1.02);
+}
+
+.feed.vintage{
+  filter:sepia(.28) saturate(.82) contrast(1.05);
+}
+
+.feed.soft{
+  filter:saturate(.95) brightness(1.06) contrast(.94);
+}
+
+.feed.pink{
+  filter:saturate(1.2) hue-rotate(-8deg);
+}
+
+.feed.mono{
+  filter:grayscale(1);
+}
+
 .name{
   position:absolute;
   left:12px;
   top:12px;
-  z-index:4;
+  z-index:5;
   background:#0009;
   border:1px solid #ffffff18;
   padding:6px 10px;
@@ -374,11 +338,11 @@ select{
   position:absolute;
   inset:0;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   background:#050509cc;
   color:#aaa;
-  z-index:5;
+  z-index:6;
   font-size:13px;
 }
 
@@ -386,15 +350,7 @@ select{
   border-left:0;
 }
 
-.together .stage{
-  gap:0;
-}
-
-.together .pane{
-  width:100%;
-}
-
-/* ---------- COUNTDOWN ---------- */
+/* COUNTDOWN */
 
 .overlay{
   position:absolute;
@@ -409,15 +365,12 @@ select{
 .count{
   opacity:0;
   font-size:120px;
-  line-height:1;
   font-weight:1000;
   text-shadow:
     0 8px 40px #000,
     0 0 35px #ff4d9d66;
   transform:scale(.7);
-  transition:
-    opacity .12s,
-    transform .16s;
+  transition:.15s;
 }
 
 .count.show{
@@ -432,10 +385,9 @@ select{
   opacity:0;
   z-index:30;
   pointer-events:none;
-  transition:opacity .1s;
 }
 
-/* ---------- CONTROLS ---------- */
+/* CONTROLS */
 
 .controls{
   display:flex;
@@ -447,18 +399,15 @@ select{
 .controls button{
   flex:1;
   min-width:130px;
-  padding:14px;
-  border-radius:15px;
-  font-weight:850;
 }
 
 .hint{
-  margin-top:9px;
-  color:var(--muted);
   font-size:12px;
+  color:var(--muted);
+  margin-top:9px;
 }
 
-/* ---------- RESULT ---------- */
+/* RESULT */
 
 .result{
   display:none;
@@ -469,7 +418,7 @@ select{
 
 .resultGrid{
   display:grid;
-  grid-template-columns:minmax(230px,420px) 1fr;
+  grid-template-columns:minmax(230px,430px) 1fr;
   gap:18px;
   align-items:start;
 }
@@ -498,7 +447,6 @@ select{
   border-radius:999px;
   color:#ccc;
   font-size:10px;
-  font-weight:800;
 }
 
 .tools{
@@ -507,60 +455,46 @@ select{
   gap:10px;
 }
 
-.sectionTitle{
+.title{
   font-size:13px;
   font-weight:900;
-  color:#eee;
-  margin-top:2px;
 }
 
-.gridButtons{
+.buttons{
   display:flex;
   flex-wrap:wrap;
   gap:7px;
 }
 
-.gridButtons button{
+.buttons button{
   flex:1;
   min-width:105px;
   padding:10px;
-  border-radius:12px;
   font-size:12px;
   background:#ffffff0a;
-  color:#fff;
   border:1px solid var(--line);
 }
 
-.gridButtons button.active{
+.buttons button.active{
   background:
-    linear-gradient(
-      135deg,
-      #ff4d9d,
-      #8b68ff
-    );
+    linear-gradient(135deg,var(--pink),var(--purple));
   border-color:transparent;
 }
 
 .notice{
-  color:#aaa2b2;
   font-size:12px;
+  color:#aaa1b2;
   line-height:1.5;
 }
 
-/* ---------- RETAKE ---------- */
+/* RETAKE */
 
 .retakeBox{
   display:none;
   padding:12px;
+  border-radius:15px;
   background:#ffffff07;
   border:1px solid var(--line);
-  border-radius:15px;
-}
-
-.retakeTitle{
-  font-size:12px;
-  font-weight:900;
-  margin-bottom:8px;
 }
 
 .retakeButtons{
@@ -571,13 +505,11 @@ select{
 
 .retakeButtons button{
   background:#ffffff0a;
-  color:#fff;
   border:1px solid var(--line);
-  border-radius:10px;
   padding:9px 12px;
 }
 
-/* ---------- MOBILE ---------- */
+/* MOBILE */
 
 @media(max-width:720px){
 
@@ -595,6 +527,7 @@ select{
 
   .stage{
     aspect-ratio:3/4;
+    min-height:0;
   }
 
   .count{
@@ -605,14 +538,16 @@ select{
     grid-template-columns:1fr;
   }
 
+  .toolbar select,
+  .toolbar button{
+    flex:1;
+  }
+
   .controls button{
     min-width:110px;
   }
-
 }
-
 </style>
-
 </head>
 
 <body>
@@ -620,579 +555,521 @@ select{
 <main class="app">
 
 <header>
+  <div class="brand">
+    Pair<span>Pic</span> 📸
+  </div>
 
-<div class="logoText">
-  Pair<span>Pic</span> 📸
-</div>
-
-<div
-  id="status"
-  class="status"
->
-  Offline
-</div>
-
+  <div id="status" class="status">
+    Offline
+  </div>
 </header>
 
+<!-- LOBBY -->
 
-<!-- =========================
-     LOBBY
-========================= -->
+<section id="lobby" class="card">
 
-<section
-  id="lobby"
-  class="card"
->
+  <div class="hero">
 
-<div class="hero">
+    <div class="heroIcon">
+      🫶📸
+    </div>
 
-<div class="heroIcon">
-  🫶📸
-</div>
+    <h1>
+      Two phones.<br>
+      One memory.
+    </h1>
 
-<h1>
-  Two phones.<br>
-  One memory.
-</h1>
+    <p>
+      Join from two phones, see each other live,
+      count down together, and create a real
+      four-photo photobooth strip.
+    </p>
 
-<p>
-  PairPic turns two separate cameras into
-  one shared online photobooth.
-</p>
+  </div>
 
-</div>
+  <div class="row">
 
+    <button id="solo">
+      Try Solo
+    </button>
 
-<div class="row">
+    <button id="create">
+      Create Room
+    </button>
 
-<button
-  id="solo"
-  class="primary"
->
-  Try Solo
-</button>
+  </div>
 
-<button
-  id="create"
-  class="primary"
->
-  Create Room
-</button>
+  <div class="row">
 
-</div>
+    <input
+      id="code"
+      maxlength="8"
+      placeholder="ROOM CODE"
+    >
 
+    <button
+      id="join"
+      class="secondary"
+    >
+      Join Room
+    </button>
 
-<div class="row">
+  </div>
 
-<input
-  id="code"
-  maxlength="8"
-  placeholder="ROOM CODE"
-/>
-
-<button
-  id="join"
-  class="secondary"
->
-  Join Room
-</button>
-
-</div>
-
-
-<div class="tiny">
-  Camera access is requested only when entering the booth.
-</div>
+  <div class="tiny">
+    Camera permission is requested only when
+    you enter the booth.
+  </div>
 
 </section>
 
 
-<!-- =========================
-     BOOTH
-========================= -->
+<!-- BOOTH -->
 
 <section id="booth">
 
 <div class="card">
 
+  <div class="topbar">
 
-<div class="topbar">
+    <div
+      class="mode"
+      id="modeLabel"
+    >
+      Photo Booth
+    </div>
 
-<div class="mode">
-  <span id="modeLabel">
-    Photo Booth
-  </span>
-</div>
+    <div class="room">
+      Room:
+      <b id="roomLabel"></b>
+    </div>
 
-<div class="room">
-  Room:
-  <b id="roomLabel"></b>
-</div>
+  </div>
 
-</div>
 
+  <!-- SETTINGS -->
 
-<!-- SETTINGS -->
+  <div class="toolbar">
 
-<div class="toolbar">
+    <select id="composition">
 
-<select id="composition">
+      <option value="classic">
+        📷 Classic
+      </option>
 
-<option value="classic">
-  📷 Classic
-</option>
+      <option value="together">
+        🫶 Together
+      </option>
 
-<option value="together">
-  🫶 Together
-</option>
+    </select>
 
-<option value="close">
-  💕 Close Together
-</option>
 
-</select>
+    <select id="background">
 
+      <option value="original">
+        📷 Normal Background
+      </option>
 
-<select id="background">
+      <option value="love">
+        ❤️ Pink Romance
+      </option>
 
-<option value="original">
-  📷 Original
-</option>
+      <option value="rose">
+        🌹 Rose
+      </option>
 
-<option value="love">
-  ❤️ Pink Romance
-</option>
+      <option value="sunset">
+        🌅 Sunset
+      </option>
 
-<option value="rose">
-  🌹 Rose
-</option>
+      <option value="night">
+        🌌 Night
+      </option>
 
-<option value="sunset">
-  🌅 Sunset
-</option>
+      <option value="studio">
+        🖤 Dark Studio
+      </option>
 
-<option value="night">
-  🌌 Night
-</option>
+      <option value="dreamy">
+        ☁️ Dreamy
+      </option>
 
-<option value="studio">
-  🖤 Dark Studio
-</option>
+    </select>
 
-<option value="classic">
-  🎞️ Classic Booth
-</option>
 
-<option value="dreamy">
-  ☁️ Dreamy
-</option>
+    <select id="filter">
 
-</select>
+      <option value="none">
+        Natural
+      </option>
 
+      <option value="warm">
+        Warm
+      </option>
 
-<select id="filter">
+      <option value="cool">
+        Cool
+      </option>
 
-<option value="none">
-  Natural
-</option>
+      <option value="vintage">
+        Vintage
+      </option>
 
-<option value="warm">
-  Warm
-</option>
+      <option value="soft">
+        Soft
+      </option>
 
-<option value="cool">
-  Cool
-</option>
+      <option value="pink">
+        Pink
+      </option>
 
-<option value="vintage">
-  Vintage
-</option>
+      <option value="mono">
+        B&W
+      </option>
 
-<option value="soft">
-  Soft
-</option>
+    </select>
 
-<option value="pink">
-  Pink
-</option>
 
-<option value="mono">
-  B&W
-</option>
+    <button
+      id="sound"
+      class="secondary"
+    >
+      🔊 Sound
+    </button>
 
-</select>
+  </div>
 
 
-<button
-  id="sound"
-  class="secondary"
->
-  🔊 Sound
-</button>
+  <!-- CAMERA -->
 
-</div>
+  <div
+    id="scene"
+    class="scene"
+  >
 
+    <div class="stage">
 
-<!-- CAMERA -->
+      <div class="pane">
 
-<div
-  id="scene"
-  class="scene original"
->
+        <div class="name">
+          YOU
+        </div>
 
-<div class="stage">
+        <video
+          id="local"
+          class="feed"
+          autoplay
+          muted
+          playsinline
+        ></video>
 
+      </div>
 
-<div class="pane">
 
-<div class="name">
-  YOU
-</div>
+      <div class="pane">
 
-<video
-  id="local"
-  class="feed"
-  autoplay
-  muted
-  playsinline
-></video>
+        <div class="name">
+          FRIEND
+        </div>
 
-</div>
+        <video
+          id="remote"
+          class="feed"
+          autoplay
+          playsinline
+        ></video>
 
+        <div
+          id="wait"
+          class="wait"
+        >
+          Waiting for your friend…
+        </div>
 
-<div class="pane">
+      </div>
 
-<div class="name">
-  FRIEND
-</div>
 
-<video
-  id="remote"
-  class="feed"
-  autoplay
-  playsinline
-></video>
+      <div class="overlay">
 
-<div
-  id="wait"
-  class="wait"
->
-  Waiting for your friend…
-</div>
+        <div
+          id="count"
+          class="count"
+        >
+          5
+        </div>
 
-</div>
+      </div>
 
 
-</div>
+      <div
+        id="flash"
+        class="flash"
+      ></div>
 
+    </div>
 
-<div class="overlay">
+  </div>
 
-<div
-  id="count"
-  class="count"
->
-  5
-</div>
 
-</div>
+  <!-- CAMERA BUTTONS -->
 
+  <div class="controls">
 
-<div
-  id="flash"
-  class="flash"
-></div>
+    <button id="single">
+      📸 Single Photo
+    </button>
 
-</div>
+    <button id="strip">
+      🎞️ 4-Photo Strip
+    </button>
 
+    <button
+      id="flip"
+      class="secondary"
+    >
+      🔄 Flip
+    </button>
 
-<!-- CAMERA BUTTONS -->
+    <button
+      id="leave"
+      class="secondary"
+    >
+      Leave
+    </button>
 
-<div class="controls">
+  </div>
 
-<button
-  id="single"
-  class="primary"
->
-  📸 Single Photo
-</button>
 
-<button
-  id="strip"
-  class="primary"
->
-  🎞️ 4-Photo Strip
-</button>
+  <div class="hint">
+    ⏱️ 5-second countdown • 4 photos •
+    both phones see the timer and flash.
+  </div>
 
-<button
-  id="flip"
-  class="secondary"
->
-  🔄 Flip
-</button>
 
-<button
-  id="leave"
-  class="secondary"
->
-  Leave
-</button>
+  <!-- RESULT -->
 
-</div>
+  <div
+    id="result"
+    class="result"
+  >
 
+    <div class="resultGrid">
 
-<div class="hint">
-  5-second countdown • 4-photo strip • synchronized capture
-</div>
 
+      <div class="preview">
 
-<!-- RESULT -->
+        <span
+          id="badge"
+          class="badge"
+        >
+          PHOTO
+        </span>
 
-<div
-  id="result"
-  class="result"
->
+        <img
+          id="photo"
+          alt="PairPic result"
+        >
 
+      </div>
 
-<div class="resultGrid">
 
+      <div class="tools">
 
-<div class="preview">
 
-<span
-  id="resultBadge"
-  class="badge"
->
-  PHOTO
-</span>
+        <div class="title">
+          Theme / Frame
+        </div>
 
-<img
-  id="photo"
-  alt="PairPic result"
-/>
 
-</div>
+        <div
+          id="themes"
+          class="buttons"
+        >
 
+          <button data-theme="classic">
+            🎞️ Classic
+          </button>
 
-<div class="tools">
+          <button data-theme="forever">
+            ❤️ Forever Love
+          </button>
 
+          <button data-theme="sweetheart">
+            💕 Sweetheart
+          </button>
 
-<div class="sectionTitle">
-  Theme
-</div>
+          <button data-theme="rose">
+            🌹 Rose Romance
+          </button>
 
+          <button data-theme="midnight">
+            🖤 Midnight Love
+          </button>
 
-<div
-  id="themes"
-  class="gridButtons"
->
+          <button data-theme="sparkle">
+            ✨ Love & Sparkle
+          </button>
 
+          <button data-theme="retro">
+            📼 Vintage Film
+          </button>
 
-<button data-theme="classic">
-  🎞️ Classic
-</button>
+          <button data-theme="elegant">
+            🤍 Elegant
+          </button>
 
-<button data-theme="forever">
-  ❤️ Forever Love
-</button>
+          <button data-theme="dreamy">
+            💜 Dreamy
+          </button>
 
-<button data-theme="sweetheart">
-  💕 Sweetheart
-</button>
+        </div>
 
-<button data-theme="rose">
-  🌹 Rose Romance
-</button>
 
-<button data-theme="midnight">
-  🖤 Midnight Love
-</button>
+        <div class="title">
+          Strip Layout
+        </div>
 
-<button data-theme="sparkle">
-  ✨ Love & Sparkle
-</button>
 
-<button data-theme="retro">
-  📼 Vintage Film
-</button>
+        <div
+          id="layouts"
+          class="buttons"
+        >
 
-<button data-theme="elegant">
-  🤍 Elegant
-</button>
+          <button data-layout="vertical">
+            📜 Vertical
+          </button>
 
-<button data-theme="dreamy">
-  💜 Dreamy
-</button>
+          <button data-layout="grid">
+            ▦ 2×2
+          </button>
 
-<button data-theme="party">
-  🪩 Party Booth
-</button>
+          <button data-layout="film">
+            🎞️ Film
+          </button>
 
-</div>
+        </div>
 
 
-<div class="sectionTitle">
-  Strip Layout
-</div>
+        <div class="title">
+          Your message
+        </div>
 
+        <input
+          id="customText"
+          maxlength="40"
+          placeholder="Together Forever ❤️"
+        >
 
-<div
-  id="layouts"
-  class="gridButtons"
->
 
-<button data-layout="vertical">
-  📜 Vertical
-</button>
+        <div class="title">
+          Stickers
+        </div>
 
-<button data-layout="grid">
-  ▦ 2 × 2
-</button>
 
-<button data-layout="film">
-  🎞️ Film
-</button>
+        <div
+          id="stickers"
+          class="buttons"
+        >
 
-<button data-layout="polaroid">
-  📷 Polaroid
-</button>
+          <button data-sticker="">
+            None
+          </button>
 
-</div>
+          <button data-sticker="♥">
+            ❤️ Hearts
+          </button>
 
+          <button data-sticker="✦">
+            ✨ Sparkles
+          </button>
 
-<div class="sectionTitle">
-  Add Text
-</div>
+          <button data-sticker="🌹">
+            🌹 Roses
+          </button>
 
+          <button data-sticker="🎀">
+            🎀 Ribbon
+          </button>
 
-<input
-  id="customText"
-  maxlength="40"
-  placeholder="Your text — e.g. Together Forever ❤️"
-/>
+        </div>
 
 
-<div class="sectionTitle">
-  Stickers
-</div>
+        <!-- RETAKES -->
 
+        <div
+          id="retakeBox"
+          class="retakeBox"
+        >
 
-<div
-  id="stickers"
-  class="gridButtons"
->
+          <div class="title">
+            🔄 Retake a photo
+          </div>
 
-<button data-sticker="">
-  None
-</button>
+          <div
+            id="retakeButtons"
+            class="retakeButtons"
+          ></div>
 
-<button data-sticker="♥">
-  ❤️ Hearts
-</button>
+        </div>
 
-<button data-sticker="✦">
-  ✨ Sparkles
-</button>
 
-<button data-sticker="🌹">
-  🌹 Roses
-</button>
+        <div class="title">
+          Actions
+        </div>
 
-<button data-sticker="🦋">
-  🦋 Butterflies
-</button>
 
-<button data-sticker="🎀">
-  🎀 Ribbon
-</button>
+        <div class="buttons">
 
-</div>
+          <button id="save">
+            📥 Download
+          </button>
 
+          <button id="saveIndividual">
+            📥 Individual
+          </button>
 
-<!-- RETAKES -->
+          <button id="retakeAll">
+            🔄 Retake All
+          </button>
 
-<div
-  id="retakeBox"
-  class="retakeBox"
->
+          <button id="share">
+            📤 Share
+          </button>
 
-<div class="retakeTitle">
-  🔄 Retake a photo
-</div>
+          <button id="enhance">
+            ✨ Enhance
+          </button>
 
-<div
-  id="retakeButtons"
-  class="retakeButtons"
-></div>
+          <button id="caption">
+            💬 Caption
+          </button>
 
-</div>
+        </div>
 
 
-<div class="sectionTitle">
-  Actions
-</div>
+        <div
+          id="notice"
+          class="notice"
+        ></div>
 
+      </div>
 
-<div class="gridButtons">
+    </div>
 
-<button id="save">
-  📥 Download
-</button>
-
-<button id="saveIndividual">
-  📥 Individual
-</button>
-
-<button id="retakeAll">
-  🔄 Retake All
-</button>
-
-<button id="share">
-  📤 Share
-</button>
-
-<button id="enhance">
-  ✨ Enhance
-</button>
-
-<button id="caption">
-  💬 Caption
-</button>
-
-</div>
-
-
-<div
-  id="notice"
-  class="notice"
->
-</div>
-
-
-</div>
-
-</div>
-
-
-</div>
+  </div>
 
 </div>
 
 </section>
-
-</div>
 
 </main>
 
 
 <script>
 
-/* =========================================================
-   PAIRPIC CORE
-========================================================= */
+const $ = id =>
+  document.getElementById(id);
 
-const $ =
-  id => document.getElementById(id);
 
 const WS_URL =
   (location.protocol === "https:"
@@ -1221,15 +1098,12 @@ const RTC_CONFIG = {
 
 
 let ws = null;
-
 let pc = null;
 
 let room = "";
-
 let role = "";
 
 let stream = null;
-
 let remoteStream = null;
 
 let facing = "user";
@@ -1237,46 +1111,29 @@ let facing = "user";
 let solo = false;
 
 let remoteReady = false;
-
 let pendingIce = [];
 
 let captureBusy = false;
 
+let photos = [];
+let resultBlob = null;
+
+let currentTheme = "classic";
+let currentLayout = "vertical";
+let currentSticker = "";
+
 let soundEnabled = true;
 
 let composition = "classic";
-
 let background = "original";
-
 let filter = "none";
 
-let currentTheme = "classic";
-
-let currentLayout = "vertical";
-
-let currentSticker = "";
-
-let currentText = "";
-
-let photos = [];
-
-let resultBlob = null;
-
-let currentRetakeIndex = -1;
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
 
 const sleep =
   ms =>
     new Promise(
       resolve =>
-        setTimeout(
-          resolve,
-          ms
-        )
+        setTimeout(resolve,ms)
     );
 
 
@@ -1288,7 +1145,7 @@ function status(text){
 }
 
 
-function makeRoom(){
+function makeCode(){
 
   return Math.random()
     .toString(36)
@@ -1302,7 +1159,8 @@ function signal(message){
 
   if(
     ws &&
-    ws.readyState === WebSocket.OPEN
+    ws.readyState ===
+      WebSocket.OPEN
   ){
 
     ws.send(
@@ -1314,9 +1172,7 @@ function signal(message){
 }
 
 
-/* =========================================================
-   CAMERA
-========================================================= */
+/* CAMERA */
 
 async function startCamera(){
 
@@ -1336,10 +1192,9 @@ async function startCamera(){
     await navigator.mediaDevices
       .getUserMedia({
 
-        video: {
+        video:{
 
-          facingMode:
-            facing,
+          facingMode:facing,
 
           width:{
             ideal:1280
@@ -1371,12 +1226,13 @@ async function startCamera(){
       ()=>{}
     );
 
+
+  applyFilter();
+
 }
 
 
-/* =========================================================
-   WEBRTC
-========================================================= */
+/* WEBRTC */
 
 function setupPeer(){
 
@@ -1480,24 +1336,23 @@ function setupPeer(){
         pc.connectionState;
 
 
-      if(
-        state ===
-        "connected"
-      ){
+      status(
+        state === "connected"
+          ? "Online · Connected"
+          : "Online · " + state
+      );
 
-        status(
-          "Online · Connected"
-        );
+
+      if(
+        state === "connected"
+      ){
 
         $("wait")
           .style.display =
             "none";
 
-      }else{
-
-        status(
-          "Online · " +
-          state
+        enableCapture(
+          true
         );
 
       }
@@ -1507,7 +1362,9 @@ function setupPeer(){
 }
 
 
-async function addIce(candidate){
+async function addIce(
+  candidate
+){
 
   if(
     !remoteReady
@@ -1528,29 +1385,16 @@ async function addIce(candidate){
       candidate
     );
 
-  }catch(error){
-
-    console.log(
-      "ICE error",
-      error
-    );
-
-  }
+  }catch(e){}
 
 }
 
 
 async function flushIce(){
 
-  const list =
-    pendingIce.splice(
-      0
-    );
-
-
   for(
     const candidate
-    of list
+    of pendingIce.splice(0)
   ){
 
     await addIce(
@@ -1562,11 +1406,9 @@ async function flushIce(){
 }
 
 
-/* =========================================================
-   SIGNALING
-========================================================= */
+/* SIGNALING */
 
-function connectSocket(){
+function connectSignal(){
 
   ws =
     new WebSocket(
@@ -1605,13 +1447,43 @@ function connectSocket(){
     };
 
 
+  ws.onerror =
+    () => {
+
+      status(
+        "Connection error"
+      );
+
+    };
+
+
   ws.onmessage =
     async event => {
 
-      const message =
-        JSON.parse(
-          event.data
-        );
+      let message;
+
+      try{
+
+        message =
+          JSON.parse(
+            event.data
+          );
+
+      }catch{
+
+        return;
+
+      }
+
+
+      if(
+        message.type ===
+        "connected"
+      ){
+
+        return;
+
+      }
 
 
       if(
@@ -1623,6 +1495,7 @@ function connectSocket(){
           "Waiting for your friend…"
         );
 
+
         $("wait")
           .style.display =
             "flex";
@@ -1632,48 +1505,17 @@ function connectSocket(){
 
       if(
         message.type ===
-        "ready"
+        "full"
       ){
 
-        status(
-          "Connected"
+        alert(
+          "This room already has two people."
         );
 
-
-        if(
-          role ===
-          "host"
-        ){
-
-          const offer =
-            await pc.createOffer({
-
-              offerToReceiveVideo:
-                true
-
-            });
-
-
-          await pc
-            .setLocalDescription(
-              offer
-            );
-
-
-          signal({
-
-            type:"offer",
-
-            offer:
-              pc.localDescription
-
-          });
-
-        }
+        return;
 
       }
 
 
       if(
-        message.type ===
-        "offe
+        message.type ==
