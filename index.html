@@ -1,20 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>PairPic — Online Photo Booth</title>
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>PairPic — Together Photobooth</title>
 
 <style>
 
 :root{
-  --bg:#09070d;
+  --pink:#ff3f9f;
+  --pink2:#ff78bd;
+  --purple:#8c63ff;
+  --bg:#08070d;
   --card:#15111d;
   --text:#fff;
-  --muted:#aaa4b5;
-  --pink:#ff3f9f;
-  --purple:#8b63ff;
+  --muted:#aaa5b6;
   --line:#ffffff1c;
 }
 
@@ -22,17 +27,21 @@
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
   min-height:100%;
+
   background:
     radial-gradient(
       circle at 50% -10%,
-      #52205f 0,
+      #54205f 0,
       #190e25 32%,
-      #09070d 70%
+      #08070d 70%
     );
+
   color:var(--text);
+
   font-family:
     Inter,
     system-ui,
@@ -55,7 +64,7 @@ input{
 
 button{
   border:0;
-  color:#fff;
+  color:white;
   cursor:pointer;
   font-weight:850;
 }
@@ -65,15 +74,21 @@ button:disabled{
 }
 
 .app{
-  width:min(1120px,100%);
-  padding:14px;
+  width:min(1150px,100%);
+  padding:12px;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:14px;
+
+  margin-bottom:12px;
 }
 
 .brand{
@@ -86,8 +101,28 @@ header{
 }
 
 .status{
+  color:#bbb7c4;
   font-size:12px;
-  color:#c1bdca;
+}
+
+
+/* =========================
+   COMMON CARD
+========================= */
+
+.card{
+  background:#11101ae8;
+
+  border:1px solid var(--line);
+
+  border-radius:25px;
+
+  padding:17px;
+
+  box-shadow:
+    0 20px 70px #000b;
+
+  backdrop-filter:blur(18px);
 }
 
 
@@ -98,36 +133,41 @@ header{
 #lobby{
   max-width:650px;
   margin:6vh auto;
-  padding:20px;
 }
 
 .hero{
   text-align:center;
-  padding:20px 10px;
+  padding:22px 10px 17px;
 }
 
 .heroLogo{
   font-size:56px;
+  filter:
+    drop-shadow(
+      0 8px 20px #ff3f9f55
+    );
 }
 
 .hero h1{
   font-size:42px;
-  line-height:1.03;
+  line-height:1.02;
   margin:14px 0;
   letter-spacing:-1.5px;
 }
 
 .hero p{
-  color:var(--muted);
-  line-height:1.6;
   max-width:520px;
   margin:auto;
+
+  color:var(--muted);
+
+  line-height:1.6;
 }
 
 .row{
   display:flex;
   gap:10px;
-  margin-top:12px;
+  margin-top:11px;
 }
 
 .row>*{
@@ -136,15 +176,24 @@ header{
 
 input{
   width:100%;
+
   padding:14px;
+
   border-radius:15px;
+
   border:1px solid var(--line);
+
   background:#08070d;
-  color:#fff;
-  text-align:center;
-  text-transform:uppercase;
-  letter-spacing:3px;
+
+  color:white;
+
   outline:none;
+
+  text-align:center;
+
+  text-transform:uppercase;
+
+  letter-spacing:3px;
 }
 
 input:focus{
@@ -171,10 +220,13 @@ input:focus{
 }
 
 .tiny{
-  color:#85808e;
-  text-align:center;
-  font-size:11px;
   margin-top:13px;
+
+  color:#85808e;
+
+  text-align:center;
+
+  font-size:11px;
 }
 
 
@@ -186,15 +238,14 @@ input:focus{
   display:none;
 }
 
-.boothCard{
-  padding:15px;
-}
-
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:12px;
+
+  gap:10px;
+
+  margin-bottom:10px;
 }
 
 .mode{
@@ -208,76 +259,309 @@ input:focus{
 }
 
 .room b{
-  color:#fff;
+  color:white;
   letter-spacing:2px;
 }
 
 .hostNotice{
   display:none;
+
+  padding:10px 12px;
+
   margin-bottom:10px;
-  padding:10px;
-  border-radius:12px;
-  background:#ff3f9f12;
-  color:#ffc1df;
+
+  border-radius:13px;
+
+  background:#ff3f9f10;
+
+  border:1px solid #ff3f9f25;
+
+  color:#e8ccdc;
+
   font-size:12px;
 }
 
 
 /* =========================
-   CAMERA STAGE
+   SHARED PHOTO STAGE
 ========================= */
 
 .stage{
   position:relative;
-  display:grid;
-  grid-template-columns:1fr 1fr;
 
   width:100%;
+
   aspect-ratio:16/9;
-  min-height:320px;
+
+  min-height:330px;
 
   overflow:hidden;
 
-  border:8px solid #fff;
-  border-radius:28px;
+  border-radius:30px;
 
-  background:#050408;
+  border:7px solid #ffffff;
+
+  background:#09080e;
 
   box-shadow:
     0 0 0 2px #ffffff22,
-    0 20px 65px #000b;
+    0 22px 70px #000b;
+
+  isolation:isolate;
 }
 
-.pane{
+
+/* Background layer */
+
+.liveBackground{
+  position:absolute;
+
+  inset:0;
+
+  z-index:0;
+
+  pointer-events:none;
+
+  transition:
+    background .35s ease;
+}
+
+
+/* =========================
+   BACKGROUNDS
+========================= */
+
+.stage.bg-classic
+.liveBackground{
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      #ffffff18,
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #17151e,
+      #08070d
+    );
+}
+
+.stage.bg-love
+.liveBackground{
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      #ff3f9f55,
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      #ff72bd45,
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #3a091f,
+      #160714
+    );
+}
+
+.stage.bg-midnight
+.liveBackground{
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      #5268ff45,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      #7d4cff35,
+      transparent 28%
+    ),
+    #08091a;
+}
+
+.stage.bg-dreamy
+.liveBackground{
+  background:
+    radial-gradient(
+      circle at 20% 25%,
+      #ff8fcf45,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      #b58cff45,
+      transparent 30%
+    ),
+    #201326;
+}
+
+.stage.bg-retro
+.liveBackground{
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #d7b86b12 0,
+      #d7b86b12 9px,
+      transparent 9px,
+      transparent 18px
+    ),
+    #302615;
+}
+
+.stage.bg-minimal
+.liveBackground{
+  background:#111;
+}
+
+
+/* =========================
+   LIVE DECORATIONS
+========================= */
+
+.decor{
+  position:absolute;
+
+  inset:0;
+
+  z-index:1;
+
+  pointer-events:none;
+}
+
+.stage.bg-love .decor::before{
+  content:
+    "♥   ♡   ♥   ♡   ♥   ♡";
+
+  position:absolute;
+
+  top:8%;
+  left:2%;
+
+  color:#ff82c033;
+
+  font-size:42px;
+
+  letter-spacing:12px;
+
+  transform:rotate(-8deg);
+}
+
+.stage.bg-love .decor::after{
+  content:
+    "♡   ♥   ♡   ♥   ♡";
+
+  position:absolute;
+
+  bottom:8%;
+  right:2%;
+
+  color:#ff82c033;
+
+  font-size:42px;
+
+  letter-spacing:12px;
+
+  transform:rotate(8deg);
+}
+
+
+/* =========================
+   CAMERA LAYOUT
+========================= */
+
+.cameraTogether{
+  position:absolute;
+
+  inset:0;
+
+  z-index:3;
+
+  display:flex;
+
+  align-items:stretch;
+
+  justify-content:center;
+}
+
+
+/*
+ * Each camera is slightly overlapped
+ * so the composition feels like one
+ * shared photobooth.
+ */
+
+.cameraPane{
   position:relative;
+
+  width:50%;
+
   overflow:hidden;
-  background:#08070d;
-  min-width:0;
+
+  background:#050408;
+
+  border:4px solid #ffffffcc;
+
+  box-shadow:
+    0 0 30px #0008;
 }
 
-.pane+.pane{
-  border-left:3px solid #ffffffaa;
+.cameraPane:first-child{
+  border-radius:
+    22px 0 0 22px;
+
+  border-right:
+    2px solid #ffffff88;
 }
+
+.cameraPane:last-child{
+  border-radius:
+    0 22px 22px 0;
+
+  border-left:
+    2px solid #ffffff88;
+}
+
+
+/* Solo camera */
+
+.stage.soloStage
+.cameraPane{
+  width:100%;
+
+  border-radius:22px;
+}
+
+
+/* Video */
 
 .feed{
   width:100%;
   height:100%;
+
   display:block;
+
   object-fit:cover;
+
   background:#08070d;
 }
 
-/* Front camera mirror */
 .localFeed{
   transform:scaleX(-1);
 }
 
+
+/* Labels */
+
 .name{
   position:absolute;
-  z-index:5;
 
-  top:12px;
-  left:12px;
+  z-index:8;
+
+  top:10px;
+  left:10px;
 
   padding:7px 11px;
 
@@ -285,24 +569,74 @@ input:focus{
 
   background:#0009;
 
-  font-size:11px;
+  border:1px solid #ffffff25;
+
+  font-size:10px;
+
   font-weight:900;
 }
 
-.wait{
+
+/* =========================
+   CENTER HEART
+========================= */
+
+.centerHeart{
   position:absolute;
-  inset:0;
-  z-index:6;
+
+  z-index:12;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width:58px;
+  height:58px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
-  text-align:center;
+  border-radius:50%;
+
+  background:#0009;
+
+  border:2px solid #ffffffaa;
+
+  box-shadow:
+    0 0 30px #ff3f9f55;
+
+  font-size:27px;
+
+  pointer-events:none;
+}
+
+
+/* =========================
+   WAITING
+========================= */
+
+.wait{
+  position:absolute;
+
+  inset:0;
+
+  z-index:15;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
 
   padding:20px;
 
-  color:#85808f;
+  text-align:center;
+
+  color:#898493;
 
   background:#08070ddd;
 
@@ -315,105 +649,20 @@ input:focus{
 
 
 /* =========================
-   BACKGROUND DECORATION
-========================= */
-
-.backdropLayer{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
-
-.stage.theme-love{
-  border-color:#ff4fa3;
-
-  background:
-    radial-gradient(
-      circle at 15% 20%,
-      #ff3f9f55,
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 85% 75%,
-      #ff6bb444,
-      transparent 28%
-    ),
-    #260713;
-}
-
-.stage.theme-retro{
-  border-color:#e5c98f;
-  background:#342817;
-}
-
-.stage.theme-neon{
-  border-color:#a16cff;
-
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      #ff3fa344,
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      #704cff44,
-      transparent 30%
-    ),
-    #080612;
-}
-
-.stage.theme-minimal{
-  border-color:#777;
-  background:#111;
-}
-
-
-/* Love hearts */
-
-.stage.theme-love .backdropLayer::before{
-  content:"♥   ♡   ♥   ♡   ♥";
-  position:absolute;
-
-  top:15%;
-  left:2%;
-
-  color:#ff72b733;
-
-  font-size:48px;
-  letter-spacing:14px;
-
-  transform:rotate(-10deg);
-}
-
-.stage.theme-love .backdropLayer::after{
-  content:"♡   ♥   ♡   ♥";
-  position:absolute;
-
-  bottom:15%;
-  right:2%;
-
-  color:#ff72b733;
-
-  font-size:48px;
-  letter-spacing:14px;
-
-  transform:rotate(10deg);
-}
-
-
-/* =========================
    COUNTDOWN
 ========================= */
 
 .overlay{
   position:absolute;
+
   inset:0;
-  z-index:20;
+
+  z-index:30;
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
 
   pointer-events:none;
@@ -424,38 +673,42 @@ input:focus{
   height:145px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
   border-radius:50%;
 
-  background:#0008;
+  background:#0009;
 
   border:4px solid #fff;
 
-  font-size:90px;
+  box-shadow:
+    0 0 0 10px #ffffff12,
+    0 20px 70px #000;
+
+  font-size:88px;
+
   font-weight:1000;
 
   opacity:0;
 
-  transform:scale(.6);
-
-  box-shadow:
-    0 15px 60px #000;
+  transform:scale(.55);
 }
 
 .count.show{
-  animation:countPop .95s ease forwards;
+  animation:
+    countPop .95s ease forwards;
 }
 
 @keyframes countPop{
 
   0%{
     opacity:0;
-    transform:scale(.6);
+    transform:scale(.55);
   }
 
-  20%{
+  18%{
     opacity:1;
     transform:scale(1.08);
   }
@@ -469,29 +722,30 @@ input:focus{
     opacity:0;
     transform:scale(.82);
   }
-
 }
 
 
 /* =========================
-   CAMERA FLASH
+   FLASH
 ========================= */
 
 .flash{
   position:absolute;
+
   inset:0;
 
-  z-index:30;
+  z-index:50;
 
-  pointer-events:none;
-
-  background:#fff;
+  background:white;
 
   opacity:0;
+
+  pointer-events:none;
 }
 
 .flash.show{
-  animation:flash .22s ease;
+  animation:
+    flash .22s ease;
 }
 
 @keyframes flash{
@@ -507,7 +761,52 @@ input:focus{
   100%{
     opacity:0;
   }
+}
 
+
+/* =========================
+   HEART ANIMATION
+========================= */
+
+.floatingHeart{
+  position:absolute;
+
+  z-index:45;
+
+  color:#ff6bb5;
+
+  font-size:22px;
+
+  opacity:0;
+
+  animation:
+    floatHeart 3s ease forwards;
+
+  text-shadow:
+    0 5px 20px #ff238e88;
+}
+
+@keyframes floatHeart{
+
+  0%{
+    opacity:0;
+    transform:
+      translateY(30px)
+      scale(.6);
+  }
+
+  15%{
+    opacity:.9;
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translateY(-160px)
+      scale(1.3)
+      rotate(12deg);
+  }
 }
 
 
@@ -517,23 +816,32 @@ input:focus{
 
 .controls{
   display:flex;
-  gap:9px;
+
   flex-wrap:wrap;
-  margin-top:13px;
+
+  gap:9px;
+
+  margin-top:12px;
 }
 
 .controls button{
   flex:1;
-  min-width:130px;
-  padding:14px;
+
+  min-width:120px;
+
+  padding:13px 14px;
+
   border-radius:15px;
 }
 
 .hint{
-  color:var(--muted);
-  font-size:12px;
   margin-top:9px;
+
+  color:var(--muted);
+
   text-align:center;
+
+  font-size:12px;
 }
 
 
@@ -543,9 +851,13 @@ input:focus{
 
 .settings{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:10px;
-  margin-top:14px;
+
+  margin-top:13px;
 }
 
 .settingBox{
@@ -554,32 +866,39 @@ input:focus{
   border-radius:17px;
 
   background:#ffffff08;
+
   border:1px solid var(--line);
 }
 
 .settingTitle{
-  font-size:12px;
-  font-weight:900;
+  margin-bottom:8px;
+
   color:#ddd;
 
-  margin-bottom:8px;
+  font-size:12px;
+
+  font-weight:900;
 }
 
 .choices{
   display:flex;
+
   flex-wrap:wrap;
+
   gap:7px;
 }
 
 .choices button{
   flex:1;
-  min-width:80px;
+
+  min-width:82px;
 
   padding:10px;
 
   border-radius:12px;
 
   background:#ffffff09;
+
   border:1px solid var(--line);
 
   font-size:11px;
@@ -603,14 +922,15 @@ input:focus{
 
 .result{
   display:none;
-  margin-top:16px;
+
+  margin-top:15px;
 }
 
 .resultGrid{
   display:grid;
 
   grid-template-columns:
-    minmax(240px,420px)
+    minmax(240px,430px)
     1fr;
 
   gap:16px;
@@ -621,11 +941,11 @@ input:focus{
 .previewWrap{
   padding:11px;
 
+  border-radius:20px;
+
   background:#07060b;
 
   border:1px solid var(--line);
-
-  border-radius:20px;
 
   text-align:center;
 }
@@ -634,11 +954,12 @@ input:focus{
   display:block;
 
   max-width:100%;
+
   max-height:650px;
 
   margin:10px auto 0;
 
-  border-radius:9px;
+  border-radius:10px;
 }
 
 .badge{
@@ -652,25 +973,28 @@ input:focus{
 
   border:1px solid var(--line);
 
-  color:#ccc;
-
   font-size:11px;
 }
 
 .resultTools{
   display:flex;
+
   flex-direction:column;
+
   gap:10px;
 }
 
 .resultTools button{
   padding:12px;
+
   border-radius:13px;
 }
 
 .notice{
   color:#aaa5b5;
+
   font-size:12px;
+
   line-height:1.5;
 }
 
@@ -682,7 +1006,17 @@ input:focus{
 @media(max-width:700px){
 
   .app{
-    padding:9px;
+    padding:8px;
+  }
+
+  .card{
+    padding:11px;
+
+    border-radius:21px;
+  }
+
+  .hero{
+    padding:17px 7px 13px;
   }
 
   .hero h1{
@@ -695,14 +1029,28 @@ input:focus{
 
   .stage{
     aspect-ratio:3/4;
+
     min-height:0;
+
     border-width:5px;
+  }
+
+  .cameraPane{
+    border-width:3px;
+  }
+
+  .centerHeart{
+    width:48px;
+    height:48px;
+
+    font-size:22px;
   }
 
   .count{
     width:110px;
     height:110px;
-    font-size:70px;
+
+    font-size:68px;
   }
 
   .settings{
@@ -714,9 +1062,18 @@ input:focus{
   }
 
   .controls button{
-    min-width:100px;
+    min-width:95px;
   }
 
+}
+
+
+/* =========================
+   DARK ROMANTIC RESULT
+========================= */
+
+.loveText{
+  color:#ff8fc8;
 }
 
 </style>
@@ -761,9 +1118,10 @@ input:focus{
     </h1>
 
     <p>
-      Join from two phones, see each other
-      together and create a real 4-photo
-      photobooth strip.
+      Join from two phones and create
+      one shared photobooth memory.
+      Timer, themes and photo moments
+      stay synchronized.
     </p>
 
   </div>
@@ -804,8 +1162,8 @@ input:focus{
 
 
   <div class="tiny">
-    Camera permission is requested only when
-    you enter the booth.
+    Camera permission is requested only
+    when entering the photobooth.
   </div>
 
 </section>
@@ -817,14 +1175,14 @@ input:focus{
 
 <section id="booth">
 
-<div class="card boothCard">
+<div class="card">
 
   <div class="topbar">
 
     <div
       id="modeLabel"
       class="mode">
-      Photo Booth
+      Together Photobooth
     </div>
 
     <div class="room">
@@ -839,54 +1197,84 @@ input:focus{
     id="hostNotice"
     class="hostNotice">
     👑 You created this room.
-    Start the photo session when your friend is connected.
+    Wait until your friend is connected,
+    then start the photo session.
   </div>
 
 
-  <!-- CAMERA -->
+  <!-- =========================
+       LIVE CAMERA
+  ========================= -->
 
   <div
     id="stage"
-    class="stage theme-classic">
+    class="stage bg-classic">
 
-    <div class="backdropLayer"></div>
+    <div
+      class="liveBackground">
+    </div>
+
+    <div
+      class="decor">
+    </div>
 
 
-    <div class="pane">
+    <div
+      id="cameraTogether"
+      class="cameraTogether">
 
-      <div class="name">
-        YOU
+
+      <div
+        id="localPane"
+        class="cameraPane">
+
+        <div class="name">
+          YOU
+        </div>
+
+        <video
+          id="local"
+          class="feed localFeed"
+          autoplay
+          muted
+          playsinline>
+        </video>
+
       </div>
 
-      <video
-        id="local"
-        class="feed localFeed"
-        autoplay
-        muted
-        playsinline>
-      </video>
+
+      <div
+        id="remotePane"
+        class="cameraPane">
+
+        <div class="name">
+          FRIEND
+        </div>
+
+        <video
+          id="remote"
+          class="feed"
+          autoplay
+          playsinline>
+        </video>
+
+      </div>
+
+
+      <div
+        id="centerHeart"
+        class="centerHeart">
+        ♥
+      </div>
 
     </div>
 
 
-    <div class="pane">
+    <div
+      id="wait"
+      class="wait">
 
-      <div class="name">
-        FRIEND
-      </div>
-
-      <video
-        id="remote"
-        class="feed"
-        autoplay
-        playsinline>
-      </video>
-
-      <div
-        id="wait"
-        class="wait">
-        Waiting for your friend…
-      </div>
+      Waiting for your friend…
 
     </div>
 
@@ -910,7 +1298,9 @@ input:focus{
   </div>
 
 
-  <!-- MAIN BUTTONS -->
+  <!-- =========================
+       CONTROLS
+  ========================= -->
 
   <div class="controls">
 
@@ -944,11 +1334,16 @@ input:focus{
   <div
     id="hint"
     class="hint">
-    Both people will see the same 5-second countdown.
+
+    Both phones will receive the
+    same synchronized countdown.
+
   </div>
 
 
-  <!-- SETTINGS -->
+  <!-- =========================
+       SETTINGS
+  ========================= -->
 
   <div class="settings">
 
@@ -981,39 +1376,45 @@ input:focus{
     <div class="settingBox">
 
       <div class="settingTitle">
-        🎨 Theme
+        🌸 Live Background
       </div>
 
       <div class="choices">
 
         <button
-          class="themeBtn active"
-          data-theme="classic">
+          class="backgroundBtn active"
+          data-background="classic">
           Classic
         </button>
 
         <button
-          class="themeBtn"
-          data-theme="love">
+          class="backgroundBtn"
+          data-background="love">
           ❤️ Love
         </button>
 
         <button
-          class="themeBtn"
-          data-theme="retro">
-          Retro
+          class="backgroundBtn"
+          data-background="midnight">
+          🌙 Midnight
         </button>
 
         <button
-          class="themeBtn"
-          data-theme="neon">
-          Neon
+          class="backgroundBtn"
+          data-background="dreamy">
+          ✨ Dreamy
         </button>
 
         <button
-          class="themeBtn"
-          data-theme="minimal">
-          Minimal
+          class="backgroundBtn"
+          data-background="retro">
+          🎞️ Retro
+        </button>
+
+        <button
+          class="backgroundBtn"
+          data-background="minimal">
+          🖤 Minimal
         </button>
 
       </div>
@@ -1024,7 +1425,9 @@ input:focus{
   </div>
 
 
-  <!-- RESULT -->
+  <!-- =========================
+       RESULT
+  ========================= -->
 
   <div
     id="result"
@@ -1100,637 +1503,928 @@ input:focus{
 
 
 <script>
-  const $ = id => document.getElementById(id);
+  /* =========================
+   BASIC VARIABLES
+========================= */
 
-const WS_URL =
-  (location.protocol === "https:" ? "wss://" : "ws://") +
-  location.host;
+const $ = id =>
+  document.getElementById(id);
 
-const rtcConfig = {
-  iceServers: [
-    { urls: "stun:stun.l.google.com:19302" },
-    { urls: "stun:stun1.l.google.com:19302" }
-  ]
-};
 
 let ws = null;
+
 let pc = null;
 
 let room = "";
+
 let role = "";
 
 let stream = null;
+
 let remoteStream = null;
 
-let facing = "user";
 let solo = false;
 
-let pendingIce = [];
-let remoteReady = false;
+let facing = "user";
+
+
+let selectedTimer = 5;
+
+let selectedBackground =
+  "classic";
+
 
 let captureBusy = false;
 
-let selectedTimer = 5;
-let currentTheme = "classic";
-let currentFrame = "classic";
-
 let lastImages = [];
+
 let currentBlob = null;
 
 
+/*
+ * This value is important.
+ *
+ * Every synchronized action uses
+ * the same server/start timestamp.
+ */
+
+let serverClockOffset = 0;
+
+
 /* =========================
-   BASIC HELPERS
+   WEBRTC CONFIG
+========================= */
+
+const rtcConfig = {
+
+  iceServers: [
+
+    {
+      urls:
+        "stun:stun.l.google.com:19302"
+    },
+
+    {
+      urls:
+        "stun:stun1.l.google.com:19302"
+    }
+
+  ]
+
+};
+
+
+/* =========================
+   SERVER URL
+========================= */
+
+const WS_URL =
+  (location.protocol === "https:"
+    ? "wss://"
+    : "ws://") +
+  location.host;
+
+
+/* =========================
+   STATUS
 ========================= */
 
 function setStatus(text) {
-  $("status").textContent = text;
+
+  $("status").textContent =
+    text;
+
 }
+
+
+/* =========================
+   SLEEP
+========================= */
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
+
 }
 
+
+/* =========================
+   ROOM CODE
+========================= */
+
 function makeRoomCode() {
+
   return Math.random()
     .toString(36)
     .slice(2, 7)
     .toUpperCase();
-}
 
-function signal(message) {
-  if (
-    ws &&
-    ws.readyState === WebSocket.OPEN
-  ) {
-    ws.send(JSON.stringify(message));
-  }
 }
 
 
 /* =========================
-   CAMERA
+   SEND MESSAGE
+========================= */
+
+function signal(message) {
+
+  if (
+    ws &&
+    ws.readyState ===
+      WebSocket.OPEN
+  ) {
+
+    ws.send(
+      JSON.stringify(message)
+    );
+
+  }
+
+}
+
+
+/* =========================
+   SYNCHRONIZED TIME
+========================= */
+
+function syncedNow() {
+
+  return (
+    Date.now() +
+    serverClockOffset
+  );
+
+}
+
+
+/*
+ * If the server sends a timestamp,
+ * use it to keep both devices close.
+ */
+
+function updateClock(message) {
+
+  if (
+    message &&
+    typeof message.serverTime ===
+      "number"
+  ) {
+
+    serverClockOffset =
+      message.serverTime -
+      Date.now();
+
+  }
+
+}
+
+
+/* =========================
+   START CAMERA
 ========================= */
 
 async function startCamera() {
 
   if (
     !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
+    !navigator.mediaDevices
+      .getUserMedia
   ) {
-    throw new Error("Camera API unavailable");
+
+    throw new Error(
+      "Camera is not available."
+    );
+
   }
+
 
   if (stream) {
-    stream.getTracks().forEach(
-      track => track.stop()
-    );
+
+    stream
+      .getTracks()
+      .forEach(
+        track =>
+          track.stop()
+      );
+
   }
 
+
   stream =
-    await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: facing,
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        frameRate: {
-          ideal: 30,
-          max: 30
-        }
-      },
-      audio: false
-    });
+    await navigator.mediaDevices
+      .getUserMedia({
 
-  $("local").srcObject = stream;
+        video: {
 
-  $("local").classList.toggle(
-    "localFeed",
-    facing === "user"
-  );
+          facingMode:
+            facing,
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          },
+
+          frameRate: {
+            ideal: 30,
+            max: 30
+          }
+
+        },
+
+        audio: false
+
+      });
+
+
+  $("local").srcObject =
+    stream;
+
+
+  $("local")
+    .classList
+    .toggle(
+      "localFeed",
+      facing === "user"
+    );
+
 
   try {
+
     await $("local").play();
-  } catch (e) {}
+
+  } catch (error) {}
+
 }
 
 
 /* =========================
-   WEBRTC PEER
+   CREATE PEER
 ========================= */
 
 function setupPeer() {
 
-  pc = new RTCPeerConnection(
-    rtcConfig
-  );
+  pc =
+    new RTCPeerConnection(
+      rtcConfig
+    );
+
 
   remoteStream =
     new MediaStream();
 
+
   $("remote").srcObject =
     remoteStream;
 
+
+  /*
+   * Add our camera.
+   */
+
   if (stream) {
 
-    stream.getTracks().forEach(
-      track => {
-        pc.addTrack(
-          track,
-          stream
-        );
-      }
-    );
+    stream
+      .getTracks()
+      .forEach(
+        track => {
+
+          pc.addTrack(
+            track,
+            stream
+          );
+
+        }
+      );
 
   }
 
 
-  pc.ontrack = event => {
+  /*
+   * Receive friend's camera.
+   */
 
-    if (
-      event.streams &&
-      event.streams[0]
-    ) {
-
-      event.streams[0]
-        .getTracks()
-        .forEach(track => {
-
-          if (
-            !remoteStream
-              .getTracks()
-              .some(
-                oldTrack =>
-                  oldTrack.id === track.id
-              )
-          ) {
-
-            remoteStream.addTrack(
-              track
-            );
-
-          }
-
-        });
-
-    } else if (event.track) {
+  pc.ontrack =
+    event => {
 
       if (
-        !remoteStream
-          .getTracks()
-          .some(
-            oldTrack =>
-              oldTrack.id ===
-              event.track.id
-          )
+        event.streams &&
+        event.streams[0]
       ) {
 
-        remoteStream.addTrack(
-          event.track
-        );
+        event.streams[0]
+          .getTracks()
+          .forEach(
+            track => {
+
+              const exists =
+                remoteStream
+                  .getTracks()
+                  .some(
+                    oldTrack =>
+                      oldTrack.id ===
+                      track.id
+                  );
+
+
+              if (!exists) {
+
+                remoteStream
+                  .addTrack(
+                    track
+                  );
+
+              }
+
+            }
+          );
+
+      } else if (
+        event.track
+      ) {
+
+        const exists =
+          remoteStream
+            .getTracks()
+            .some(
+              oldTrack =>
+                oldTrack.id ===
+                event.track.id
+            );
+
+
+        if (!exists) {
+
+          remoteStream
+            .addTrack(
+              event.track
+            );
+
+        }
 
       }
 
-    }
-
-    $("wait")
-      .classList
-      .add("hidden");
-
-  };
-
-
-  pc.onicecandidate = event => {
-
-    if (event.candidate) {
-
-      signal({
-        type: "ice",
-        candidate: event.candidate
-      });
-
-    }
-
-  };
-
-
-  pc.onconnectionstatechange = () => {
-
-    if (!pc) return;
-
-    const state =
-      pc.connectionState;
-
-    if (state === "connected") {
-
-      setStatus(
-        "Online · Connected"
-      );
 
       $("wait")
         .classList
-        .add("hidden");
+        .add(
+          "hidden"
+        );
 
-    } else if (
-      state === "connecting"
-    ) {
-
-      setStatus(
-        "Connecting…"
-      );
-
-    } else if (
-      state === "disconnected"
-    ) {
-
-      setStatus(
-        "Connection interrupted"
-      );
-
-    } else if (
-      state === "failed"
-    ) {
-
-      setStatus(
-        "Connection failed"
-      );
-
-    } else if (
-      state === "closed"
-    ) {
-
-      setStatus(
-        "Disconnected"
-      );
-
-    }
-
-  };
-
-}
+    };
 
 
-/* =========================
-   ICE
-========================= */
+  /*
+   * ICE candidates.
+   */
 
-async function addIce(candidate) {
+  pc.onicecandidate =
+    event => {
 
-  if (!pc || !candidate) {
-    return;
-  }
+      if (
+        event.candidate
+      ) {
 
-  if (!remoteReady) {
+        signal({
 
-    pendingIce.push(
-      candidate
-    );
+          type:
+            "ice",
 
-    return;
-  }
+          candidate:
+            event.candidate
 
-  try {
+        });
 
-    await pc.addIceCandidate(
-      candidate
-    );
+      }
 
-  } catch (error) {
-
-    console.warn(
-      "ICE error:",
-      error
-    );
-
-  }
-
-}
+    };
 
 
-async function flushIce() {
+  /*
+   * Connection state.
+   */
 
-  if (!pc) return;
+  pc.onconnectionstatechange =
+    () => {
 
-  const candidates =
-    pendingIce.splice(0);
+      if (!pc) {
+        return;
+      }
 
-  for (
-    const candidate
-    of candidates
-  ) {
 
-    try {
+      const state =
+        pc.connectionState;
 
-      await pc.addIceCandidate(
-        candidate
-      );
 
-    } catch (error) {
+      if (
+        state ===
+        "connected"
+      ) {
 
-      console.warn(
-        "ICE flush error:",
-        error
-      );
+        setStatus(
+          "Online · Connected"
+        );
 
-    }
 
-  }
+        $("wait")
+          .classList
+          .add(
+            "hidden"
+          );
+
+      }
+
+      else if (
+        state ===
+        "connecting"
+      ) {
+
+        setStatus(
+          "Connecting…"
+        );
+
+      }
+
+      else if (
+        state ===
+        "disconnected"
+      ) {
+
+        setStatus(
+          "Connection interrupted"
+        );
+
+      }
+
+      else if (
+        state ===
+        "failed"
+      ) {
+
+        setStatus(
+          "Connection failed"
+        );
+
+      }
+
+    };
 
 }
 
 
 /* =========================
-   SIGNALING SERVER
+   SIGNALING CONNECTION
 ========================= */
 
 function connectSignal() {
 
-  ws = new WebSocket(
-    WS_URL
-  );
-
-
-  ws.onopen = () => {
-
-    setStatus(
-      "Connecting…"
+  ws =
+    new WebSocket(
+      WS_URL
     );
 
-    signal({
-      type: "join",
-      room: room,
-      role: role
-    });
 
-  };
-
-
-  ws.onclose = () => {
-
-    if (!solo) {
+  ws.onopen =
+    () => {
 
       setStatus(
-        "Disconnected"
+        "Joining room…"
       );
 
-    }
 
-  };
+      signal({
+
+        type:
+          "join",
+
+        room:
+          room,
+
+        role:
+          role
+
+      });
+
+    };
 
 
-  ws.onerror = () => {
+  ws.onerror =
+    () => {
 
-    setStatus(
-      "Connection error"
-    );
+      setStatus(
+        "Connection error"
+      );
 
-  };
+    };
 
 
-  ws.onmessage = async event => {
+  ws.onclose =
+    () => {
 
-    let message;
+      if (!solo) {
 
-    try {
-
-      message =
-        JSON.parse(
-          event.data
+        setStatus(
+          "Disconnected"
         );
 
-    } catch (error) {
+      }
 
-      return;
-
-    }
+    };
 
 
-    /* FRIEND WAITING */
+  ws.onmessage =
+    async event => {
 
-    if (
-      message.type ===
-      "waiting"
-    ) {
-
-      setStatus(
-        "Waiting for your friend…"
-      );
-
-      $("wait")
-        .classList
-        .remove("hidden");
-
-      return;
-    }
+      let message;
 
 
-    /* BOTH CONNECTED */
+      try {
 
-    if (
-      message.type ===
-      "ready"
-    ) {
+        message =
+          JSON.parse(
+            event.data
+          );
 
-      setStatus(
-        "Connected"
-      );
+      }
 
-      $("wait")
-        .classList
-        .add("hidden");
+      catch (error) {
+
+        return;
+
+      }
 
 
       /*
-       * HOST creates offer.
+       * Update synchronized clock
+       * whenever server time exists.
        */
 
+      updateClock(
+        message
+      );
+
+
+      /* =====================
+         WAITING
+      ===================== */
+
       if (
-        role === "host" &&
-        pc
+        message.type ===
+        "waiting"
       ) {
+
+        setStatus(
+          "Waiting for your friend…"
+        );
+
+
+        $("wait")
+          .classList
+          .remove(
+            "hidden"
+          );
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         READY
+      ===================== */
+
+      if (
+        message.type ===
+        "ready"
+      ) {
+
+        setStatus(
+          "Connected"
+        );
+
+
+        $("wait")
+          .classList
+          .add(
+            "hidden"
+          );
+
+
+        /*
+         * Host creates offer.
+         */
+
+        if (
+          role ===
+          "host" &&
+          pc
+        ) {
+
+          try {
+
+            const offer =
+              await pc.createOffer({
+
+                offerToReceiveVideo:
+                  true,
+
+                offerToReceiveAudio:
+                  false
+
+              });
+
+
+            await pc
+              .setLocalDescription(
+                offer
+              );
+
+
+            signal({
+
+              type:
+                "offer",
+
+              offer:
+                pc.localDescription
+
+            });
+
+          }
+
+          catch (error) {
+
+            console.error(
+              "Offer error:",
+              error
+            );
+
+          }
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         OFFER
+      ===================== */
+
+      if (
+        message.type ===
+        "offer"
+      ) {
+
+        if (!pc) {
+          return;
+        }
+
 
         try {
 
-          const offer =
-            await pc.createOffer({
-              offerToReceiveVideo: true,
-              offerToReceiveAudio: false
-            });
+          await pc
+            .setRemoteDescription(
+              message.offer
+            );
 
-          await pc.setLocalDescription(
-            offer
-          );
+
+          const answer =
+            await pc.createAnswer();
+
+
+          await pc
+            .setLocalDescription(
+              answer
+            );
+
 
           signal({
-            type: "offer",
-            offer: pc.localDescription
+
+            type:
+              "answer",
+
+            answer:
+              pc.localDescription
+
           });
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
           console.error(
-            "Offer error:",
+            "Offer handling error:",
             error
           );
 
         }
 
-      }
 
-      return;
-    }
-
-
-    /* GUEST RECEIVES OFFER */
-
-    if (
-      message.type ===
-      "offer"
-    ) {
-
-      if (!pc) return;
-
-      try {
-
-        await pc.setRemoteDescription(
-          message.offer
-        );
-
-        remoteReady = true;
-
-        await flushIce();
-
-        const answer =
-          await pc.createAnswer();
-
-        await pc.setLocalDescription(
-          answer
-        );
-
-        signal({
-          type: "answer",
-          answer: pc.localDescription
-        });
-
-      } catch (error) {
-
-        console.error(
-          "Answer error:",
-          error
-        );
+        return;
 
       }
 
-      return;
-    }
 
-
-    /* HOST RECEIVES ANSWER */
-
-    if (
-      message.type ===
-      "answer"
-    ) {
-
-      if (!pc) return;
-
-      try {
-
-        await pc.setRemoteDescription(
-          message.answer
-        );
-
-        remoteReady = true;
-
-        await flushIce();
-
-      } catch (error) {
-
-        console.error(
-          "Remote description error:",
-          error
-        );
-
-      }
-
-      return;
-    }
-
-
-    /* ICE */
-
-    if (
-      message.type ===
-      "ice"
-    ) {
-
-      await addIce(
-        message.candidate
-      );
-
-      return;
-    }
-
-
-    /* FRIEND LEFT */
-
-    if (
-      message.type ===
-      "peer-left"
-    ) {
-
-      setStatus(
-        "Friend left the room"
-      );
-
-      $("wait")
-        .classList
-        .remove("hidden");
-
-      return;
-    }
-
-
-    /* ROOM FULL */
-
-    if (
-      message.type ===
-      "full"
-    ) {
-
-      alert(
-        "This room already has two people."
-      );
-
-      return;
-    }
-
-
-    /*
-     * PHOTO SESSION MESSAGE
-     *
-     * Part 3 will provide
-     * runPhotoSession().
-     */
-
-    if (
-      message.type ===
-      "start-session"
-    ) {
+      /* =====================
+         ANSWER
+      ===================== */
 
       if (
-        typeof runPhotoSession ===
-        "function"
+        message.type ===
+        "answer"
       ) {
 
-        await runPhotoSession(
-          message
-        );
+        if (!pc) {
+          return;
+        }
+
+
+        try {
+
+          await pc
+            .setRemoteDescription(
+              message.answer
+            );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "Answer error:",
+            error
+          );
+
+        }
+
+
+        return;
 
       }
 
-      return;
-    }
 
-  };
+      /* =====================
+         ICE
+      ===================== */
+
+      if (
+        message.type ===
+        "ice"
+      ) {
+
+        if (
+          pc &&
+          message.candidate
+        ) {
+
+          try {
+
+            await pc
+              .addIceCandidate(
+                message.candidate
+              );
+
+          }
+
+          catch (error) {
+
+            console.warn(
+              "ICE error:",
+              error
+            );
+
+          }
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         FRIEND LEFT
+      ===================== */
+
+      if (
+        message.type ===
+        "peer-left"
+      ) {
+
+        setStatus(
+          "Friend left the room"
+        );
+
+
+        $("wait")
+          .classList
+          .remove(
+            "hidden"
+          );
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         ROOM FULL
+      ===================== */
+
+      if (
+        message.type ===
+        "full"
+      ) {
+
+        alert(
+          "This room already has two people."
+        );
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         SYNCHRONIZED SESSION
+      ===================== */
+
+      if (
+        message.type ===
+        "start-session"
+      ) {
+
+        /*
+         * Part 4 will contain
+         * runPhotoSession().
+         */
+
+        if (
+          typeof
+            runPhotoSession ===
+          "function"
+        ) {
+
+          await runPhotoSession(
+            message
+          );
+
+        }
+
+
+        return;
+
+      }
+
+
+      /* =====================
+         SYNCHRONIZED BACKGROUND
+      ===================== */
+
+      if (
+        message.type ===
+        "background-change"
+      ) {
+
+        /*
+         * Part 5 will contain
+         * applyBackground().
+         */
+
+        if (
+          typeof
+            applyBackground ===
+          "function"
+        ) {
+
+          applyBackground(
+            message.background,
+            false
+          );
+
+        }
+
+
+        return;
+
+      }
+
+    };
 
 }
 
@@ -1745,9 +2439,15 @@ async function enterBooth(
 ) {
 
   room =
-    String(newRoom)
+    String(
+      newRoom
+    )
       .toUpperCase()
-      .slice(0, 8);
+      .slice(
+        0,
+        8
+      );
+
 
   role =
     newRole;
@@ -1763,6 +2463,7 @@ async function enterBooth(
     .display =
     "none";
 
+
   $("booth")
     .style
     .display =
@@ -1774,43 +2475,66 @@ async function enterBooth(
     await startCamera();
 
 
+    /*
+     * SOLO MODE
+     */
+
     if (solo) {
 
       $("modeLabel")
         .textContent =
         "Solo Photo Booth";
 
+
       $("wait")
         .classList
-        .add("hidden");
+        .add(
+          "hidden"
+        );
 
-      $("remote")
+
+      $("remotePane")
         .style
         .display =
         "none";
+
+
+      $("centerHeart")
+        .style
+        .display =
+        "none";
+
+
+      $("cameraTogether")
+        .classList
+        .add(
+          "soloStage"
+        );
+
 
       $("hostNotice")
         .style
         .display =
         "none";
 
-      document
-        .querySelector(".stage")
-        .style
-        .gridTemplateColumns =
-        "1fr";
 
       setStatus(
         "Solo Demo"
       );
 
+
       return;
+
     }
 
 
+    /*
+     * NORMAL TWO-PERSON MODE
+     */
+
     $("modeLabel")
       .textContent =
-      "Photo Booth";
+      "Together Photobooth";
 
 
     $("hostNotice")
@@ -1823,14 +2547,18 @@ async function enterBooth(
 
     setupPeer();
 
+
     connectSignal();
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.error(
       "Camera error:",
       error
     );
+
 
     alert(
       "Camera access failed.\n\n" +
@@ -1838,37 +2566,90 @@ async function enterBooth(
       "for this website and try again."
     );
 
+
     location.reload();
 
   }
 
-            }
+        }
   /* =========================
-   COUNTDOWN
+   SYNCHRONIZED COUNTDOWN
 ========================= */
 
-async function showCountdown(seconds) {
+async function showCountdownUntil(
+  startAt,
+  seconds
+) {
 
-  const count = $("count");
+  const count =
+    $("count");
 
-  for (
-    let number = seconds;
-    number >= 1;
-    number--
+  /*
+   * Wait until the exact shared
+   * start time.
+   */
+
+  while (
+    syncedNow() < startAt
   ) {
 
-    count.textContent = number;
+    await sleep(20);
 
-    count.classList.remove("show");
+  }
+
+
+  /*
+   * Countdown is based on the
+   * shared clock instead of each
+   * phone's setTimeout chain.
+   */
+
+  const endAt =
+    startAt +
+    seconds * 1000;
+
+
+  while (true) {
+
+    const remaining =
+      endAt -
+      syncedNow();
+
+
+    if (remaining <= 0) {
+      break;
+    }
+
+
+    const number =
+      Math.ceil(
+        remaining / 1000
+      );
+
+
+    count.textContent =
+      number;
+
+
+    count.classList
+      .remove("show");
+
 
     void count.offsetWidth;
 
-    count.classList.add("show");
 
-    await sleep(1000);
+    count.classList
+      .add("show");
+
+
+    await sleep(60);
+
   }
 
-  count.classList.remove("show");
+
+  count.classList
+    .remove("show");
+
 }
 
 
@@ -1878,68 +2659,23 @@ async function showCountdown(seconds) {
 
 async function cameraFlash() {
 
-  const flash = $("flash");
+  const flash =
+    $("flash");
 
-  flash.classList.remove("show");
+
+  flash.classList
+    .remove("show");
+
 
   void flash.offsetWidth;
 
-  flash.classList.add("show");
+
+  flash.classList
+    .add("show");
+
 
   await sleep(180);
-}
 
-
-/* =========================
-   LOVE HEART EFFECT
-========================= */
-
-function createHearts() {
-
-  const stage = $("stage");
-
-  const symbols = [
-    "♥",
-    "♡",
-    "❤",
-    "💕"
-  ];
-
-  for (
-    let i = 0;
-    i < 14;
-    i++
-  ) {
-
-    const heart =
-      document.createElement("div");
-
-    heart.className = "heart";
-
-    heart.textContent =
-      symbols[
-        Math.floor(
-          Math.random() *
-          symbols.length
-        )
-      ];
-
-    heart.style.left =
-      (5 + Math.random() * 90) + "%";
-
-    heart.style.top =
-      (45 + Math.random() * 45) + "%";
-
-    heart.style.animationDelay =
-      (Math.random() * .5) + "s";
-
-    stage.appendChild(heart);
-
-    setTimeout(
-      () => heart.remove(),
-      3200
-    );
-  }
 }
 
 
@@ -1947,11 +2683,13 @@ function createHearts() {
    WAIT FOR VIDEO
 ========================= */
 
-async function waitForVideo(video) {
+async function waitForVideo(
+  video
+) {
 
   for (
     let i = 0;
-    i < 30;
+    i < 40;
     i++
   ) {
 
@@ -1962,17 +2700,107 @@ async function waitForVideo(video) {
     ) {
 
       return true;
+
     }
 
+
     await sleep(100);
+
   }
 
+
   return false;
+
 }
 
 
 /* =========================
-   DRAW CAMERA VIDEO
+   FLOATING HEARTS
+========================= */
+
+function createFloatingHearts() {
+
+  const stage =
+    $("stage");
+
+
+  const symbols = [
+    "♥",
+    "♡",
+    "❤",
+    "💕"
+  ];
+
+
+  for (
+    let i = 0;
+    i < 12;
+    i++
+  ) {
+
+    const heart =
+      document.createElement(
+        "div"
+      );
+
+
+    heart.className =
+      "floatingHeart";
+
+
+    heart.textContent =
+      symbols[
+        Math.floor(
+          Math.random() *
+          symbols.length
+        )
+      ];
+
+
+    heart.style.left =
+      (
+        8 +
+        Math.random() * 84
+      ) +
+      "%";
+
+
+    heart.style.top =
+      (
+        55 +
+        Math.random() * 30
+      ) +
+      "%";
+
+
+    heart.style.animationDelay =
+      (
+        Math.random() * .5
+      ) +
+      "s";
+
+
+    stage.appendChild(
+      heart
+    );
+
+
+    setTimeout(
+      () => {
+
+        heart.remove();
+
+      },
+      3200
+    );
+
+  }
+
+}
+
+
+/* =========================
+   COVER-CROP VIDEO
 ========================= */
 
 function drawCover(
@@ -1989,14 +2817,21 @@ function drawCover(
     !video ||
     video.readyState < 2
   ) {
+
     return;
+
   }
 
+
   const videoWidth =
-    video.videoWidth || 1280;
+    video.videoWidth ||
+    1280;
+
 
   const videoHeight =
-    video.videoHeight || 720;
+    video.videoHeight ||
+    720;
+
 
   const scale =
     Math.max(
@@ -2004,19 +2839,31 @@ function drawCover(
       height / videoHeight
     );
 
+
   const sourceWidth =
     width / scale;
+
 
   const sourceHeight =
     height / scale;
 
+
   const sourceX =
-    (videoWidth - sourceWidth) / 2;
+    (
+      videoWidth -
+      sourceWidth
+    ) / 2;
+
 
   const sourceY =
-    (videoHeight - sourceHeight) / 2;
+    (
+      videoHeight -
+      sourceHeight
+    ) / 2;
+
 
   ctx.save();
+
 
   if (mirror) {
 
@@ -2025,97 +2872,301 @@ function drawCover(
       y
     );
 
-    ctx.scale(-1, 1);
 
-    ctx.drawImage(
-      video,
-      sourceX,
-      sourceY,
-      sourceWidth,
-      sourceHeight,
-      0,
-      0,
-      width,
-      height
+    ctx.scale(
+      -1,
+      1
     );
 
-  } else {
 
     ctx.drawImage(
+
       video,
+
       sourceX,
       sourceY,
+
       sourceWidth,
       sourceHeight,
-      x,
-      y,
+
+      0,
+      0,
+
       width,
       height
+
     );
+
   }
 
+  else {
+
+    ctx.drawImage(
+
+      video,
+
+      sourceX,
+      sourceY,
+
+      sourceWidth,
+      sourceHeight,
+
+      x,
+      y,
+
+      width,
+      height
+
+    );
+
+  }
+
+
   ctx.restore();
+
 }
 
 
 /* =========================
-   CAPTURE COMBINED PHOTO
+   LIVE PHOTO BACKGROUND
 ========================= */
 
-async function captureCombinedPhoto() {
+function drawPhotoBackground(
+  ctx,
+  width,
+  height,
+  background
+) {
 
-  await waitForVideo(
-    $("local")
-  );
+  if (
+    background ===
+    "love"
+  ) {
 
-  if (!solo) {
+    const gradient =
+      ctx.createLinearGradient(
+        0,
+        0,
+        width,
+        height
+      );
 
-    await waitForVideo(
-      $("remote")
+
+    gradient.addColorStop(
+      0,
+      "#3a091f"
     );
+
+
+    gradient.addColorStop(
+      .5,
+      "#160714"
+    );
+
+
+    gradient.addColorStop(
+      1,
+      "#3a0a26"
+    );
+
+
+    ctx.fillStyle =
+      gradient;
+
+
+    ctx.fillRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+
+    return;
+
   }
 
 
-  const canvas =
-    document.createElement("canvas");
-
-
-  const width =
-    solo ? 1280 : 1600;
-
-  const height = 1000;
-
-
-  canvas.width = width;
-  canvas.height = height;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  /* Background */
-
-  if (currentTheme === "love") {
-
-    ctx.fillStyle = "#260713";
-
-  } else if (
-    currentTheme === "retro"
+  if (
+    background ===
+    "midnight"
   ) {
 
-    ctx.fillStyle = "#e9dcc1";
+    const gradient =
+      ctx.createLinearGradient(
+        0,
+        0,
+        width,
+        height
+      );
 
-  } else if (
-    currentTheme === "neon"
-  ) {
 
-    ctx.fillStyle = "#080514";
+    gradient.addColorStop(
+      0,
+      "#090d2a"
+    );
 
-  } else {
 
-    ctx.fillStyle = "#08080d";
+    gradient.addColorStop(
+      .5,
+      "#08091a"
+    );
+
+
+    gradient.addColorStop(
+      1,
+      "#16102e"
+    );
+
+
+    ctx.fillStyle =
+      gradient;
+
+
+    ctx.fillRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+
+    return;
+
   }
+
+
+  if (
+    background ===
+    "dreamy"
+  ) {
+
+    const gradient =
+      ctx.createLinearGradient(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+    gradient.addColorStop(
+      0,
+      "#3a2040"
+    );
+
+
+    gradient.addColorStop(
+      .5,
+      "#201326"
+    );
+
+
+    gradient.addColorStop(
+      1,
+      "#281b3b"
+    );
+
+
+    ctx.fillStyle =
+      gradient;
+
+
+    ctx.fillRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+
+    return;
+
+  }
+
+
+  if (
+    background ===
+    "retro"
+  ) {
+
+    ctx.fillStyle =
+      "#302615";
+
+
+    ctx.fillRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+
+    ctx.strokeStyle =
+      "#d7b86b22";
+
+
+    ctx.lineWidth =
+      10;
+
+
+    for (
+      let x = -height;
+      x < width + height;
+      x += 35
+    ) {
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        x,
+        0
+      );
+
+      ctx.lineTo(
+        x + height,
+        height
+      );
+
+      ctx.stroke();
+
+    }
+
+
+    return;
+
+  }
+
+
+  if (
+    background ===
+    "minimal"
+  ) {
+
+    ctx.fillStyle =
+      "#111";
+
+
+    ctx.fillRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Classic.
+   */
+
+  ctx.fillStyle =
+    "#0c0b12";
+
 
   ctx.fillRect(
     0,
@@ -2124,142 +3175,424 @@ async function captureCombinedPhoto() {
     height
   );
 
+}
 
-  /* Camera area */
 
-  const photoTop = 65;
-  const photoHeight = 830;
+/* =========================
+   DRAW SHARED COMPOSITION
+========================= */
+
+async function captureCombinedPhoto() {
+
+  await waitForVideo(
+    $("local")
+  );
+
+
+  if (!solo) {
+
+    await waitForVideo(
+      $("remote")
+    );
+
+  }
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+
+  const width =
+    solo
+      ? 1400
+      : 1600;
+
+
+  const height =
+    1050;
+
+
+  canvas.width =
+    width;
+
+
+  canvas.height =
+    height;
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  /*
+   * Background matches
+   * the live background.
+   */
+
+  drawPhotoBackground(
+    ctx,
+    width,
+    height,
+    selectedBackground
+  );
+
+
+  /*
+   * Main photo area.
+   */
+
+  const photoTop =
+    70;
+
+
+  const photoHeight =
+    850;
+
+
+  const photoWidth =
+    width -
+    80;
+
+
+  const photoLeft =
+    40;
+
+
+  /*
+   * Clip the entire shared
+   * composition to rounded corners.
+   */
+
+  ctx.save();
+
+
+  ctx.beginPath();
+
+
+  ctx.roundRect(
+    photoLeft,
+    photoTop,
+    photoWidth,
+    photoHeight,
+    35
+  );
+
+
+  ctx.clip();
 
 
   if (solo) {
 
     drawCover(
+
       ctx,
+
       $("local"),
-      0,
+
+      photoLeft,
       photoTop,
-      width,
+
+      photoWidth,
       photoHeight,
+
       facing === "user"
+
     );
 
-  } else {
+  }
 
-    const halfWidth =
-      width / 2;
+  else {
+
+    /*
+     * Instead of two completely
+     * separate boxes, overlap the
+     * two images slightly.
+     */
+
+    const overlap =
+      70;
+
+
+    const eachWidth =
+      (
+        photoWidth +
+        overlap
+      ) / 2;
 
 
     /*
-     * YOU
+     * LEFT PERSON
      */
 
     drawCover(
+
       ctx,
+
       $("local"),
-      0,
+
+      photoLeft,
       photoTop,
-      halfWidth,
+
+      eachWidth,
       photoHeight,
+
       facing === "user"
+
     );
 
 
     /*
-     * FRIEND
+     * RIGHT PERSON
      */
 
     drawCover(
+
       ctx,
+
       $("remote"),
-      halfWidth,
+
+      photoLeft +
+        eachWidth -
+        overlap,
+
       photoTop,
-      halfWidth,
+
+      eachWidth,
       photoHeight,
+
       false
+
     );
 
 
     /*
-     * CENTER DIVIDER
+     * Soft center transition.
+     */
+
+    const centerX =
+      photoLeft +
+      photoWidth / 2;
+
+
+    const centerGradient =
+      ctx.createLinearGradient(
+
+        centerX - 110,
+        0,
+
+        centerX + 110,
+        0
+
+      );
+
+
+    centerGradient.addColorStop(
+      0,
+      "rgba(0,0,0,0)"
+    );
+
+
+    centerGradient.addColorStop(
+      .5,
+      "rgba(0,0,0,.22)"
+    );
+
+
+    centerGradient.addColorStop(
+      1,
+      "rgba(0,0,0,0)"
+    );
+
+
+    ctx.fillStyle =
+      centerGradient;
+
+
+    ctx.fillRect(
+      centerX - 110,
+      photoTop,
+      220,
+      photoHeight
+    );
+
+
+    /*
+     * Shared heart in the middle.
      */
 
     ctx.fillStyle =
-      "#ffffff";
+      "rgba(255,255,255,.92)";
 
-    ctx.fillRect(
-      halfWidth - 2,
-      photoTop,
-      4,
-      photoHeight
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+      centerX,
+      photoTop +
+        photoHeight / 2,
+      34,
+      0,
+      Math.PI * 2
     );
+
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+      "#ff3f9f";
+
+
+    ctx.font =
+      "900 31px system-ui";
+
+
+    ctx.textAlign =
+      "center";
+
+
+    ctx.textBaseline =
+      "middle";
+
+
+    ctx.fillText(
+      "♥",
+      centerX,
+      photoTop +
+        photoHeight / 2
+    );
+
   }
 
 
-  /* Bottom information */
+  ctx.restore();
+
+
+  /*
+   * Outer border.
+   */
+
+  ctx.strokeStyle =
+    selectedBackground ===
+    "love"
+      ? "#ff78bd"
+      : "#ffffff";
+
+
+  ctx.lineWidth =
+    9;
+
+
+  ctx.beginPath();
+
+
+  ctx.roundRect(
+    photoLeft,
+    photoTop,
+    photoWidth,
+    photoHeight,
+    35
+  );
+
+
+  ctx.stroke();
+
+
+  /*
+   * Header.
+   */
 
   ctx.fillStyle =
-    "rgba(0,0,0,.55)";
+    "#ffffff";
+
+
+  ctx.textAlign =
+    "center";
+
+
+  ctx.textBaseline =
+    "alphabetic";
+
+
+  ctx.font =
+    "900 43px system-ui";
+
+
+  ctx.fillText(
+    "PAIRPIC",
+    width / 2,
+    45
+  );
+
+
+  /*
+   * Love decoration.
+   */
+
+  if (
+    selectedBackground ===
+    "love"
+  ) {
+
+    ctx.fillStyle =
+      "#ff82c8";
+
+
+    ctx.font =
+      "32px system-ui";
+
+
+    ctx.fillText(
+      "♥",
+      55,
+      47
+    );
+
+
+    ctx.fillText(
+      "♥",
+      width - 55,
+      47
+    );
+
+  }
+
+
+  /*
+   * Footer.
+   */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.45)";
+
 
   ctx.fillRect(
     0,
-    photoTop + photoHeight,
+    height - 85,
     width,
-    height -
-      photoTop -
-      photoHeight
+    85
   );
 
 
   ctx.fillStyle =
     "#ffffff";
 
-  ctx.textAlign =
-    "center";
 
   ctx.font =
-    "900 34px system-ui";
+    "700 17px system-ui";
+
 
   ctx.fillText(
-    "PAIRPIC",
+    new Date()
+      .toLocaleDateString(),
     width / 2,
-    height - 52
+    height - 30
   );
-
-
-  ctx.font =
-    "700 16px system-ui";
-
-  ctx.fillText(
-    new Date().toLocaleDateString(),
-    width / 2,
-    height - 24
-  );
-
-
-  /* Love decorations */
-
-  if (
-    currentTheme === "love"
-  ) {
-
-    ctx.fillStyle =
-      "#ff5cad";
-
-    ctx.font =
-      "36px system-ui";
-
-    ctx.fillText(
-      "♥",
-      45,
-      48
-    );
-
-    ctx.fillText(
-      "♥",
-      width - 45,
-      48
-    );
-  }
 
 
   return new Promise(
@@ -2270,132 +3603,7 @@ async function captureCombinedPhoto() {
         .94
       )
   );
-}
 
-
-/* =========================
-   FRAME DRAWING
-========================= */
-
-function drawFrame(
-  ctx,
-  width,
-  height,
-  frame
-) {
-
-  ctx.lineWidth = 32;
-
-  ctx.textAlign = "center";
-
-
-  /* CLASSIC */
-
-  if (
-    frame === "classic"
-  ) {
-
-    ctx.strokeStyle =
-      "#ffffff";
-
-    ctx.strokeRect(
-      18,
-      18,
-      width - 36,
-      height - 36
-    );
-  }
-
-
-  /* LOVE */
-
-  if (
-    frame === "love"
-  ) {
-
-    ctx.strokeStyle =
-      "#ff3f9f";
-
-    ctx.strokeRect(
-      18,
-      18,
-      width - 36,
-      height - 36
-    );
-
-    ctx.fillStyle =
-      "#ff3f9f";
-
-    ctx.font =
-      "900 26px system-ui";
-
-    ctx.fillText(
-      "♥ TOGETHER ♥",
-      width / 2,
-      height - 20
-    );
-  }
-
-
-  /* RETRO */
-
-  if (
-    frame === "retro"
-  ) {
-
-    ctx.strokeStyle =
-      "#d2ae6c";
-
-    ctx.strokeRect(
-      18,
-      18,
-      width - 36,
-      height - 36
-    );
-  }
-
-
-  /* NEON */
-
-  if (
-    frame === "neon"
-  ) {
-
-    ctx.strokeStyle =
-      "#a16cff";
-
-    ctx.shadowColor =
-      "#ff3fa3";
-
-    ctx.shadowBlur = 25;
-
-    ctx.strokeRect(
-      18,
-      18,
-      width - 36,
-      height - 36
-    );
-
-    ctx.shadowBlur = 0;
-  }
-
-
-  /* MINIMAL */
-
-  if (
-    frame === "minimal"
-  ) {
-
-    ctx.strokeStyle =
-      "#222";
-
-    ctx.strokeRect(
-      18,
-      18,
-      width - 36,
-      height - 36
-    );
-  }
 }
 
 
@@ -2404,8 +3612,7 @@ function drawFrame(
 ========================= */
 
 async function buildPhotoStrip(
-  blobs,
-  frame
+  blobs
 ) {
 
   const images =
@@ -2414,46 +3621,83 @@ async function buildPhotoStrip(
       blobs.map(
         blob =>
           new Promise(
-            (resolve, reject) => {
+            (
+              resolve,
+              reject
+            ) => {
 
               const image =
                 new Image();
 
+
               image.onload =
-                () => resolve(image);
+                () => {
+
+                  URL.revokeObjectURL(
+                    image.src
+                  );
+
+
+                  resolve(
+                    image
+                  );
+
+                };
+
 
               image.onerror =
                 reject;
+
 
               image.src =
                 URL.createObjectURL(
                   blob
                 );
+
             }
           )
       )
+
     );
 
 
-  const width = 820;
+  const width =
+    820;
 
-  const padding = 40;
 
-  const gap = 18;
+  const padding =
+    38;
 
-  const photoHeight = 400;
 
-  const top = 145;
+  const top =
+    145;
 
-  const bottom = 105;
+
+  const gap =
+    18;
+
+
+  const photoHeight =
+    390;
+
+
+  const bottom =
+    105;
 
 
   const height =
     top +
-    images.length *
-      photoHeight +
-    (images.length - 1) *
-      gap +
+    (
+      images.length *
+      photoHeight
+    ) +
+    (
+      (
+        images.length -
+        1
+      ) *
+      gap
+    ) +
     bottom;
 
 
@@ -2466,6 +3710,7 @@ async function buildPhotoStrip(
   canvas.width =
     width;
 
+
   canvas.height =
     height;
 
@@ -2476,33 +3721,55 @@ async function buildPhotoStrip(
     );
 
 
-  /* Strip background */
+  /*
+   * Strip background.
+   */
 
   if (
-    frame === "love"
+    selectedBackground ===
+    "love"
   ) {
 
     ctx.fillStyle =
       "#fff0f7";
 
-  } else if (
-    frame === "retro"
+  }
+
+  else if (
+    selectedBackground ===
+    "retro"
   ) {
 
     ctx.fillStyle =
       "#eadfc5";
 
-  } else if (
-    frame === "neon"
+  }
+
+  else if (
+    selectedBackground ===
+    "midnight"
   ) {
 
     ctx.fillStyle =
-      "#090713";
+      "#08091a";
 
-  } else {
+  }
+
+  else if (
+    selectedBackground ===
+    "dreamy"
+  ) {
+
+    ctx.fillStyle =
+      "#24172d";
+
+  }
+
+  else {
 
     ctx.fillStyle =
       "#ffffff";
+
   }
 
 
@@ -2514,18 +3781,24 @@ async function buildPhotoStrip(
   );
 
 
-  /* Title */
+  /*
+   * Header.
+   */
 
   ctx.textAlign =
     "center";
 
+
   ctx.fillStyle =
-    frame === "retro"
-      ? "#241a0d"
+    selectedBackground ===
+      "love"
+      ? "#a82c67"
       : "#111";
 
+
   ctx.font =
-    "900 58px system-ui";
+    "900 55px system-ui";
+
 
   ctx.fillText(
     "PAIRPIC",
@@ -2535,7 +3808,8 @@ async function buildPhotoStrip(
 
 
   ctx.font =
-    "700 19px system-ui";
+    "700 18px system-ui";
+
 
   ctx.fillText(
     "4 MOMENTS TOGETHER",
@@ -2544,128 +3818,169 @@ async function buildPhotoStrip(
   );
 
 
-  /* Photos */
+  /*
+   * Photos.
+   */
 
   images.forEach(
-    (image, index) => {
+    (
+      image,
+      index
+    ) => {
 
       const y =
         top +
         index *
-          (photoHeight + gap);
+        (
+          photoHeight +
+          gap
+        );
 
 
-      ctx.save();
-
-      ctx.beginPath();
-
-      ctx.roundRect(
-        padding,
-        y,
-        width -
-          padding * 2,
-        photoHeight,
-        10
-      );
-
-      ctx.clip();
-
-
-      const areaWidth =
+      const photoWidth =
         width -
         padding * 2;
 
 
+      ctx.save();
+
+
+      ctx.beginPath();
+
+
+      ctx.roundRect(
+        padding,
+        y,
+        photoWidth,
+        photoHeight,
+        13
+      );
+
+
+      ctx.clip();
+
+
       const scale =
         Math.max(
-          areaWidth / image.width,
-          photoHeight / image.height
+
+          photoWidth /
+            image.width,
+
+          photoHeight /
+            image.height
+
         );
 
 
       const sourceWidth =
-        areaWidth / scale;
+        photoWidth /
+        scale;
+
 
       const sourceHeight =
-        photoHeight / scale;
+        photoHeight /
+        scale;
 
 
       const sourceX =
-        (image.width -
-          sourceWidth) / 2;
+        (
+          image.width -
+          sourceWidth
+        ) / 2;
+
 
       const sourceY =
-        (image.height -
-          sourceHeight) / 2;
+        (
+          image.height -
+          sourceHeight
+        ) / 2;
 
 
       ctx.drawImage(
+
         image,
+
         sourceX,
         sourceY,
+
         sourceWidth,
         sourceHeight,
+
         padding,
         y,
-        areaWidth,
+
+        photoWidth,
         photoHeight
+
       );
 
 
       ctx.restore();
 
+
+      /*
+       * Photo number.
+       */
+
+      ctx.fillStyle =
+        "rgba(0,0,0,.6)";
+
+
+      ctx.beginPath();
+
+
+      ctx.arc(
+        padding + 30,
+        y + 30,
+        17,
+        0,
+        Math.PI * 2
+      );
+
+
+      ctx.fill();
+
+
+      ctx.fillStyle =
+        "#fff";
+
+
+      ctx.font =
+        "900 15px system-ui";
+
+
+      ctx.fillText(
+        String(
+          index + 1
+        ),
+        padding + 30,
+        y + 35
+      );
+
     }
   );
 
 
-  /* Love decoration */
-
-  if (
-    frame === "love"
-  ) {
-
-    ctx.fillStyle =
-      "#ff3f9f";
-
-    ctx.font =
-      "30px system-ui";
-
-    ctx.fillText(
-      "♥",
-      35,
-      65
-    );
-
-    ctx.fillText(
-      "♥",
-      width - 35,
-      65
-    );
-  }
-
-
-  /* Date */
+  /*
+   * Footer.
+   */
 
   ctx.fillStyle =
-    frame === "retro"
-      ? "#241a0d"
+    selectedBackground ===
+      "love"
+      ? "#a82c67"
       : "#333";
+
 
   ctx.font =
     "700 18px system-ui";
 
+
   ctx.fillText(
-    new Date().toLocaleDateString(),
+    new Date()
+      .toLocaleDateString(),
     width / 2,
     height - 35
-  );
-
-
-  drawFrame(
-    ctx,
-    width,
-    height,
-    frame
   );
 
 
@@ -2677,6 +3992,7 @@ async function buildPhotoStrip(
         .94
       )
   );
+
 }
 
 
@@ -2699,210 +4015,399 @@ function showResult() {
       : "PHOTO";
 
 
-  if (currentBlob) {
+  if (
+    currentBlob
+  ) {
 
     $("photo")
       .src =
       URL.createObjectURL(
         currentBlob
       );
+
   }
 
 
   $("aiNotice")
     .textContent =
     lastImages.length > 1
-      ? "Your 4-photo strip is ready."
+      ? "Your shared 4-photo strip is ready."
       : "Your shared photo is ready.";
-}
 
-
-/* =========================
-   RUN PHOTO SESSION
+  }
+  /* =========================
+   PHOTO SESSION ENGINE
 ========================= */
 
-async function runPhotoSession(
-  session
-) {
+async function runPhotoSession(session) {
 
   if (captureBusy) {
     return;
   }
 
-
   captureBusy = true;
 
+  try {
 
-  /*
-   * Wait for the shared start time.
-   */
+    const startAt =
+      Number(session.startAt);
 
-  const delay =
-    Math.max(
-      0,
-      Number(session.startAt) -
-      Date.now()
-    );
-
-
-  if (delay > 0) {
-
-    await sleep(delay);
-  }
-
-
-  /*
-   * SINGLE PHOTO
-   */
-
-  if (
-    session.mode === "single"
-  ) {
-
-    await showCountdown(
+    const timer =
       Number(
         session.timer || 5
-      )
+      );
+
+    /*
+     * Everyone waits for exactly
+     * the same timestamp.
+     */
+
+    await showCountdownUntil(
+      startAt,
+      timer
     );
 
+
+    /* =====================
+       SINGLE PHOTO
+    ===================== */
+
+    if (
+      session.mode ===
+      "single"
+    ) {
+
+      await cameraFlash();
+
+
+      const image =
+        await captureCombinedPhoto();
+
+
+      lastImages = [
+        image
+      ];
+
+
+      currentBlob =
+        image;
+
+
+      showResult();
+
+
+      captureBusy = false;
+
+      return;
+    }
+
+
+    /* =====================
+       4 PHOTO STRIP
+    ===================== */
+
+    lastImages = [];
+
+
+    /*
+     * The first photo has already
+     * used the synchronized countdown.
+     */
 
     await cameraFlash();
 
 
-    const image =
-      await captureCombinedPhoto();
-
-
-    lastImages =
-      [image];
-
-    currentBlob =
-      image;
-
-
-    showResult();
-
-
-    captureBusy = false;
-
-    return;
-  }
-
-
-  /*
-   * 4 PHOTO STRIP
-   */
-
-  lastImages = [];
-
-
-  for (
-    let i = 0;
-    i < 4;
-    i++
-  ) {
-
-    await showCountdown(
-      Number(
-        session.timer || 5
-      )
-    );
-
-
-    await cameraFlash();
-
-
-    const image =
+    let firstImage =
       await captureCombinedPhoto();
 
 
     lastImages.push(
-      image
+      firstImage
     );
 
 
     /*
-     * Hearts during Love theme.
+     * Remaining three photos.
+     *
+     * Each photo gets a NEW shared
+     * timestamp sent by the host.
+     *
+     * This prevents the two phones
+     * from slowly drifting apart.
      */
 
-    if (
-      currentTheme === "love"
+    for (
+      let i = 1;
+      i < 4;
+      i++
     ) {
 
-      createHearts();
+      if (
+        role === "host" &&
+        !solo
+      ) {
+
+        const nextStart =
+          syncedNow() +
+          1200;
+
+
+        signal({
+
+          type:
+            "next-photo",
+
+          startAt:
+            nextStart,
+
+          timer:
+            timer,
+
+          photoNumber:
+            i + 1
+
+        });
+
+
+        await showCountdownUntil(
+          nextStart,
+          timer
+        );
+
+      }
+
+      else if (
+        solo
+      ) {
+
+        const nextStart =
+          syncedNow() +
+          300;
+
+
+        await showCountdownUntil(
+          nextStart,
+          timer
+        );
+
+      }
+
+      else {
+
+        /*
+         * Guest waits for the
+         * next-photo message.
+         *
+         * The WebSocket handler below
+         * handles this case.
+         */
+
+        await waitForNextPhoto();
+      }
+
+
+      await cameraFlash();
+
+
+      const image =
+        await captureCombinedPhoto();
+
+
+      lastImages.push(
+        image
+      );
+
+
+      if (
+        selectedBackground ===
+        "love"
+      ) {
+
+        createFloatingHearts();
+
+      }
+
+
+      if (
+        i < 3
+      ) {
+
+        await sleep(250);
+
+      }
+
     }
 
 
-    /*
-     * Small pause between photos.
-     */
+    currentBlob =
+      await buildPhotoStrip(
+        lastImages
+      );
 
-    if (i < 3) {
 
-      await sleep(900);
-    }
+    showResult();
 
   }
 
+  catch (error) {
 
-  currentBlob =
-    await buildPhotoStrip(
-      lastImages,
-      currentFrame
+    console.error(
+      "Photo session error:",
+      error
     );
 
+    alert(
+      "Something went wrong while taking the photo. Please try again."
+    );
 
-  showResult();
+  }
 
 
   captureBusy = false;
+
+}
+
+
+/* =========================
+   NEXT PHOTO WAITING
+========================= */
+
+let nextPhotoResolver =
+  null;
+
+
+function waitForNextPhoto() {
+
+  return new Promise(
+    resolve => {
+
+      nextPhotoResolver =
+        resolve;
+
+    }
+  );
+
+}
+
+
+/* =========================
+   RECEIVE NEXT PHOTO
+========================= */
+
+function handleNextPhoto(
+  message
+) {
+
+  if (
+    nextPhotoResolver
+  ) {
+
+    const resolve =
+      nextPhotoResolver;
+
+
+    nextPhotoResolver =
+      null;
+
+
+    /*
+     * Start the countdown using
+     * the host's exact timestamp.
+     */
+
+    resolve(
+      showCountdownUntil(
+        Number(
+          message.startAt
+        ),
+        Number(
+          message.timer || 5
+        )
+      )
+    );
+
   }
-  /* =========================
+
+}
+
+
+/* =========================
    START PHOTO SESSION
 ========================= */
-async function startPhotoSession(mode) {
 
-  if (captureBusy) {
-    return;
-  }
+async function startPhotoSession(
+  mode
+) {
 
-  /* Solo mode */
-  if (solo) {
-
-    const session = {
-      type: "start-session",
-      mode: mode,
-      count: mode === "strip" ? 4 : 1,
-      timer: selectedTimer,
-
-      /*
-       * Give the local camera a small
-       * head start too.
-       */
-      startAt: Date.now() + 300
-    };
-
-    await runPhotoSession(session);
+  if (
+    captureBusy
+  ) {
 
     return;
+
   }
 
 
-  /* Only room creator starts */
-  if (role !== "host") {
+  /*
+   * Guest cannot start a room
+   * session.
+   */
+
+  if (
+    !solo &&
+    role !== "host"
+  ) {
 
     alert(
       "The room creator starts the photo session."
     );
 
     return;
+
   }
 
 
-  /* Make sure WebSocket is connected */
+  /*
+   * SOLO
+   */
+
+  if (solo) {
+
+    const startAt =
+      syncedNow() +
+      500;
+
+
+    await runPhotoSession({
+
+      type:
+        "start-session",
+
+      mode:
+        mode,
+
+      timer:
+        selectedTimer,
+
+      startAt:
+        startAt
+
+    });
+
+
+    return;
+
+  }
+
+
+  /*
+   * Make sure friend is connected.
+   */
+
   if (
     !ws ||
-    ws.readyState !== WebSocket.OPEN
+    ws.readyState !==
+      WebSocket.OPEN
   ) {
 
     alert(
@@ -2910,57 +4415,58 @@ async function startPhotoSession(mode) {
     );
 
     return;
+
   }
 
 
   /*
    * IMPORTANT:
    *
-   * Both phones receive the SAME
-   * startAt timestamp.
+   * Host creates ONE timestamp.
    *
-   * This makes the countdown begin
-   * at approximately the same time.
+   * Both phones use that timestamp.
    */
+
+  const startAt =
+    syncedNow() +
+    2500;
+
 
   const session = {
 
-    type: "start-session",
+    type:
+      "start-session",
 
-    mode: mode,
-
-    count:
-      mode === "strip"
-        ? 4
-        : 1,
+    mode:
+      mode,
 
     timer:
       selectedTimer,
 
-    /*
-     * 2 seconds gives the other phone
-     * enough time to receive the message.
-     */
     startAt:
-      Date.now() + 2000
+      startAt
 
   };
 
 
   /*
-   * Send the session to the friend.
+   * Send to guest.
    */
 
-  signal(session);
+  signal(
+    session
+  );
 
 
   /*
-   * Start the exact same session
-   * on the creator's phone.
+   * Start on host.
    */
 
-  await runPhotoSession(session);
-}  
+  await runPhotoSession(
+    session
+  );
+
+}
 
 
 /* =========================
@@ -2972,19 +4478,23 @@ $("create").onclick =
 
     solo = false;
 
+
     const code =
       makeRoomCode();
+
 
     await enterBooth(
       code,
       "host"
     );
 
+
     alert(
       "Your room code is:\n\n" +
       code +
       "\n\nShare this code with your friend."
     );
+
   };
 
 
@@ -3002,27 +4512,32 @@ $("join").onclick =
         .toUpperCase();
 
 
-    if (code.length < 4) {
+    if (
+      code.length < 4
+    ) {
 
       alert(
         "Please enter a valid room code."
       );
 
       return;
+
     }
 
 
     solo = false;
 
+
     await enterBooth(
       code,
       "guest"
     );
+
   };
 
 
 /* =========================
-   SOLO DEMO
+   SOLO MODE
 ========================= */
 
 $("solo").onclick =
@@ -3030,15 +4545,17 @@ $("solo").onclick =
 
     solo = true;
 
+
     await enterBooth(
       "SOLO",
       "solo"
     );
+
   };
 
 
 /* =========================
-   PHOTO BUTTONS
+   SINGLE PHOTO
 ========================= */
 
 $("single").onclick =
@@ -3051,6 +4568,10 @@ $("single").onclick =
   };
 
 
+/* =========================
+   4 PHOTO STRIP
+========================= */
+
 $("strip").onclick =
   () => {
 
@@ -3058,116 +4579,6 @@ $("strip").onclick =
       "strip"
     );
 
-  };
-
-
-/* =========================
-   FLIP CAMERA
-========================= */
-
-$("flip").onclick =
-  async () => {
-
-    if (captureBusy) {
-      return;
-    }
-
-
-    facing =
-      facing === "user"
-        ? "environment"
-        : "user";
-
-
-    const oldTrack =
-      stream
-        ?.getVideoTracks()[0];
-
-
-    await startCamera();
-
-
-    const newTrack =
-      stream
-        ?.getVideoTracks()[0];
-
-
-    /*
-     * Replace the camera track
-     * being sent to the friend.
-     */
-
-    if (
-      pc &&
-      newTrack
-    ) {
-
-      const sender =
-        pc
-          .getSenders()
-          .find(
-            item =>
-              item.track &&
-              item.track.kind ===
-              "video"
-          );
-
-
-      if (sender) {
-
-        await sender.replaceTrack(
-          newTrack
-        );
-
-      }
-
-    }
-
-
-    if (oldTrack) {
-      oldTrack.stop();
-    }
-  };
-
-
-/* =========================
-   LEAVE ROOM
-========================= */
-
-$("leave").onclick =
-  () => {
-
-    try {
-
-      if (ws) {
-        ws.close();
-      }
-
-    } catch (e) {}
-
-
-    try {
-
-      if (pc) {
-        pc.close();
-      }
-
-    } catch (e) {}
-
-
-    if (stream) {
-
-      stream
-        .getTracks()
-        .forEach(
-          track =>
-            track.stop()
-        );
-
-    }
-
-
-    location.reload();
   };
 
 
@@ -3196,23 +4607,50 @@ document
               ".timerBtn"
             )
             .forEach(
-              item =>
+              item => {
+
                 item.classList
                   .remove(
                     "active"
-                  )
+                  );
+
+              }
             );
 
 
           button.classList
-            .add("active");
+            .add(
+              "active"
+            );
 
 
           $("hint")
             .textContent =
-            "Both people will see the same " +
+            "Countdown: " +
             selectedTimer +
-            "-second countdown.";
+            " seconds.";
+
+          /*
+           * Synchronize the selected
+           * timer with the other phone.
+           */
+
+          if (
+            !solo &&
+            role === "host"
+          ) {
+
+            signal({
+
+              type:
+                "timer-change",
+
+              timer:
+                selectedTimer
+
+            });
+
+          }
 
         };
 
@@ -3221,12 +4659,163 @@ document
 
 
 /* =========================
-   LIVE THEME BUTTONS
+   APPLY BACKGROUND
+========================= */
+
+function applyBackground(
+  background,
+  broadcast = true
+) {
+
+  const allowed = [
+    "classic",
+    "love",
+    "midnight",
+    "dreamy",
+    "retro",
+    "minimal"
+  ];
+
+
+  if (
+    !allowed.includes(
+      background
+    )
+  ) {
+
+    background =
+      "classic";
+
+  }
+
+
+  selectedBackground =
+    background;
+
+
+  /*
+   * Change live stage.
+   */
+
+  const stage =
+    $("stage");
+
+
+  stage.classList
+    .remove(
+
+      "bg-classic",
+
+      "bg-love",
+
+      "bg-midnight",
+
+      "bg-dreamy",
+
+      "bg-retro",
+
+      "bg-minimal"
+
+    );
+
+
+  stage.classList
+    .add(
+      "bg-" +
+      background
+    );
+
+
+  /*
+   * Update active button.
+   */
+
+  document
+    .querySelectorAll(
+      ".backgroundBtn"
+    )
+    .forEach(
+      button => {
+
+        button.classList
+          .toggle(
+
+            "active",
+
+            button.dataset
+              .background ===
+              background
+
+          );
+
+      }
+    );
+
+
+  /*
+   * Update hint.
+   */
+
+  const names = {
+
+    classic:
+      "🎞️ Classic background",
+
+    love:
+      "❤️ Love background",
+
+    midnight:
+      "🌙 Midnight background",
+
+    dreamy:
+      "✨ Dreamy background",
+
+    retro:
+      "🎞️ Retro background",
+
+    minimal:
+      "🖤 Minimal background"
+
+  };
+
+
+  $("hint")
+    .textContent =
+    names[background];
+
+
+  /*
+   * Send to other phone.
+   */
+
+  if (
+    broadcast &&
+    !solo &&
+    role === "host"
+  ) {
+
+    signal({
+
+      type:
+        "background-change",
+
+      background:
+        background
+
+    });
+
+  }
+
+}
+
+
+/* =========================
+   BACKGROUND BUTTONS
 ========================= */
 
 document
   .querySelectorAll(
-    ".themeBtn"
+    ".backgroundBtn"
   )
   .forEach(
     button => {
@@ -3234,142 +4823,30 @@ document
       button.onclick =
         () => {
 
-          currentTheme =
-            button.dataset.theme;
-
-
-          const stage =
-            $("stage");
-
-
-          stage.classList
-            .remove(
-              "theme-classic",
-              "theme-love",
-              "theme-retro",
-              "theme-neon",
-              "theme-minimal"
-            );
-
-
-          stage.classList
-            .add(
-              "theme-" +
-              currentTheme
-            );
-
-
-          document
-            .querySelectorAll(
-              ".themeBtn"
-            )
-            .forEach(
-              item =>
-                item.classList
-                  .remove(
-                    "active"
-                  )
-            );
-
-
-          button.classList
-            .add("active");
-
-
-          if (
-            currentTheme ===
-            "love"
-          ) {
-
-            $("hint")
-              .textContent =
-              "❤️ Romantic Love theme selected.";
-
-          } else {
-
-            $("hint")
-              .textContent =
-              "Both people will see the same " +
-              selectedTimer +
-              "-second countdown.";
-
-          }
-
-        };
-
-    }
-  );
-
-
-/* =========================
-   FRAME BUTTONS
-========================= */
-
-document
-  .querySelectorAll(
-    ".frameBtn"
-  )
-  .forEach(
-    button => {
-
-      button.onclick =
-        async () => {
-
-          currentFrame =
-            button.dataset.frame;
-
-
-          document
-            .querySelectorAll(
-              ".frameBtn"
-            )
-            .forEach(
-              item =>
-                item.classList
-                  .remove(
-                    "active"
-                  )
-            );
-
-
-          button.classList
-            .add("active");
-
-
           /*
-           * Rebuild the strip
-           * immediately if one exists.
+           * Only host changes the
+           * shared room background.
            */
 
           if (
-            lastImages.length > 1
+            !solo &&
+            role !== "host"
           ) {
 
-            currentBlob =
-              await buildPhotoStrip(
-                lastImages,
-                currentFrame
-              );
+            alert(
+              "The room creator controls the shared background."
+            );
 
-
-            $("photo")
-              .src =
-              URL.createObjectURL(
-                currentBlob
-              );
-
-
-            $("aiNotice")
-              .textContent =
-              "Frame updated.";
-
-          } else {
-
-            $("aiNotice")
-              .textContent =
-              "Frame selected. It will be used on your next 4-photo strip.";
+            return;
 
           }
+
+
+          applyBackground(
+            button.dataset
+              .background,
+            true
+          );
 
         };
 
@@ -3378,114 +4855,80 @@ document
 
 
 /* =========================
-   DOWNLOAD HELPER
+   FLIP CAMERA
 ========================= */
 
-function downloadBlob(
-  blob,
-  filename
-) {
-
-  if (!blob) {
-    return;
-  }
-
-
-  const url =
-    URL.createObjectURL(
-      blob
-    );
-
-
-  const link =
-    document.createElement(
-      "a"
-    );
-
-
-  link.href =
-    url;
-
-
-  link.download =
-    filename;
-
-
-  document.body.appendChild(
-    link
-  );
-
-
-  link.click();
-
-
-  link.remove();
-
-
-  setTimeout(
-    () =>
-      URL.revokeObjectURL(
-        url
-      ),
-    1000
-  );
-}
-
-
-/* =========================
-   DOWNLOAD STRIP
-========================= */
-
-$("saveStrip").onclick =
-  () => {
-
-    if (!currentBlob) {
-      return;
-    }
-
-
-    downloadBlob(
-      currentBlob,
-      lastImages.length > 1
-        ? "pairpic-4-photo-strip.jpg"
-        : "pairpic-photo.jpg"
-    );
-
-  };
-
-
-/* =========================
-   DOWNLOAD INDIVIDUAL PHOTOS
-========================= */
-
-$("savePhotos").onclick =
+$("flip").onclick =
   async () => {
 
     if (
-      !lastImages.length
+      captureBusy
     ) {
 
       return;
+
     }
 
 
-    for (
-      let i = 0;
-      i < lastImages.length;
-      i++
+    facing =
+      facing === "user"
+        ? "environment"
+        : "user";
+
+
+    await startCamera();
+
+
+    /*
+     * Replace the camera track
+     * being sent through WebRTC.
+     */
+
+    if (
+      pc &&
+      stream
     ) {
 
-      downloadBlob(
-        lastImages[i],
-        "pairpic-photo-" +
-        (i + 1) +
-        ".jpg"
-      );
+      const newTrack =
+        stream
+          .getVideoTracks()[0];
 
 
-      await sleep(
-        180
-      );
+      const sender =
+        pc
+          .getSenders()
+          .find(
+            item =>
+              item.track &&
+              item.track.kind ===
+              "video"
+          );
+
+
+      if (
+        sender &&
+        newTrack
+      ) {
+
+        try {
+
+          await sender
+            .replaceTrack(
+              newTrack
+            );
+
+        }
+
+        catch (error) {
+
+          console.warn(
+            "Camera track replacement failed:",
+            error
+          );
+
+        }
+
+      }
 
     }
 
@@ -3493,178 +4936,50 @@ $("savePhotos").onclick =
 
 
 /* =========================
-   ENHANCE
+   LEAVE ROOM
 ========================= */
 
-$("enhance").onclick =
-  async () => {
+$("leave").onclick =
+  () => {
 
-    if (!currentBlob) {
-      return;
+    try {
+
+      if (ws) {
+
+        ws.close();
+
+      }
+
+    }
+
+    catch (error) {}
+
+
+    try {
+
+      if (pc) {
+
+        pc.close();
+
+      }
+
+    }
+
+    catch (error) {}
+
+
+    if (stream) {
+
+      stream
+        .getTracks()
+        .forEach(
+          track =>
+            track.stop()
+        );
+
     }
 
 
-    $("aiNotice")
-      .textContent =
-      "Enhancing photo…";
-
-
-    const image =
-      new Image();
-
-
-    image.src =
-      URL.createObjectURL(
-        currentBlob
-      );
-
-
-    await image.decode();
-
-
-    const canvas =
-      document.createElement(
-        "canvas"
-      );
-
-
-    canvas.width =
-      image.width;
-
-
-    canvas.height =
-      image.height;
-
-
-    const ctx =
-      canvas.getContext(
-        "2d"
-      );
-
-
-    ctx.filter =
-      "contrast(1.07) saturate(1.08) brightness(1.03)";
-
-
-    ctx.drawImage(
-      image,
-      0,
-      0
-    );
-
-
-    currentBlob =
-      await new Promise(
-        resolve =>
-          canvas.toBlob(
-            resolve,
-            "image/jpeg",
-            .95
-          )
-      );
-
-
-    $("photo")
-      .src =
-      URL.createObjectURL(
-        currentBlob
-      );
-
-
-    $("aiNotice")
-      .textContent =
-      "✨ Photo enhanced.";
+    location.reload();
 
   };
-
-
-/* =========================
-   CAPTION
-========================= */
-
-$("caption").onclick =
-  () => {
-
-    const captions = [
-
-      "Two people. One memory. ❤️",
-
-      "Better together. 🫶📸",
-
-      "A little moment worth keeping forever. ✨",
-
-      "One photobooth. Endless memories. ❤️",
-
-      "Together is our favorite place. 💕"
-
-    ];
-
-
-    const caption =
-      captions[
-        Math.floor(
-          Math.random() *
-          captions.length
-        )
-      ];
-
-
-    $("aiNotice")
-      .textContent =
-      "💬 " +
-      caption;
-
-  };
-
-
-/* =========================
-   RETAKE
-========================= */
-
-$("resultRetake").onclick =
-  () => {
-
-    $("result")
-      .style
-      .display =
-      "none";
-
-
-    currentBlob =
-      null;
-
-
-    lastImages =
-      [];
-
-
-    $("aiNotice")
-      .textContent =
-      "Ready for another shot.";
-
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  };
-
-
-/* =========================
-   INITIAL STATE
-========================= */
-
-setStatus(
-  "Offline"
-);
-
-
-/* =========================
-   CLOSE SCRIPT + HTML
-========================= */
-
-</script>
-
-</body>
-</html>
