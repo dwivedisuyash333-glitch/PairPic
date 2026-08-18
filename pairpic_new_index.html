@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PairPic — Together Photobooth</title>
+<style>
+:root{--pink:#ff3f9f;--purple:#8b63ff;--bg:#08070d;--card:#12101a;--muted:#aaa5b6;--line:#ffffff1c}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#54205f,#190e25 35%,#08070d 72%);color:#fff;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}body{display:flex;justify-content:center}button,input{font:inherit}button{border:0;color:#fff;cursor:pointer;font-weight:850}button:disabled{opacity:.45}.app{width:min(1150px,100%);padding:10px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.brand{font-size:26px;font-weight:950}.brand span{color:var(--pink)}.status{font-size:12px;color:#bbb7c4}.card{background:#11101ae8;border:1px solid var(--line);border-radius:25px;padding:16px;box-shadow:0 20px 70px #000b;backdrop-filter:blur(18px)}#lobby{max-width:650px;margin:6vh auto}.hero{text-align:center;padding:18px 8px 15px}.heroLogo{font-size:56px}.hero h1{font-size:42px;line-height:1.02;margin:14px 0;letter-spacing:-1.5px}.hero p{max-width:530px;margin:auto;color:var(--muted);line-height:1.6}.row{display:flex;gap:10px;margin-top:10px}.row>*{flex:1}input{width:100%;padding:14px;border-radius:15px;border:1px solid var(--line);background:#08070d;color:#fff;outline:none;text-align:center;text-transform:uppercase;letter-spacing:3px}.primary{background:linear-gradient(135deg,var(--pink),var(--purple))}.secondary{background:#ffffff0b;border:1px solid var(--line)}.bigButton{padding:15px;border-radius:16px}.tiny{text-align:center;color:#85808e;font-size:11px;margin-top:12px}#booth{display:none}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.mode{font-size:17px;font-weight:900}.room{font-size:12px;color:var(--muted)}.room b{color:#fff;letter-spacing:2px}.hostNotice{display:none;padding:10px 12px;margin-bottom:10px;border-radius:13px;background:#ff3f9f10;border:1px solid #ff3f9f25;color:#e8ccdc;font-size:12px}.stage{position:relative;width:100%;aspect-ratio:16/9;min-height:330px;overflow:hidden;border-radius:30px;border:6px solid #fff;background:#09080e;box-shadow:0 0 0 2px #ffffff22,0 22px 70px #000b;isolation:isolate}.liveBackground{position:absolute;inset:0;z-index:0;pointer-events:none;transition:background .35s}.stage.bg-classic .liveBackground{background:radial-gradient(circle at 20% 20%,#fff1,transparent 25%),linear-gradient(135deg,#17151e,#08070d)}.stage.bg-love .liveBackground{background:radial-gradient(circle at 15% 20%,#ff3f9f66,transparent 28%),radial-gradient(circle at 85% 75%,#ff72bd55,transparent 30%),linear-gradient(135deg,#3a091f,#160714)}.stage.bg-midnight .liveBackground{background:radial-gradient(circle at 25% 20%,#5268ff55,transparent 25%),radial-gradient(circle at 80% 70%,#7d4cff44,transparent 28%),#08091a}.stage.bg-dreamy .liveBackground{background:radial-gradient(circle at 20% 25%,#ff8fcf55,transparent 25%),radial-gradient(circle at 80% 70%,#b58cff55,transparent 30%),#201326}.stage.bg-retro .liveBackground{background:repeating-linear-gradient(45deg,#d7b86b14 0,#d7b86b14 9px,transparent 9px,transparent 18px),#302615}.stage.bg-minimal .liveBackground{background:#111}.decor{position:absolute;inset:0;z-index:1;pointer-events:none}.stage.bg-love .decor:before{content:"♥   ♡   ♥   ♡";position:absolute;top:5%;left:2%;color:#ff82c033;font-size:42px;letter-spacing:12px;transform:rotate(-8deg)}.stage.bg-love .decor:after{content:"♡   ♥   ♡   ♥";position:absolute;bottom:5%;right:2%;color:#ff82c033;font-size:42px;letter-spacing:12px;transform:rotate(8deg)}.cameraTogether{position:absolute;inset:0;z-index:3;display:flex;align-items:stretch;justify-content:center;padding:13px;gap:8px}.cameraPane{position:relative;width:50%;overflow:hidden;background:#050408;border:3px solid #ffffffcc;border-radius:22px;box-shadow:0 0 30px #0008}.cameraPane:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0005,transparent 25%,transparent 75%,#0006);pointer-events:none}.cameraTogether.solo .cameraPane{width:100%}.feed{width:100%;height:100%;display:block;object-fit:cover;background:#08070d}.localFeed{transform:scaleX(-1)}.name{position:absolute;z-index:8;top:9px;left:9px;padding:7px 11px;border-radius:999px;background:#0009;border:1px solid #fff3;font-size:10px;font-weight:900}.centerHeart{position:absolute;z-index:12;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#0009;border:2px solid #ffffffaa;box-shadow:0 0 30px #ff3f9f55;font-size:27px;pointer-events:none}.wait{position:absolute;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;color:#aaa5b6;background:#08070ddd;font-size:13px}.wait.hidden{display:none}.overlay{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;pointer-events:none}.count{width:145px;height:145px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#0009;border:4px solid #fff;box-shadow:0 0 0 10px #ffffff12,0 20px 70px #000;font-size:88px;font-weight:1000;opacity:0;transform:scale(.55)}.count.show{animation:countPop .95s ease forwards}@keyframes countPop{0%{opacity:0;transform:scale(.55)}18%{opacity:1;transform:scale(1.08)}70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.82)}}.flash{position:absolute;inset:0;z-index:50;background:#fff;opacity:0;pointer-events:none}.flash.show{animation:flash .22s ease}@keyframes flash{0%{opacity:0}25%{opacity:.95}100%{opacity:0}}.floatingHeart{position:absolute;z-index:45;color:#ff6bb5;font-size:22px;opacity:0;animation:floatHeart 3s ease forwards;text-shadow:0 5px 20px #ff238e88}@keyframes floatHeart{0%{opacity:0;transform:translateY(30px) scale(.6)}15%{opacity:.9}100%{opacity:0;transform:translateY(-160px) scale(1.3) rotate(12deg)}}.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}.controls button{flex:1;min-width:120px;padding:13px 14px;border-radius:15px}.hint{margin-top:9px;color:var(--muted);text-align:center;font-size:12px}.settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.settingBox{padding:13px;border-radius:17px;background:#ffffff08;border:1px solid var(--line)}.settingTitle{margin-bottom:8px;color:#ddd;font-size:12px;font-weight:900}.choices{display:flex;flex-wrap:wrap;gap:7px}.choices button{flex:1;min-width:78px;padding:10px;border-radius:12px;background:#ffffff09;border:1px solid var(--line);font-size:11px}.choices button.active{background:linear-gradient(135deg,var(--pink),var(--purple));border-color:transparent}.result{display:none;margin-top:15px}.resultGrid{display:grid;grid-template-columns:minmax(240px,430px) 1fr;gap:16px;align-items:start}.previewWrap{padding:11px;border-radius:20px;background:#07060b;border:1px solid var(--line);text-align:center}.previewWrap img{display:block;max-width:100%;max-height:650px;margin:10px auto 0;border-radius:10px}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#ffffff0d;border:1px solid var(--line);font-size:11px}.resultTools{display:flex;flex-direction:column;gap:10px}.resultTools button{padding:12px;border-radius:13px}.notice{color:#aaa5b5;font-size:12px;line-height:1.5}@media(max-width:700px){.app{padding:7px}.card{padding:11px;border-radius:21px}.hero h1{font-size:34px}.row{flex-direction:column}.stage{aspect-ratio:3/4;min-height:0;border-width:5px}.cameraTogether{padding:8px;gap:5px}.cameraPane{border-width:2px;border-radius:17px}.centerHeart{width:48px;height:48px;font-size:22px}.count{width:110px;height:110px;font-size:68px}.settings{grid-template-columns:1fr}.resultGrid{grid-template-columns:1fr}.controls button{min-width:95px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand">Pair<span>Pic</span> 📸</div><div id="status" class="status">Offline</div></header>
+<section id="lobby" class="card">
+<div class="hero"><div class="heroLogo">🫶📸</div><h1>Two people.<br>One photobooth.</h1><p>Join from two phones and create one shared photobooth memory. Countdown, background and photo moments stay synchronized.</p></div>
+<div class="row"><button id="solo" class="primary bigButton">📸 Try Solo Demo</button><button id="create" class="primary bigButton">🫶 Create Room</button></div>
+<div class="row"><input id="code" maxlength="8" placeholder="ROOM CODE" autocomplete="off"><button id="join" class="secondary bigButton">Join Room</button></div>
+<div class="tiny">Camera permission is requested only when entering the photobooth.</div>
+</section>
+<section id="booth"><div class="card">
+<div class="topbar"><div id="modeLabel" class="mode">Together Photobooth</div><div class="room">Room: <b id="roomLabel"></b></div></div>
+<div id="hostNotice" class="hostNotice">👑 You created this room. Wait for your friend, then start the photo session.</div>
+<div id="stage" class="stage bg-classic">
+<div class="liveBackground"></div><div class="decor"></div>
+<div id="cameraTogether" class="cameraTogether">
+<div id="localPane" class="cameraPane"><div class="name">YOU</div><video id="local" class="feed localFeed" autoplay muted playsinline></video></div>
+<div id="remotePane" class="cameraPane"><div class="name">FRIEND</div><video id="remote" class="feed" autoplay playsinline></video></div>
+<div id="centerHeart" class="centerHeart">♥</div>
+</div>
+<div id="wait" class="wait">Waiting for your friend…</div><div class="overlay"><div id="count" class="count">5</div></div><div id="flash" class="flash"></div>
+</div>
+<div class="controls"><button id="single" class="primary">📸 Single Photo</button><button id="strip" class="primary">🎞️ 4 Photo Strip</button><button id="flip" class="secondary">🔄 Flip</button><button id="leave" class="secondary">🚪 Leave</button></div>
+<div id="hint" class="hint">Both phones will receive the same synchronized countdown.</div>
+<div class="settings">
+<div class="settingBox"><div class="settingTitle">⏱ Countdown</div><div class="choices"><button class="timerBtn active" data-timer="5">5 Seconds</button><button class="timerBtn" data-timer="3">3 Seconds</button></div></div>
+<div class="settingBox"><div class="settingTitle">🌸 Live Background</div><div class="choices"><button class="backgroundBtn active" data-background="classic">Classic</button><button class="backgroundBtn" data-background="love">❤️ Love</button><button class="backgroundBtn" data-background="midnight">🌙 Midnight</button><button class="backgroundBtn" data-background="dreamy">✨ Dreamy</button><button class="backgroundBtn" data-background="retro">🎞️ Retro</button><button class="backgroundBtn" data-background="minimal">🖤 Minimal</button></div></div>
+</div>
+<div id="result" class="result"><div class="resultGrid"><div class="previewWrap"><span id="resultBadge" class="badge">PHOTO</span><img id="photo" alt="PairPic result"></div><div class="resultTools"><button id="saveStrip" class="primary">📥 Download Strip</button><button id="savePhotos" class="secondary">📥 Download Photos</button><button id="enhance" class="secondary">✨ Enhance</button><button id="caption" class="secondary">💬 Caption</button><button id="resultRetake" class="primary">🔄 Take Again</button><div id="aiNotice" class="notice">Your photo is ready.</div></div></div></div>
+</div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let ws=null,pc=null,room='',role='',stream=null,remoteStream=null,solo=false,facing='user';
+let selectedTimer=5,selectedBackground='classic',captureBusy=false,lastImages=[],currentBlob=null,serverClockOffset=0,remoteIceQueue=[];
+const rtcConfig={iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
+const WS_URL=(location.protocol==='https:'?'wss://':'ws://')+location.host;
+function setStatus(text){$('status').textContent=text}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function makeRoomCode(){return Math.random().toString(36).slice(2,7).toUpperCase()}
+function signal(message){if(ws&&ws.readyState===WebSocket.OPEN)ws.send(JSON.stringify(message))}
+function syncedNow(){return Date.now()+serverClockOffset}
+function updateClock(message){if(typeof message?.serverTime==='number')serverClockOffset=message.serverTime-Date.now()}
+async function startCamera(){
+ if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera unavailable');
+ if(stream)stream.getTracks().forEach(t=>t.stop());
+ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30,max:30}},audio:false});
+ $('local').srcObject=stream;
+ $('local').classList.toggle('localFeed',facing==='user');
+ try{await $('local').play()}catch{}
+}
+function setupPeer(){
+ pc=new RTCPeerConnection(rtcConfig); remoteStream=new MediaStream(); $('remote').srcObject=remoteStream;
+ stream?.getTracks().forEach(track=>pc.addTrack(track,stream));
+ pc.ontrack=e=>{const tracks=e.streams?.[0]?.getTracks?.()||[e.track];tracks.forEach(t=>{if(t&&!remoteStream.getTracks().some(x=>x.id===t.id))remoteStream.addTrack(t)});$('wait').classList.add('hidden')};
+ pc.onicecandidate=e=>{if(e.candidate)signal({type:'ice',candidate:e.candidate})};
+ pc.onconnectionstatechange=()=>{const s=pc?.connectionState;if(s==='connected'){setStatus('Online · Connected');$('wait').classList.add('hidden')}else if(s==='connecting')setStatus('Connecting…');else if(s==='disconnected')setStatus('Connection interrupted');else if(s==='failed')setStatus('Connection failed')};
+}
+async function flushIce(){if(!pc?.remoteDescription)return;for(const c of remoteIceQueue.splice(0)){try{await pc.addIceCandidate(c)}catch(e){console.warn('ICE',e)}}}
+function connectSignal(){
+ ws=new WebSocket(WS_URL);
+ ws.onopen=()=>{setStatus('Joining room…');signal({type:'join',room,role})};
+ ws.onerror=()=>setStatus('Connection error');
+ ws.onclose=()=>{if(!solo)setStatus('Disconnected')};
+ ws.onmessage=async event=>{
+  let m;try{m=JSON.parse(event.data)}catch{return}updateClock(m);
+  if(m.type==='hello'){return}
+  if(m.type==='joined'){role=m.role;$('hostNotice').style.display=role==='host'?'block':'none';return}
+  if(m.type==='waiting'){setStatus('Waiting for your friend…');$('wait').classList.remove('hidden');return}
+  if(m.type==='ready'){
+   setStatus('Connected');$('wait').classList.add('hidden');
+   if(role==='host'&&pc){try{const offer=await pc.createOffer({offerToReceiveVideo:true,offerToReceiveAudio:false});await pc.setLocalDescription(offer);signal({type:'offer',offer:pc.localDescription})}catch(e){console.error(e)}}
+   return;
+  }
+  if(m.type==='offer'&&pc){try{await pc.setRemoteDescription(m.offer);await flushIce();const answer=await pc.createAnswer();await pc.setLocalDescription(answer);signal({type:'answer',answer:pc.localDescription})}catch(e){console.error('offer',e)}return}
+  if(m.type==='answer'&&pc){try{await pc.setRemoteDescription(m.answer);await flushIce()}catch(e){console.error('answer',e)}return}
+  if(m.type==='ice'&&m.candidate){if(pc?.remoteDescription){try{await pc.addIceCandidate(m.candidate)}catch(e){console.warn('ice',e)}}else remoteIceQueue.push(m.candidate);return}
+  if(m.type==='peer-left'){setStatus('Friend left the room');$('wait').classList.remove('hidden');return}
+  if(m.type==='full'){alert('This room already has two people.');return}
+  if(m.type==='timer-change'){selectedTimer=Number(m.timer)===3?3:5;setTimerButtons();return}
+  if(m.type==='background-change'){applyBackground(m.background,false);return}
+  if(m.type==='start-session'){await runPhotoSession(m);return}
+  if(m.type==='next-photo'){handleNextPhoto(m);return}
+  if(m.type==='error'){alert(m.message||'Server error');return}
+ };
+}
+async function enterBooth(newRoom,newRole){
+ room=String(newRoom).toUpperCase().slice(0,8);role=newRole;$('roomLabel').textContent=room;$('lobby').style.display='none';$('booth').style.display='block';
+ try{await startCamera();
+  if(solo){$('modeLabel').textContent='Solo Photo Booth';$('wait').classList.add('hidden');$('remotePane').style.display='none';$('centerHeart').style.display='none';$('cameraTogether').classList.add('solo');$('hostNotice').style.display='none';setStatus('Solo Demo');}
+  else{setupPeer();connectSignal()}
+ }catch(e){console.error(e);alert('Camera access failed. Please allow camera permission for PairPic and try again.');location.reload()}
+}
+async function showCountdownUntil(startAt,seconds){
+ const count=$('count');const target=Number(startAt)-serverClockOffset;let last=-1;
+ while(true){const remaining=target-Date.now();if(remaining<=0)break;const n=Math.ceil(remaining/1000);if(n!==last){last=n;count.textContent=n;count.classList.remove('show');void count.offsetWidth;count.classList.add('show')}await sleep(Math.min(40,Math.max(10,remaining)))}count.classList.remove('show')
+}
+async function cameraFlash(){const f=$('flash');f.classList.remove('show');void f.offsetWidth;f.classList.add('show');await sleep(180)}
+async function waitForVideo(video,timeout=4000){const end=Date.now()+timeout;while(Date.now()<end){if(video&&video.readyState>=2&&video.videoWidth>0)return true;await sleep(80)}return false}
+function createFloatingHearts(){for(let i=0;i<10;i++){const h=document.createElement('div');h.className='floatingHeart';h.textContent=['♥','♡','❤','💕'][Math.floor(Math.random()*4)];h.style.left=(8+Math.random()*84)+'%';h.style.top=(55+Math.random()*30)+'%';h.style.animationDelay=(Math.random()*.4)+'s';$('stage').appendChild(h);setTimeout(()=>h.remove(),3200)}}
+function drawCover(ctx,video,x,y,w,h,mirror=false){if(!video||video.readyState<2)return;const vw=video.videoWidth||1280,vh=video.videoHeight||720,scale=Math.max(w/vw,h/vh),sw=w/scale,sh=h/scale,sx=(vw-sw)/2,sy=(vh-sh)/2;ctx.save();if(mirror){ctx.translate(x+w,y);ctx.scale(-1,1);ctx.drawImage(video,sx,sy,sw,sh,0,0,w,h)}else ctx.drawImage(video,sx,sy,sw,sh,x,y,w,h);ctx.restore()}
+function drawPhotoBackground(ctx,w,h,bg){let g;if(bg==='love'){g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#3a091f');g.addColorStop(.5,'#160714');g.addColorStop(1,'#3a0a26')}else if(bg==='midnight'){g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#090d2a');g.addColorStop(.5,'#08091a');g.addColorStop(1,'#16102e')}else if(bg==='dreamy'){g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#3a2040');g.addColorStop(.5,'#201326');g.addColorStop(1,'#281b3b')}if(g){ctx.fillStyle=g;ctx.fillRect(0,0,w,h);return}ctx.fillStyle=bg==='retro'?'#302615':bg==='minimal'?'#111':'#0c0b12';ctx.fillRect(0,0,w,h);if(bg==='retro'){ctx.strokeStyle='#d7b86b22';ctx.lineWidth=10;for(let x=-h;x<w+h;x+=35){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+h,h);ctx.stroke()}}}
+async function captureCombinedPhoto(){
+ await waitForVideo($('local'));if(!solo)await waitForVideo($('remote'));
+ const canvas=document.createElement('canvas'),w=solo?1400:1600,h=1050;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');drawPhotoBackground(ctx,w,h,selectedBackground);
+ const top=70,left=40,ph=850,pw=w-80;ctx.save();ctx.beginPath();ctx.roundRect(left,top,pw,ph,35);ctx.clip();
+ if(solo)drawCover(ctx,$('local'),left,top,pw,ph,facing==='user');else{const overlap=70,each=(pw+overlap)/2;drawCover(ctx,$('local'),left,top,each,ph,facing==='user');drawCover(ctx,$('remote'),left+each-overlap,top,each,ph,false);const cx=left+pw/2;const grad=ctx.createLinearGradient(cx-110,0,cx+110,0);grad.addColorStop(0,'transparent');grad.addColorStop(.5,'rgba(0,0,0,.25)');grad.addColorStop(1,'transparent');ctx.fillStyle=grad;ctx.fillRect(cx-110,top,220,ph);ctx.fillStyle='rgba(255,255,255,.92)';ctx.beginPath();ctx.arc(cx,top+ph/2,34,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ff3f9f';ctx.font='900 31px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('♥',cx,top+ph/2)}ctx.restore();ctx.strokeStyle=selectedBackground==='love'?'#ff78bd':'#fff';ctx.lineWidth=9;ctx.beginPath();ctx.roundRect(left,top,pw,ph,35);ctx.stroke();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.font='900 43px system-ui';ctx.fillText('PAIRPIC',w/2,45);ctx.font='700 18px system-ui';ctx.fillText(new Date().toLocaleDateString(),w/2,h-30);return new Promise(r=>canvas.toBlob(r,'image/jpeg',.94))
+}
+async function buildPhotoStrip(blobs){
+ const images=await Promise.all(blobs.map(blob=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{URL.revokeObjectURL(img.src);resolve(img)};img.onerror=reject;img.src=URL.createObjectURL(blob)})));const w=820,pad=38,top=145,gap=18,ph=390,bottom=105,h=top+images.length*ph+(images.length-1)*gap+bottom,canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');ctx.fillStyle=selectedBackground==='love'?'#fff0f7':selectedBackground==='retro'?'#eadfc5':selectedBackground==='midnight'?'#08091a':selectedBackground==='dreamy'?'#24172d':'#fff';ctx.fillRect(0,0,w,h);ctx.fillStyle=selectedBackground==='love'?'#a82c67':'#111';ctx.textAlign='center';ctx.font='900 55px system-ui';ctx.fillText('PAIRPIC',w/2,70);ctx.font='700 18px system-ui';ctx.fillText('4 MOMENTS TOGETHER',w/2,108);images.forEach((img,i)=>{const y=top+i*(ph+gap),pw=w-pad*2;ctx.save();ctx.beginPath();ctx.roundRect(pad,y,pw,ph,13);ctx.clip();const scale=Math.max(pw/img.width,ph/img.height),sw=pw/scale,sh=ph/scale,sx=(img.width-sw)/2,sy=(img.height-sh)/2;ctx.drawImage(img,sx,sy,sw,sh,pad,y,pw,ph);ctx.restore();ctx.fillStyle='rgba(0,0,0,.6)';ctx.beginPath();ctx.arc(pad+30,y+30,17,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.font='900 15px system-ui';ctx.fillText(String(i+1),pad+30,y+35)});ctx.fillStyle=selectedBackground==='love'?'#a82c67':'#333';ctx.font='700 18px system-ui';ctx.fillText(new Date().toLocaleDateString(),w/2,h-35);return new Promise(r=>canvas.toBlob(r,'image/jpeg',.94))}
+function showResult(){if(!currentBlob)return;$('result').style.display='block';$('resultBadge').textContent=lastImages.length>1?'4 PHOTO STRIP':'PHOTO';$('photo').src=URL.createObjectURL(currentBlob);$('aiNotice').textContent=lastImages.length>1?'Your shared 4-photo strip is ready.':'Your shared photo is ready.'}
+let nextPhotoResolver=null;
+function waitForNextPhoto(){return new Promise(resolve=>{nextPhotoResolver=resolve})}
+function handleNextPhoto(m){if(nextPhotoResolver){const resolve=nextPhotoResolver;nextPhotoResolver=null;resolve(m)}}
+async function runPhotoSession(session){
+ if(captureBusy)return;captureBusy=true;try{await showCountdownUntil(session.startAt,Number(session.timer)||5);await cameraFlash();lastImages=[];lastImages.push(await captureCombinedPhoto());if(selectedBackground==='love')createFloatingHearts();
+  if(session.mode==='strip'){
+   for(let i=1;i<4;i++){
+    let next;
+    if(solo){next={startAt:syncedNow()+700,timer:selectedTimer};await showCountdownUntil(next.startAt,next.timer)}
+    else if(role==='host'){signal({type:'next-photo',photoNumber:i+1,timer:selectedTimer});next={startAt:syncedNow()+1700,timer:selectedTimer};await showCountdownUntil(next.startAt,next.timer)}
+    else{next=await waitForNextPhoto();await showCountdownUntil(next.startAt,next.timer)}
+    await cameraFlash();lastImages.push(await captureCombinedPhoto());if(selectedBackground==='love')createFloatingHearts();await sleep(120)
+   }
+   currentBlob=await buildPhotoStrip(lastImages)
+  }else currentBlob=lastImages[0];showResult();
+ }catch(e){console.error('Photo session',e);alert('Something went wrong while taking the photo. Please try again.')}finally{captureBusy=false}
+}
+function setTimerButtons(){document.querySelectorAll('.timerBtn').forEach(b=>b.classList.toggle('active',Number(b.dataset.timer)===selectedTimer))}
+function applyBackground(bg,broadcast=true){const allowed=['classic','love','midnight','dreamy','retro','minimal'];if(!allowed.includes(bg))bg='classic';selectedBackground=bg;const stage=$('stage');stage.classList.remove(...allowed.map(x=>'bg-'+x));stage.classList.add('bg-'+bg);document.querySelectorAll('.backgroundBtn').forEach(b=>b.classList.toggle('active',b.dataset.background===bg));$('hint').textContent={classic:'🎞️ Classic background',love:'❤️ Love background',midnight:'🌙 Midnight background',dreamy:'✨ Dreamy background',retro:'🎞️ Retro background',minimal:'🖤 Minimal background'}[bg];if(broadcast&&!solo&&role==='host')signal({type:'background-change',background:bg})}
+$('create').onclick=async()=>{solo=false;const code=makeRoomCode();await enterBooth(code,'host');alert('Your room code is:\n\n'+code+'\n\nShare this code with your friend.')};
+$('join').onclick=async()=>{const code=$('code').value.trim().toUpperCase();if(code.length<4){alert('Please enter a valid room code.');return}solo=false;await enterBooth(code,'guest')};
+$('solo').onclick=async()=>{solo=true;await enterBooth('SOLO','solo')};
+$('single').onclick=()=>startPhotoSession('single');$('strip').onclick=()=>startPhotoSession('strip');
+$('flip').onclick=async()=>{if(captureBusy)return;facing=facing==='user'?'environment':'user';await startCamera();if(pc&&stream){const track=stream.getVideoTracks()[0],sender=pc.getSenders().find(s=>s.track?.kind==='video');if(sender&&track)try{await sender.replaceTrack(track)}catch(e){console.warn(e)}}};
+$('leave').onclick=()=>{try{ws?.close()}catch{}try{pc?.close()}catch{}stream?.getTracks().forEach(t=>t.stop());location.reload()};
+document.querySelectorAll('.timerBtn').forEach(b=>b.onclick=()=>{selectedTimer=Number(b.dataset.timer)===3?3:5;setTimerButtons();if(!solo&&role==='host')signal({type:'timer-change',timer:selectedTimer})});
+document.querySelectorAll('.backgroundBtn').forEach(b=>b.onclick=()=>{if(!solo&&role!=='host'){alert('Only the room creator controls the shared background.');return}applyBackground(b.dataset.background,true)});
+$('saveStrip').onclick=()=>{if(!currentBlob)return;const a=document.createElement('a');a.href=URL.createObjectURL(currentBlob);a.download=lastImages.length>1?'pairpic-4-photo-strip.jpg':'pairpic-photo.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('savePhotos').onclick=async()=>{for(let i=0;i<lastImages.length;i++){const a=document.createElement('a');a.href=URL.createObjectURL(lastImages[i]);a.download=`pairpic-photo-${i+1}.jpg`;a.click();await sleep(180);setTimeout(()=>URL.revokeObjectURL(a.href),1000)}};
+$('enhance').onclick=async()=>{if(!currentBlob)return;const img=new Image();img.src=URL.createObjectURL(currentBlob);await img.decode();const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.filter='contrast(1.06) saturate(1.07) brightness(1.02)';ctx.drawImage(img,0,0);currentBlob=await new Promise(r=>c.toBlob(r,'image/jpeg',.95));$('photo').src=URL.createObjectURL(currentBlob);$('aiNotice').textContent='✨ Photo enhanced.'};
+$('caption').onclick=()=>{$('aiNotice').textContent=['Two people. One memory. ❤️','Better together. 🫶📸','A little moment worth keeping forever. ✨','One photobooth. Endless memories. ❤️','Together is our favorite place. 💕'][Math.floor(Math.random()*5)]};
+$('resultRetake').onclick=()=>{$('result').style.display='none';currentBlob=null;lastImages=[];$('aiNotice').textContent='Ready for another shot.';window.scrollTo({top:0,behavior:'smooth'})};
+setStatus('Offline');
+</script>
+</body>
+</html>
